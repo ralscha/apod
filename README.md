@@ -1,4 +1,4 @@
-Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written with Ionic for the client and Java for the server side.
+Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written in Ionic 3 (client) and Java (server).
 
 # https://apod.hplar.ch
 
