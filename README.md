@@ -35,9 +35,9 @@ Examples:
   * https://apod.hplar.ch/index.html#/detail/2017-12-24
   * https://apod.hplar.ch/index.html#/full/2017-12-27
   
-This also allows the hardware back button on an Android device to work properly.
+With this configuration also the hardware back button on an Android device works properly.
 
-Apod data is stored in an IndexedDB. The application accesses the IndexedDB through [Dexie.js](http://dexie.org/). Visited images are stored through the Service Worker in the Cache. The application assets are also cached, this makes the app offline capable, limited to entries and images that the user visited  when the browser was online.
+Apod data is stored in IndexedDB. The application accesses the IndexedDB through [Dexie.js](http://dexie.org/). Visited images are stored by the Service Worker in the Cache. The application assets are also cached, this makes the app offline capable, limited to entries and images that the user visited  when the browser was online.
 
 #### Libraries
   * [Ionic](https://ionicframework.com/)
