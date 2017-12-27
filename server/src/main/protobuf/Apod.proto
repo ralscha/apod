@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option java_package = "ch.rasc.apod";
+
+message Apod {
+  string date = 1;
+  string explanation = 2;
+  string title = 3;
+  string credit = 4;
+}
+
+message Apods {
+  repeated Apod apods = 1;
+}

@@ -1,0 +1,11 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>{{selectedApod?.title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-scroll scrollX="true" scrollY="true" zoom="true" style="height: 100vh">
+    <img *ngIf="imgSrc" [src]="imgSrc">
+  </ion-scroll>
+</ion-content>
