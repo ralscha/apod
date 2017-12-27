@@ -56,4 +56,4 @@ Various sized icons generated with: http://cthedot.de/icongen/
   * [shx](https://github.com/shelljs/shx): Used for common platform independent shell tasks
   
 Application assets are revisioned with a content hash in their filename ([rev-hash](https://www.npmjs.com/package/rev-hash), [webpack-manifest-plugin](https://github.com/danethurber/webpack-manifest-plugin), [cache-busting.js](https://github.com/ralscha/apod/blob/master/client/cache-busting.js))     
-See also my blog for more informations: https://golb.hplar.ch/p/Workbox-in-Ionic-and-Lazy-Loading-Modules
+See also my blog post for more information about this topic: https://golb.hplar.ch/p/Workbox-in-Ionic-and-Lazy-Loading-Modules
