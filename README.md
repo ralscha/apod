@@ -30,7 +30,8 @@ The app consists of 3 pages:
   * **Detail**: Displays the image and underneath the explanation. Shows full page when user taps on image.
   * **Full**: Displays the high definition image in a scrollable view.
   
-Thanks to the Ionic support for the History API each page is bookmarkable (see configuration in [app.module.ts](https://github.com/ralscha/apod/blob/master/client/src/app/app.module.ts#L19-L25)). Examples:
+Thanks to the Ionic support for the History API each page is bookmarkable (see configuration in [app.module.ts](https://github.com/ralscha/apod/blob/master/client/src/app/app.module.ts#L19-L25)).    
+Examples:
   * https://apod.hplar.ch/index.html#/detail/2017-12-24
   * https://apod.hplar.ch/index.html#/full/2017-12-27
   
