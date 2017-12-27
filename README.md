@@ -7,7 +7,7 @@ Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astro
 
 ### Server
 Written in Java 8 and Spring. 
-Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the informations in a Xodus database, downloads the normal and high def image and recompresses them with the [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth.      
+Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the informations in a Xodus database, downloads the normal and high def image and recompresses them with [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth.      
 Provides an Protocol Buffer endpoint (`/apods`) for the clients.
 
 **Libraries:**
