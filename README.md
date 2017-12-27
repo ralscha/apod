@@ -23,8 +23,6 @@ Provides an Protocol Buffer endpoint (`/apods`) for the clients.
 ### Client
 
 #### Icon
-Source:    
-https://www.shareicon.net/science-stars-education-astronomy-universe-telescope-795293
-
+Source: https://www.shareicon.net/science-stars-education-astronomy-universe-telescope-795293      
 Different sizes generated with: http://cthedot.de/icongen/
 
