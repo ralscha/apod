@@ -19,8 +19,11 @@ Provides an Protocol Buffer endpoint (`/apods`) for the clients.
   * [protobuf-java](https://github.com/google/protobuf)
   * [kryo](https://github.com/EsotericSoftware/kryo)
 
+<br>
 
 ### Client
+
+
 
 #### Icon
 Source: https://www.shareicon.net/science-stars-education-astronomy-universe-telescope-795293      
