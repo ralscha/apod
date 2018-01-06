@@ -35,7 +35,7 @@ public class Importer {
 
 	private final ObjectMapper om;
 
-	private final OkHttpClient client;
+	private final OkHttpClient httpClient;
 
 	private final ExodusManager exodusManager;
 
@@ -43,10 +43,11 @@ public class Importer {
 
 	private final AppProperties appProperties;
 
-	public Importer(ObjectMapper om, AppProperties appProperties, ExodusManager exodusManager) throws IOException {
+	public Importer(ObjectMapper om, AppProperties appProperties, ExodusManager exodusManager,
+			OkHttpClient httpClient) throws IOException {
 		this.om = om;
 		this.appProperties = appProperties;
-		this.client = new OkHttpClient();
+		this.httpClient = httpClient;
 		this.exodusManager = exodusManager;
 		this.imageDirectory = Paths.get(appProperties.getImagesPath());
 		Files.createDirectories(this.imageDirectory);
@@ -80,7 +81,7 @@ public class Importer {
 				this.appProperties.getNasaApiKey(), date);
 
 		Request request = new Request.Builder().url(url).build();
-		try (Response response = this.client.newCall(request).execute()) {
+		try (Response response = this.httpClient.newCall(request).execute()) {
 			if (response.isSuccessful()) {
 				// System.out.println(response.header("X-RateLimit-Limit"));
 				System.out.println(response.header("X-RateLimit-Remaining"));
@@ -203,7 +204,7 @@ public class Importer {
 		Files.createDirectories(file.getParent());
 
 		Request request = new Request.Builder().url(url).build();
-		try (Response response = this.client.newCall(request).execute()) {
+		try (Response response = this.httpClient.newCall(request).execute()) {
 			if (response.isSuccessful()) {
 				try (ResponseBody body = response.body()) {
 					if (body != null) {
