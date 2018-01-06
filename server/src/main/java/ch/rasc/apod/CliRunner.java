@@ -187,6 +187,20 @@ public class CliRunner implements ApplicationRunner {
 			}
 			SpringApplication.exit(this.appContext, () -> 0);
 		}
+		else if (args.getNonOptionArgs().contains("deldate")) {
+			Application.runJobs = false;
+			
+			List<String> date = args.getOptionValues("date");
+			if (date.size() == 1) {
+				String key = date.get(0);
+				Apod apod = this.exodusManager.readApod(key);
+				if (apod != null) {
+					this.exodusManager.deleteApod(apod);
+				}
+			}
+
+			SpringApplication.exit(this.appContext, () -> 0);
+		}		
 		else if (args.getNonOptionArgs().contains("fixurls")) {
 			Application.runJobs = false;
 			List<Apod> allApods = this.exodusManager.readAllApod();

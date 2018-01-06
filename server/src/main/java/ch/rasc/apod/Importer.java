@@ -93,10 +93,13 @@ public class Importer {
 						apod.setCredit(credit);
 
 						if ("image".equals(apod.getMediaType()) && isJpeg(apod)) {
+							boolean hasImage = false;
+							
 							if (StringUtils.hasText(apod.getHdUrl())) {
 								String fileName = downloadAndOptimize(apod.getDate(), apod.getHdUrl(), true);
 								if (fileName != null) {
 									apod.setHdUrl(fileName);
+									hasImage = true;
 								}
 							}
 
@@ -104,10 +107,14 @@ public class Importer {
 								String fileName = downloadAndOptimize(apod.getDate(), apod.getUrl(), false);
 								if (fileName != null) {
 									apod.setUrl(fileName);
+									hasImage = true;
 								}
 							}
-							apod.setExplanation(cleanup(apod.getExplanation()));
-							this.exodusManager.saveApod(apod);
+							
+							if (hasImage) {
+								apod.setExplanation(cleanup(apod.getExplanation()));
+								this.exodusManager.saveApod(apod);
+							}
 						}
 					}
 				}
