@@ -50,6 +50,10 @@ export class HomePage {
     this.apodProvider.init().then(() => loading.dismiss());
   }
 
+  doRefresh(refresher) {
+    this.apodProvider.init().then(() => refresher.complete());
+  }
+
   async init() {
     this.apods = [];
     this.offset = 0;
