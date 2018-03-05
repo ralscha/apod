@@ -9,7 +9,7 @@ Currently the app only runs on Chrome and Firefox.
 
 ### Server
 Written in Java 8 and Spring. 
-Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the informations in a Xodus database, downloads the normal and high def image and recompresses them with [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth.      
+Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the information in a Xodus database, downloads the normal and high def image and recompresses them with [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth.      
 Provides an Protocol Buffer endpoint (`/apods`) for the clients.
 
 **Libraries:**
@@ -50,7 +50,7 @@ Source: https://www.shareicon.net/science-stars-education-astronomy-universe-tel
 Various sized icons generated with: http://cthedot.de/icongen/
 
 #### Build tools
-  * [gzip-all](https://www.npmjs.com/package/gzip-all): Precompress the applicatation assets
+  * [bread-compressor-cli](https://github.com/ralscha/bread-compressor-cli): Precompress assets
   * [html-minifier](https://www.npmjs.com/package/html-minifier): Minify the index.html page
   * [workbox-cli](https://github.com/googlechrome/workbox): Precache the application assets
   * [shx](https://github.com/shelljs/shx): Used for common platform independent shell tasks
