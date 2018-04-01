@@ -35,7 +35,7 @@
     "protobufjs": "6.8.6",
     "rxjs": "5.5.8",
     "workbox-sw": "3.0.1",
-    "zone.js": "0.8.22"
+    "zone.js": "0.8.23"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.8",
