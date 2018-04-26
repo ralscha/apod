@@ -29,7 +29,7 @@
     "@angular/http": "5.2.10",
     "@angular/platform-browser": "5.2.10",
     "@angular/platform-browser-dynamic": "5.2.10",
-    "dexie": "2.0.2",
+    "dexie": "2.0.3",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "protobufjs": "6.8.6",
