@@ -9,6 +9,6 @@ module.exports = {
     './node_modules/workbox-routing/build/workbox-routing.prod.js',
     './node_modules/workbox-precaching/build/workbox-precaching.prod.js'
   ],
-	dest: '{{WWW}}/workbox-3.1.0'
+	dest: '{{WWW}}/workbox-3.2.0'
   }
 }
