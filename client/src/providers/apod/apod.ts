@@ -4,7 +4,7 @@ import {Apods, IApod} from "../../protos/apod";
 import {ENV} from "@app/env";
 import {Events} from "ionic-angular";
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ApodProvider {
   private db: ApodDb;
 

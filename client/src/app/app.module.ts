@@ -3,7 +3,6 @@ import {ErrorHandler, NgModule} from '@angular/core';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import {MyApp} from './app.component';
 import {HomePage} from '../pages/home/home';
-import {ApodProvider} from '../providers/apod/apod';
 import {FullPage} from "../pages/full/full";
 import {DetailPage} from "../pages/detail/detail";
 
@@ -32,8 +31,7 @@ import {DetailPage} from "../pages/detail/detail";
     DetailPage
   ],
   providers: [
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ApodProvider
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {
