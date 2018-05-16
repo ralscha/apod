@@ -31,7 +31,7 @@
     "@angular/platform-browser-dynamic": "6.0.2",
     "dexie": "2.0.3",
     "ionic-angular": "3.9.2",
-    "ionicons": "4.1.0",
+    "ionicons": "4.1.1",
     "protobufjs": "6.8.6",
     "rxjs": "6.1.0",
     "rxjs-compat": "6.1.0",
