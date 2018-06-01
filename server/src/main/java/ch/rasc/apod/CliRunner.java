@@ -62,6 +62,23 @@ public class CliRunner implements ApplicationRunner {
 
 			SpringApplication.exit(this.appContext, () -> 0);
 		}
+		else if (args.getNonOptionArgs().contains("import10")) {
+			Application.runJobs = false;
+
+			LocalDate c = LocalDate.now();
+
+			for (int i = 0; i < 10; i++) {
+				try {
+					boolean ok = this.importer.importData(c);
+				}
+				catch (IOException e) {
+					Application.logger.info(e.getMessage());
+				}
+				c = c.minusDays(1);
+			}
+
+			SpringApplication.exit(this.appContext, () -> 0);
+		}
 		else if (args.getNonOptionArgs().contains("exportcredit")) {
 			Application.runJobs = false;
 
