@@ -10,7 +10,7 @@ Currently the app only runs on Chrome and Firefox.
 ### Server
 Written in Java 8 and Spring. 
 Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the information in a Xodus database, downloads the normal and high def image and recompresses them with [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth.      
-Provides an Protocol Buffer endpoint (`/apods`) for the clients.
+Provides a Protocol Buffer endpoint (`/apods`) for the clients.
 
 **Libraries:**
   * [Spring 5](https://projects.spring.io/spring-framework/)
@@ -55,5 +55,49 @@ Various sized icons generated with: http://cthedot.de/icongen/
   * [workbox-cli](https://github.com/googlechrome/workbox): Precache the application assets
   * [shx](https://github.com/shelljs/shx): Used for common platform independent shell tasks
   
-Application assets are revisioned with a content hash in their filename ([rev-hash](https://www.npmjs.com/package/rev-hash), [webpack-manifest-plugin](https://github.com/danethurber/webpack-manifest-plugin), [cache-busting.js](https://github.com/ralscha/apod/blob/master/client/cache-busting.js))     
+Application assets are versioned with a content hash in their filename ([rev-hash](https://www.npmjs.com/package/rev-hash), [webpack-manifest-plugin](https://github.com/danethurber/webpack-manifest-plugin), [cache-busting.js](https://github.com/ralscha/apod/blob/master/client/cache-busting.js))     
 See also my blog post for more information about this topic: https://golb.hplar.ch/p/Workbox-in-Ionic-and-Lazy-Loading-Modules
+
+
+## Run locally
+
+  * Install Node.js    
+    https://nodejs.org/en/
+
+  * Download jpeg-recompress for your operation system    
+    https://github.com/imagemin/jpeg-recompress-bin/tree/master/vendor/
+
+  * Install the Ionic CLI: `npm install -g ionic@latest`
+
+  * Clone the project and install the client dependencies
+    ```
+    git clone https://github.com/ralscha/apod.git
+    cd apod/client
+    npm install
+    ```
+
+  * Open `server/src/main/resources/application-development.properties` and change the path to the jpeg-recompress binary. 
+
+
+  * Visit the NASA Open API page and apply for an API key (it's free)     
+    https://api.nasa.gov/index.html#apply-for-an-api-key
+
+  * Open `server/src/main/resources/application.properties` and enter the API key     
+    `app.nasa-api-key=<enter key here>`
+
+  * Download some test data. The following command will download the last 10 days.
+    ```
+    cd apod/server
+    ./mvnw spring-boot:run -Dspring.profiles.active=development -Dspring-boot.run.arguments=import10
+    ```
+
+  * Start the server
+  ```
+  ./mvnw spring-boot:run -Dspring.profiles.active=development
+  ```
+
+  * Start the client
+  ```
+  cd apod/client
+  ionic serve
+  ```
