@@ -31,10 +31,10 @@
     "@angular/platform-browser-dynamic": "6.1.8",
     "dexie": "2.0.4",
     "ionic-angular": "3.9.2",
-    "ionicons": "4.4.3",
+    "ionicons": "4.4.4",
     "protobufjs": "6.8.8",
-    "rxjs": "6.3.2",
-    "rxjs-compat": "6.3.2",
+    "rxjs": "6.3.3",
+    "rxjs-compat": "6.3.3",
     "workbox-sw": "3.6.1",
     "zone.js": "0.8.26"
   },
