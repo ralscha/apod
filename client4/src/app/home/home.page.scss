@@ -1,0 +1,69 @@
+button {
+  padding: 6px 6px 0 6px !important;
+  background-color: var(--ion-color-dark) !important;
+}
+
+
+ion-label {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+ion-list {
+  padding-left: 8px;
+}
+
+.image {
+  position: relative;
+
+  h4 {
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    width: 100%;
+
+    span {
+      color: white;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2px;
+    }
+  }
+
+  h2 {
+    position: absolute;
+    bottom: 29px;
+    left: 2px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+
+    span {
+      color: white;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2px;
+    }
+  }
+
+  h3 {
+    position: absolute;
+    bottom: 8px;
+    left: 2px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+
+    span {
+      font-style: italic;
+      font-size: 0.93em;
+      color: white;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2px;
+    }
+  }
+
+}

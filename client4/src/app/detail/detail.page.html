@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{selectedApod?.title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <img [src]="imageURL()" (click)="showFull()"/>
+  <div class="credit">
+    {{selectedApod?.credit}}
+  </div>
+  <div class="explanation" [innerHTML]="selectedApod?.explanation">
+  </div>
+</ion-content>

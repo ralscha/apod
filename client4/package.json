@@ -1,0 +1,51 @@
+{
+  "name": "soandsoblank",
+  "version": "0.0.1",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "build-prod": "ng build --prod",
+    "serve-www": "http-server www -o -a localhost -p 1234",
+    "lint": "ng lint",
+    "pbts": "pbjs -t static-module ../server/src/main/protobuf/Apod.proto -o src/app/protos/apod.js && pbts --no-comments src/app/protos/apod.js -o src/app/protos/apod.d.ts",
+    "compress": "bread-compressor www",
+    "ionic-migration": "tslint -c ionic-migration.json -p tsconfig.json"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "7.1.2",
+    "@angular/core": "7.1.2",
+    "@angular/forms": "7.1.2",
+    "@angular/platform-browser": "7.1.2",
+    "@angular/platform-browser-dynamic": "7.1.2",
+    "@angular/pwa": "^0.11.2",
+    "@angular/router": "7.1.2",
+    "@angular/service-worker": "7.1.2",
+    "@ionic/angular": "4.0.0-beta.17",
+    "core-js": "2.6.0",
+    "dexie": "^2.0.4",
+    "protobufjs": "^6.8.8",
+    "rxjs": "6.3.3",
+    "zone.js": "0.8.26"
+  },
+  "devDependencies": {
+    "@angular-devkit/architect": "0.11.2",
+    "@angular-devkit/build-angular": "0.11.2",
+    "@angular-devkit/core": "7.1.2",
+    "@angular-devkit/schematics": "7.1.2",
+    "@angular/cli": "7.1.2",
+    "@angular/compiler": "7.1.2",
+    "@angular/compiler-cli": "7.1.2",
+    "@angular/language-service": "7.1.2",
+    "@ionic/angular-toolkit": "1.2.0",
+    "@ionic/v4-migration-tslint": "1.6.0",
+    "@types/node": "10.12.12",
+    "bread-compressor-cli": "^1.0.4",
+    "codelyzer": "4.5.0",
+    "http-server": "0.11.1",
+    "ts-node": "7.0.1",
+    "tslint": "5.11.0",
+    "typescript": "3.1.6"
+  }
+}

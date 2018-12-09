@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-title *ngIf="!showSearchbar">NASA APOD</ion-title>
+
+    <ion-searchbar #searchbar (ionCancel)="clearSearch()" (ionInput)="triggerSearchInput($event)"
+                   *ngIf="showSearchbar" [(ngModel)]="searchTerm"
+                   color="medium"
+                   [showCancelButton]="true"></ion-searchbar>
+
+    <ion-buttons slot="primary">
+      <ion-button (click)="toggleSearch()">
+        <ion-icon slot="icon-only" [ngStyle]="{'color': searchTerm === '' ? '' : 'yellow' }" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown"
+                           pullingText="Pull to refresh"
+                           refreshingSpinner="circles"
+                           refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    <ion-item [routerLink]="['/detail', apod.date]" [routerDirection]="forward" no-margin no-padding
+              *ngFor="let apod of apods; trackBy: trackBy">
+      <ion-label>
+        <div class="image">
+          <img [src]="imageURL(apod)"/>
+          <h4><span>{{apod.date}}</span></h4>
+          <h2><span>{{apod.title}}</span></h2>
+          <h3><span>{{apod.credit}}</span></h3>
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>
