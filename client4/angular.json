@@ -25,7 +25,43 @@
                 "input": "src/assets",
                 "output": "assets"
               },
-              "src/manifest.json"
+              {
+                "glob": "workbox-sw.js",
+                "input": "node_modules/workbox-sw/build",
+                "output": "./workbox-3.6.3"
+              },
+              {
+                "glob": "workbox-core.prod.js",
+                "input": "node_modules/workbox-core/build/",
+                "output": "./workbox-3.6.3"
+              },
+              {
+                "glob": "workbox-precaching.prod.js",
+                "input": "node_modules/workbox-precaching/build/",
+                "output": "./workbox-3.6.3"
+              },
+              {
+                "glob": "workbox-strategies.prod.js",
+                "input": "node_modules/workbox-strategies/build/",
+                "output": "./workbox-3.6.3"
+              },
+              {
+                "glob": "workbox-cache-expiration.prod.js",
+                "input": "node_modules/workbox-cache-expiration/build/",
+                "output": "./workbox-3.6.3"
+              },
+              {
+                "glob": "workbox-cacheable-response.prod.js",
+                "input": "node_modules/workbox-cacheable-response/build/",
+                "output": "./workbox-3.6.3"
+              },
+              {
+                "glob": "workbox-routing.prod.js",
+                "input": "node_modules/workbox-routing/build/",
+                "output": "./workbox-3.6.3"
+              },
+              "src/manifest.json",
+              "src/service-worker.js"
             ],
             "styles": [
               {
@@ -60,8 +96,7 @@
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
                 }
-              ],
-              "serviceWorker": true
+              ]
             },
             "ci": {
               "progress": false

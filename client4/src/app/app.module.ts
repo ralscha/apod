@@ -5,11 +5,11 @@ import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 import {AppComponent} from './app.component';
 import {HomePage} from './home/home.page';
 import {CommonModule} from '@angular/common';
-import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import {DetailPage} from './detail/detail.page';
 import {FullPage} from './full/full.page';
 import {FormsModule} from '@angular/forms';
+import {ServiceWorkerModule} from './service-worker-module';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -27,7 +27,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule.forRoot(),
     RouterModule.forRoot(routes, {useHash: true}),
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})],
+    ServiceWorkerModule.register('service-worker.js')],
   providers: [
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
   ],

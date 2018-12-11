@@ -25,10 +25,21 @@ export class DetailPage implements OnInit {
   }
 
   async showFull() {
-    const response = await caches.match(this.imageURL(), {cacheName: 'images'});
-    if (response) {
+    if (navigator.onLine) {
       this.navCtrl.navigateForward(['/full', this.selectedApod.date]);
+    } else {
+      const response = await caches.match(this.imageHDURL(), {cacheName: 'images'});
+      if (response) {
+        this.navCtrl.navigateForward(['/full', this.selectedApod.date]);
+      }
     }
+  }
+
+  imageHDURL() {
+    if (this.selectedApod) {
+      return `${environment.serverURL}/img/${this.selectedApod.date}/hd`;
+    }
+    return 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
   }
 
   imageURL() {
