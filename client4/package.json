@@ -24,7 +24,7 @@
     "dexie": "2.0.4",
     "protobufjs": "6.8.8",
     "rxjs": "6.3.3",
-    "workbox-sw": "^3.6.3",
+    "workbox-sw": "3.6.3",
     "zone.js": "0.8.26"
   },
   "devDependencies": {
@@ -44,6 +44,6 @@
     "ts-node": "7.0.1",
     "tslint": "5.11.0",
     "typescript": "3.1.6",
-    "workbox-cli": "^3.6.3"
+    "workbox-cli": "3.6.3"
   }
 }
