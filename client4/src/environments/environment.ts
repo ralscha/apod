@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  serverURL: 'https://apod.hplar.ch',
+  serverURL: 'http://localhost:8080',
   version: '2.0.0'
 };
 

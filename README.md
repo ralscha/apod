@@ -1,15 +1,15 @@
-Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written in Ionic 3 (client) and Java (server).
+Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written in Ionic 4 (`client4`) and Java (`server`). You also find the old Ionic 3 client in the `client` directory.
 
 # https://apod.hplar.ch/
 
-This is *not* a PWA. The Web App requires a browser with Service Worker and Cache API implementation.    
+This is *not* a PWA. This web app requires a browser with service worker and Cache API implementation.    
 Currently the app only runs on Chrome and Firefox. 
 
 ## Technology
 
 ### Server
-Written in Java 8 and Spring. 
-Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the information in a Xodus database, downloads the normal and high def image and recompresses them with [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth.      
+Written in Java 8 with Spring / Spring Boot.    
+Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the information in a [Xodus](https://github.com/JetBrains/xodus) database, downloads the normal and high def image and recompresses them with [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth.      
 Provides a Protocol Buffer endpoint (`/apods`) for the clients.
 
 **Libraries:**
@@ -30,14 +30,7 @@ The app consists of 3 pages:
   * **Detail**: Displays the image and underneath the explanation. Shows full page when user taps on image.
   * **Full**: Displays the high definition image in a scrollable view.
   
-Thanks to the Ionic support for the History API each page is bookmarkable (see configuration in [app.module.ts](https://github.com/ralscha/apod/blob/master/client/src/app/app.module.ts#L19-L25)).    
-Examples:
-  * https://apod.hplar.ch/index.html#/detail/2017-12-24
-  * https://apod.hplar.ch/index.html#/full/2017-12-27
-  
-With this configuration also the hardware back button on an Android device works properly.
-
-Apod data is stored in IndexedDB. The application accesses the IndexedDB through [Dexie.js](http://dexie.org/). Visited images are stored by the Service Worker in the Cache. The application assets are also cached, this makes the app offline capable, limited to entries and images that the user visited  when the browser was online.
+Apod data is stored in IndexedDB. The application accesses the IndexedDB through [Dexie.js](http://dexie.org/). Visited images are stored by the service worker in the cache. The application assets are also cached, the app therefore runs when offline. In offline mode the applications shows only entries and images that the user visited before and are therefore cached.
 
 #### Libraries
   * [Ionic](https://ionicframework.com/)
@@ -50,14 +43,9 @@ Source: https://www.shareicon.net/science-stars-education-astronomy-universe-tel
 Various sized icons generated with: http://cthedot.de/icongen/
 
 #### Build tools
-  * [bread-compressor-cli](https://github.com/ralscha/bread-compressor-cli): Precompress assets
-  * [html-minifier](https://www.npmjs.com/package/html-minifier): Minify the index.html page
-  * [workbox-cli](https://github.com/googlechrome/workbox): Precache the application assets
-  * [shx](https://github.com/shelljs/shx): Used for common platform independent shell tasks
+  * [bread-compressor-cli](https://github.com/ralscha/bread-compressor-cli): Pre-compresses assets
+  * [workbox-cli](https://github.com/googlechrome/workbox): Precache the application resources
   
-Application assets are versioned with a content hash in their filename ([rev-hash](https://www.npmjs.com/package/rev-hash), [webpack-manifest-plugin](https://github.com/danethurber/webpack-manifest-plugin), [cache-busting.js](https://github.com/ralscha/apod/blob/master/client/cache-busting.js))     
-See also my blog post for more information about this topic: https://golb.hplar.ch/p/Workbox-in-Ionic-and-Lazy-Loading-Modules
-
 
 ## Run locally
 
@@ -67,9 +55,11 @@ See also my blog post for more information about this topic: https://golb.hplar.
   * Download jpeg-recompress for your operation system    
     https://github.com/imagemin/jpeg-recompress-bin/tree/master/vendor/
 
-  * Install the Ionic CLI: `npm install -g ionic@latest`
+  * Install the Ionic and Angular CLI: 
+    * `npm install -g ionic@latest`
+    * `npm install -g @angular/cli`
 
-  * Clone the project and install the client dependencies
+  * Clone the project and install the dependencies
     ```
     git clone https://github.com/ralscha/apod.git
     cd apod/client
