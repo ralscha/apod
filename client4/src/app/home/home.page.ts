@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {IApod} from '../protos/apod';
 import {environment} from '../../environments/environment';
-import {Events, LoadingController, Searchbar} from '@ionic/angular';
+import {Events, IonSearchbar, LoadingController} from '@ionic/angular';
 import {ApodService} from '../apod.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class HomePage implements OnInit {
   showSearchbar = false;
   searchTerm = '';
   @ViewChild('searchbar')
-  searchbar: Searchbar;
+  searchbar: IonSearchbar;
   private offset = 0;
 
   constructor(private readonly apodService: ApodService,
