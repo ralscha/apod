@@ -6,7 +6,7 @@ module.exports = {
     "*.css",
     "assets/icon/*.png",
     "assets/icon/favicon.ico",
-    "*.svg",
+    "svg/*",
     "manifest.json"
   ],
   "dontCacheBustUrlsMatching": new RegExp('.+\.[a-f0-9]{20}\..+'),

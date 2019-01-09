@@ -2,17 +2,17 @@ const fs = require('fs');
 const util = require('util');
 const readdir = util.promisify(fs.readdir);
 const unlink = util.promisify(fs.unlink);
-const directory = 'www';
+const directory = 'www/svg';
 
 const keep = [
-  'md-search.',
-  'md-arrow-dropdown.',
-  'md-close.',
-  'md-arrow-back.',
-  'ios-search.',
-  'ios-arrow-dropdown.',
-  'ios-close.',
-  'ios-arrow-back.'
+  'md-search.svg',
+  'md-arrow-dropdown.svg',
+  'md-close.svg',
+  'md-arrow-back.svg',
+  'ios-search.svg',
+  'ios-arrow-dropdown.svg',
+  'ios-close.svg',
+  'ios-arrow-back.svg'
 ];
 
 async function remove() {
@@ -20,7 +20,7 @@ async function remove() {
     const files = await readdir(directory);
     const toBeDeleted = [];
     for (const file of files) {
-      if (file.endsWith('.svg') && !keep.find(k => file.startsWith(k))) {
+      if (!keep.find(k => file === k)) {
         toBeDeleted.push(file);
       }
     }
