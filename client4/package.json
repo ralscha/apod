@@ -25,7 +25,7 @@
     "protobufjs": "6.8.8",
     "rxjs": "6.3.3",
     "workbox-sw": "3.6.3",
-    "zone.js": "0.8.28"
+    "zone.js": "0.8.29"
   },
   "devDependencies": {
     "@angular-devkit/architect": "0.12.2",
