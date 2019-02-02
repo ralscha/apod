@@ -1,14 +1,17 @@
 module.exports = {
   "globDirectory": "www/",
   "globPatterns": [
-    "assets/fonts/roboto*.woff2",
-    "build/**/*.css",
-    "build/**/*.js",
     "index.html",
+    "*.js",
+    "*.css",
+    "assets/icon/*.png",
+    "assets/icon/favicon.ico",
+    "svg/*",
     "manifest.json"
   ],
-  "dontCacheBustUrlsMatching": new RegExp('.+\.[a-f0-9]{10}\..+'),
+  "dontCacheBustUrlsMatching": new RegExp('.+\.[a-f0-9]{20}\..+'),
   "maximumFileSizeToCacheInBytes": 5000000,
   "swSrc": "src/service-worker.js",
   "swDest": "www/service-worker.js"
 };
+

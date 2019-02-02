@@ -1,7 +1,5 @@
 {
-  "name": "apod",
-  "app_id": "",
-  "type": "ionic-angular",
+  "name": "soandsoblank",
   "integrations": {},
-  "hooks": {}
+  "type": "angular"
 }
