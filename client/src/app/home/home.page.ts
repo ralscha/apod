@@ -39,7 +39,7 @@ export class HomePage implements OnInit {
 
     await loading.present();
 
-    await this.apodService.init()
+    await this.apodService.init();
     loading.dismiss();
   }
 
