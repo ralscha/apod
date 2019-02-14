@@ -14,7 +14,7 @@ export const SCRIPT = new InjectionToken<string>('SERVICE_WORKER_REGISTER_SCRIPT
 
 export function swAppInitializer(
   injector: Injector, script: string, options: RegistrationOptions,
-  platformId: string): Function {
+  platformId: string): () => void {
   const initializer = () => {
     const app = injector.get<ApplicationRef>(ApplicationRef);
 

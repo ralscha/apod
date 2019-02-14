@@ -76,7 +76,8 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": []
+            "scripts": [],
+            "es5BrowserSupport": true
           },
           "configurations": {
             "production": {
