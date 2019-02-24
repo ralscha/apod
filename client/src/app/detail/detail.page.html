@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <img [src]="imageURL()" (click)="showFull()"/>
+  <img [alt]="selectedApod?.title" [src]="imageURL()" (click)="showFull()"/>
   <div class="credit">
     {{selectedApod?.credit}}
   </div>

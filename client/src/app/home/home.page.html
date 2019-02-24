@@ -31,7 +31,7 @@
               *ngFor="let apod of apods; trackBy: trackBy">
       <ion-label>
         <div class="image">
-          <img [src]="imageURL(apod)"/>
+          <img [alt]="apod.title" [src]="imageURL(apod)"/>
           <h4><span>{{apod.date}}</span></h4>
           <h2><span>{{apod.title}}</span></h2>
           <h3><span>{{apod.credit}}</span></h3>

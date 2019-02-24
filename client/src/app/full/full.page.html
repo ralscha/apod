@@ -8,5 +8,5 @@
 </ion-header>
 
 <ion-content scrollX="true" scrollY="true">
-  <img *ngIf="imgSrc" [src]="imgSrc">
+  <img [alt]="selectedApod?.title" *ngIf="imgSrc" [src]="imgSrc">
 </ion-content>
