@@ -1,4 +1,4 @@
-Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written in Ionic 4 (`client4`) and Java (`server`). You find the old Ionic 3 client in the `client` directory.
+Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written with Ionic 4 (`client`) and Java (`server`).
 
 # https://apod.hplar.ch/
 
