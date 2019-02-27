@@ -24,7 +24,7 @@
     "dexie": "2.0.4",
     "protobufjs": "6.8.8",
     "rxjs": "6.4.0",
-    "workbox-sw": "3.6.3",
+    "workbox-sw": "4.0.0",
     "zone.js": "0.8.29"
   },
   "devDependencies": {
