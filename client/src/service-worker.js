@@ -1,14 +1,16 @@
-importScripts('workbox-3.6.3/workbox-sw.js');
+importScripts('workbox-4.0.0/workbox-sw.js');
 workbox.setConfig({
   debug: false,
-  modulePathPrefix: 'workbox-3.6.3/'
+  modulePathPrefix: 'workbox-4.0.0/'
 });
-workbox.skipWaiting();
-workbox.clientsClaim();
+workbox.core.skipWaiting();
+workbox.core.clientsClaim();
+workbox.precaching.cleanupOutdatedCaches();
+
 workbox.precaching.precacheAndRoute([]);
 
 workbox.routing.registerRoute(/(.*)img(.*)/,
-  workbox.strategies.cacheFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: 'images',
     plugins: [
       new workbox.expiration.Plugin({

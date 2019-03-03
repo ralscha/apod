@@ -2,8 +2,17 @@
 // https://github.com/angular/angular/blob/master/packages/service-worker/src/module.ts
 
 import {isPlatformBrowser} from '@angular/common';
-import {APP_INITIALIZER, ApplicationRef, InjectionToken, Injector, ModuleWithProviders, NgModule, PLATFORM_ID} from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationRef,
+  InjectionToken,
+  Injector,
+  ModuleWithProviders,
+  NgModule,
+  PLATFORM_ID
+} from '@angular/core';
 import {filter, take} from 'rxjs/operators';
+import {Workbox} from 'workbox-window';
 
 export abstract class RegistrationOptions {
   scope?: string;
@@ -26,7 +35,11 @@ export function swAppInitializer(
     const whenStable =
       app.isStable.pipe(filter((stable: boolean) => !!stable), take(1)).toPromise();
 
-    whenStable.then(() => navigator.serviceWorker.register(script, {scope: options.scope}));
+    whenStable.then(() => {
+      const wb = new Workbox(script, {scope: options.scope});
+      wb.register();
+    });
+
   };
   return initializer;
 }
