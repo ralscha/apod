@@ -1,7 +1,7 @@
-importScripts('workbox-4.0.0/workbox-sw.js');
+importScripts('workbox-4.1.0/workbox-sw.js');
 workbox.setConfig({
   debug: false,
-  modulePathPrefix: 'workbox-4.0.0/'
+  modulePathPrefix: 'workbox-4.1.0/'
 });
 workbox.core.skipWaiting();
 workbox.core.clientsClaim();
