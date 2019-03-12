@@ -38,7 +38,7 @@
     "@angular/compiler-cli": "7.2.8",
     "@angular/language-service": "7.2.8",
     "@ionic/angular-toolkit": "1.4.0",
-    "@types/node": "11.11.0",
+    "@types/node": "11.11.3",
     "bread-compressor-cli": "1.0.5",
     "codelyzer": "4.5.0",
     "http-server": "0.11.1",
