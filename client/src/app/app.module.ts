@@ -5,7 +5,6 @@ import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 import {AppComponent} from './app.component';
 import {HomePage} from './home/home.page';
 import {CommonModule} from '@angular/common';
-import {environment} from '../environments/environment';
 import {DetailPage} from './detail/detail.page';
 import {FullPage} from './full/full.page';
 import {FormsModule} from '@angular/forms';
