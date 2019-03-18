@@ -13,6 +13,7 @@ export class ApodService {
 
   constructor(private readonly events: Events) {
     this.db = new ApodDb();
+    this.init();
   }
 
   async init() {

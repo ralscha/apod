@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {IApod} from '../protos/apod';
 import {environment} from '../../environments/environment';
 import {Events, IonSearchbar, LoadingController} from '@ionic/angular';
@@ -9,7 +9,7 @@ import {ApodService} from '../apod.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss']
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
 
   version: string;
   apods: IApod[] = [];
@@ -19,28 +19,25 @@ export class HomePage implements OnInit {
   searchbar: IonSearchbar;
   private offset = 0;
 
+  private initEventHandler = () => this.init();
+
   constructor(private readonly apodService: ApodService,
               private readonly loadingCtrl: LoadingController,
-              events: Events) {
-    events.subscribe('apods_updated', () => {
-      this.init();
-    });
-
-    this.init();
-
-    window.addEventListener('online', this.init.bind(this));
-    window.addEventListener('offline', this.init.bind(this));
+              private readonly events: Events) {
   }
 
   async ngOnInit() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Please wait...'
-    });
+    this.events.subscribe('apods_updated', this.initEventHandler);
+    this.init();
 
-    await loading.present();
+    window.addEventListener('online', this.initEventHandler);
+    window.addEventListener('offline', this.initEventHandler);
+  }
 
-    await this.apodService.init();
-    loading.dismiss();
+  ngOnDestroy(): void {
+    this.events.unsubscribe('apods_updated', this.initEventHandler);
+    window.removeEventListener('online', this.initEventHandler);
+    window.removeEventListener('offline', this.initEventHandler);
   }
 
   doRefresh(event) {
@@ -98,6 +95,19 @@ export class HomePage implements OnInit {
 
     if (navigator.onLine) {
       apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
+
+      if (apodsFromDb.length === 0) {
+        const loading = await this.loadingCtrl.create({
+          message: 'Please wait...'
+        });
+
+        await loading.present();
+
+        await this.apodService.init();
+        loading.dismiss();
+        apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
+      }
+
     } else {
       apodsFromDb = await this.getCachedApods();
     }
