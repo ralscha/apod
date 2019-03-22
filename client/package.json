@@ -26,7 +26,7 @@
     "rxjs": "6.4.0",
     "workbox-sw": "4.1.1",
     "workbox-window": "4.1.1",
-    "zone.js": "0.8.29"
+    "zone.js": "0.9.0"
   },
   "devDependencies": {
     "@angular-devkit/architect": "0.13.6",
