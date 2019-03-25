@@ -96,7 +96,7 @@ export class HomePage implements OnInit, OnDestroy {
     if (navigator.onLine) {
       apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
 
-      if (apodsFromDb.length === 0) {
+      if (apodsFromDb.length === 0 && this.searchTerm.trim().length === 0) {
         const loading = await this.loadingCtrl.create({
           message: 'Please wait...'
         });
