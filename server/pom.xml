@@ -115,11 +115,15 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			<plugin>
+				<groupId>io.spring.javaformat</groupId>
+				<artifactId>spring-javaformat-maven-plugin</artifactId>
+				<version>0.0.9</version>
+			</plugin>
+		
 		</plugins>
 	</build>
-
-
-
 
 	<description>Server for the self hosted APOD viewer</description>
 	<url>https://apod.hplar.ch</url>

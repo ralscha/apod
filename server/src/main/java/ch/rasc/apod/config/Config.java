@@ -22,4 +22,5 @@ public class Config {
 	public ProtobufHttpMessageConverter protobufHttpMessageConverter() {
 		return new ProtobufHttpMessageConverter();
 	}
+
 }

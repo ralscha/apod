@@ -30,8 +30,12 @@ import okhttp3.ResponseBody;
 
 @Service
 public class Importer {
-	private final static DateTimeFormatter shortFormat = DateTimeFormatter.ofPattern("yyMMdd");
-	private final static DateTimeFormatter longFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+	private final static DateTimeFormatter shortFormat = DateTimeFormatter
+			.ofPattern("yyMMdd");
+
+	private final static DateTimeFormatter longFormat = DateTimeFormatter
+			.ofPattern("yyyy-MM-dd");
 
 	private final ObjectMapper om;
 
@@ -43,8 +47,8 @@ public class Importer {
 
 	private final AppProperties appProperties;
 
-	public Importer(ObjectMapper om, AppProperties appProperties, ExodusManager exodusManager,
-			OkHttpClient httpClient) throws IOException {
+	public Importer(ObjectMapper om, AppProperties appProperties,
+			ExodusManager exodusManager, OkHttpClient httpClient) throws IOException {
 		this.om = om;
 		this.appProperties = appProperties;
 		this.httpClient = httpClient;
@@ -63,7 +67,8 @@ public class Importer {
 		for (int j = 0; j < 4; j++) {
 			try {
 				importData(c);
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				Application.logger.error("scheduledImport", e);
 			}
 			c = c.minusDays(1);
@@ -77,7 +82,8 @@ public class Importer {
 			return false;
 		}
 
-		String url = String.format("https://api.nasa.gov/planetary/apod?api_key=%s&hd=true&date=%s",
+		String url = String.format(
+				"https://api.nasa.gov/planetary/apod?api_key=%s&hd=true&date=%s",
 				this.appProperties.getNasaApiKey(), date);
 
 		Request request = new Request.Builder().url(url).build();
@@ -95,9 +101,10 @@ public class Importer {
 
 						if ("image".equals(apod.getMediaType()) && isJpeg(apod)) {
 							boolean hasImage = false;
-							
+
 							if (StringUtils.hasText(apod.getHdUrl())) {
-								String fileName = downloadAndOptimize(apod.getDate(), apod.getHdUrl(), true);
+								String fileName = downloadAndOptimize(apod.getDate(),
+										apod.getHdUrl(), true);
 								if (fileName != null) {
 									apod.setHdUrl(fileName);
 									hasImage = true;
@@ -105,13 +112,14 @@ public class Importer {
 							}
 
 							if (StringUtils.hasText(apod.getUrl())) {
-								String fileName = downloadAndOptimize(apod.getDate(), apod.getUrl(), false);
+								String fileName = downloadAndOptimize(apod.getDate(),
+										apod.getUrl(), false);
 								if (fileName != null) {
 									apod.setUrl(fileName);
 									hasImage = true;
 								}
 							}
-							
+
 							if (hasImage) {
 								apod.setExplanation(cleanup(apod.getExplanation()));
 								this.exodusManager.saveApod(apod);
@@ -136,16 +144,19 @@ public class Importer {
 				if (fileName.toLowerCase().endsWith(".jpg")) {
 					int pos = fileName.lastIndexOf(".");
 					if (pos != -1) {
-						Path out = imgFile.resolveSibling(fileName.substring(0, pos) + "_o" + fileName.substring(pos));
+						Path out = imgFile.resolveSibling(fileName.substring(0, pos)
+								+ "_o" + fileName.substring(pos));
 						try {
 							if (hd) {
 								optimizeJpegs(imgFile, out);
-							} else {
-								out = imgFile
-										.resolveSibling(fileName.substring(0, pos) + "_oo" + fileName.substring(pos));
+							}
+							else {
+								out = imgFile.resolveSibling(fileName.substring(0, pos)
+										+ "_oo" + fileName.substring(pos));
 								optimizeJpegsLowQuality(imgFile, out);
 							}
-						} catch (InterruptedException | IOException e) {
+						}
+						catch (InterruptedException | IOException e) {
 							Application.logger.error("optimize", e);
 						}
 					}
@@ -153,7 +164,8 @@ public class Importer {
 
 				return fileName;
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			Application.logger.error("downloadAndOptimize", e);
 		}
 
@@ -180,7 +192,8 @@ public class Importer {
 	private static String getCreditNote(Apod apod) throws IOException {
 
 		LocalDate ld = LocalDate.parse(apod.getDate());
-		Document doc = Jsoup.connect("https://apod.nasa.gov/apod/ap" + ld.format(shortFormat) + ".html").get();
+		Document doc = Jsoup.connect(
+				"https://apod.nasa.gov/apod/ap" + ld.format(shortFormat) + ".html").get();
 
 		Elements elements = doc.getElementsByTag("center");
 		if (elements.size() >= 2) {
@@ -215,23 +228,25 @@ public class Importer {
 		}
 	}
 
-	private void optimizeJpegs(Path in, Path out) throws IOException, InterruptedException {
+	private void optimizeJpegs(Path in, Path out)
+			throws IOException, InterruptedException {
 		if (Files.exists(out)) {
 			return;
 		}
 
-		Process p = new ProcessBuilder(this.appProperties.getJpegRecompressExe(), "-c", "--accurate", "--strip",
-				in.toString(), out.toString()).start();
+		Process p = new ProcessBuilder(this.appProperties.getJpegRecompressExe(), "-c",
+				"--accurate", "--strip", in.toString(), out.toString()).start();
 		p.waitFor();
 	}
 
-	private void optimizeJpegsLowQuality(Path in, Path out) throws IOException, InterruptedException {
+	private void optimizeJpegsLowQuality(Path in, Path out)
+			throws IOException, InterruptedException {
 		if (Files.exists(out)) {
 			return;
 		}
 
-		Process p = new ProcessBuilder(this.appProperties.getJpegRecompressExe(), "-c", "-s", "-q", "low", "-t", ".97",
-				in.toString(), out.toString()).start();
+		Process p = new ProcessBuilder(this.appProperties.getJpegRecompressExe(), "-c",
+				"-s", "-q", "low", "-t", ".97", in.toString(), out.toString()).start();
 		p.waitFor();
 	}
 
@@ -245,10 +260,12 @@ public class Importer {
 			if (fileName.toLowerCase().endsWith(".jpg")) {
 				int pos = fileName.lastIndexOf(".");
 				if (pos != -1) {
-					Path out = imgFile.resolveSibling(fileName.substring(0, pos) + "_oo" + fileName.substring(pos));
+					Path out = imgFile.resolveSibling(
+							fileName.substring(0, pos) + "_oo" + fileName.substring(pos));
 					try {
 						optimizeJpegsLowQuality(imgFile, out);
-					} catch (InterruptedException | IOException e) {
+					}
+					catch (InterruptedException | IOException e) {
 						Application.logger.error("optimize", e);
 					}
 				}
@@ -279,8 +296,8 @@ public class Importer {
 		Path dir = this.imageDirectory.resolve(dayPath);
 		System.out.println(dir);
 
-		Files.walk(dir, FileVisitOption.FOLLOW_LINKS).sorted(Comparator.reverseOrder()).map(Path::toFile)
-				.forEach(File::delete);
+		Files.walk(dir, FileVisitOption.FOLLOW_LINKS).sorted(Comparator.reverseOrder())
+				.map(Path::toFile).forEach(File::delete);
 
 		this.exodusManager.deleteApod(apod);
 	}
@@ -291,10 +308,12 @@ public class Importer {
 		}
 
 		String expl = explanation;
-		List<String> obsoleteTexts = Arrays.asList("Free APOD Lectur", "Free Download:", "Note: Free", "Free Lecture",
-				"No Textbook:", "Happy Holidays:", "Print or Peruse:", "If Time Continues:", "Budget Universe:",
-				"Downloadable Universe:", "Organize Your Universe:", "News: ", "Best Space Images", "Free Download",
-				"Free Present", "Free Presentation", "    Free", "See for yourself:", "Follow APOD on", "Poll:",
+		List<String> obsoleteTexts = Arrays.asList("Free APOD Lectur", "Free Download:",
+				"Note: Free", "Free Lecture", "No Textbook:", "Happy Holidays:",
+				"Print or Peruse:", "If Time Continues:", "Budget Universe:",
+				"Downloadable Universe:", "Organize Your Universe:", "News: ",
+				"Best Space Images", "Free Download", "Free Present", "Free Presentation",
+				"    Free", "See for yourself:", "Follow APOD on", "Poll:",
 				"Now Available:", ".   Students", "digg_url", ".    ");
 		for (String ob : obsoleteTexts) {
 			int pos = expl.toLowerCase().indexOf(ob.toLowerCase());
@@ -305,4 +324,5 @@ public class Importer {
 
 		return expl.trim();
 	}
+
 }

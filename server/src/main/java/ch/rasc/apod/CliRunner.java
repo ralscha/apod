@@ -109,7 +109,8 @@ public class CliRunner implements ApplicationRunner {
 				List<String> lines = new ArrayList<>();
 				for (Apod apod : allApods) {
 
-					lines.add(apod.getDate() + ";" + apod.getUrl() + ";" + apod.getHdUrl());
+					lines.add(
+							apod.getDate() + ";" + apod.getUrl() + ";" + apod.getHdUrl());
 				}
 				Files.write(export, lines);
 			}
@@ -206,7 +207,7 @@ public class CliRunner implements ApplicationRunner {
 		}
 		else if (args.getNonOptionArgs().contains("deldate")) {
 			Application.runJobs = false;
-			
+
 			List<String> date = args.getOptionValues("date");
 			if (date.size() == 1) {
 				String key = date.get(0);
@@ -217,7 +218,7 @@ public class CliRunner implements ApplicationRunner {
 			}
 
 			SpringApplication.exit(this.appContext, () -> 0);
-		}		
+		}
 		else if (args.getNonOptionArgs().contains("fixurls")) {
 			Application.runJobs = false;
 			List<Apod> allApods = this.exodusManager.readAllApod();

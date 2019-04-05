@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "app")
 @Component
 public class AppProperties {
+
 	private String nasaApiKey;
 
 	private String imagesPath;
