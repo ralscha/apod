@@ -27,7 +27,7 @@
   </ion-refresher>
 
   <ion-list>
-    <ion-item [routerLink]="['/detail', apod.date]" [routerDirection]="forward" no-margin no-padding
+    <ion-item [routerLink]="['/detail', apod.date]" routerDirection="forward" no-margin no-padding
               *ngFor="let apod of apods; trackBy: trackBy">
       <ion-label>
         <div class="image">
