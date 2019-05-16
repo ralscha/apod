@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.4.RELEASE</version>
+		<version>2.1.5.RELEASE</version>
 		<relativePath />
 	</parent>
 
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.11.3</version>
+			<version>1.12.1</version>
 		</dependency>
 
 		<dependency>
@@ -80,7 +80,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
 				<configuration>
 					<debug>true</debug>
 					<source>${java.version}</source>
@@ -90,7 +89,7 @@
 						<path>
 							<groupId>org.springframework.boot</groupId>
 							<artifactId>spring-boot-configuration-processor</artifactId>
-							<version>2.1.4.RELEASE</version>
+							<version>2.1.5.RELEASE</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
