@@ -1,5 +1,5 @@
 module.exports = {
-  "globDirectory": "www/",
+  "globDirectory": "dist/app/",
   "globPatterns": [
     "index.html",
     "*.js",
@@ -12,6 +12,6 @@ module.exports = {
   "dontCacheBustURLsMatching": new RegExp('.+\.[a-f0-9]{20}\..+'),
   "maximumFileSizeToCacheInBytes": 5000000,
   "swSrc": "src/service-worker.js",
-  "swDest": "www/service-worker.js"
+  "swDest": "dist/app/service-worker.js"
 };
 

@@ -6,8 +6,8 @@ import {ApodService} from '../apod.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss']
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss']
 })
 export class HomePage implements OnInit, OnDestroy {
 
@@ -15,7 +15,7 @@ export class HomePage implements OnInit, OnDestroy {
   apods: IApod[] = [];
   showSearchbar = false;
   searchTerm = '';
-  @ViewChild('searchbar')
+  @ViewChild('searchbar', {static: false})
   searchbar: IonSearchbar;
   private offset = 0;
 
