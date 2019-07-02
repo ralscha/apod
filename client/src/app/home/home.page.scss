@@ -3,6 +3,9 @@ button {
   background-color: var(--ion-color-dark) !important;
 }
 
+ion-refresher {
+  --ion-text-color: white;
+}
 
 ion-label {
   margin: 0 !important;
