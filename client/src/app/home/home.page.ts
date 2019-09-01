@@ -120,7 +120,8 @@ export class HomePage implements OnInit, OnDestroy {
     let apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
     while (cachedApods.length < 5 && apodsFromDb.length > 0) {
       for (const a of apodsFromDb) {
-        const response = await caches.match(`${environment.serverURL}/img/${a.date}/n`, {cacheName: 'images'});
+        const imagesCache = await caches.open('images');
+        const response = await imagesCache.match(`${environment.serverURL}/img/${a.date}/n`);
         if (response) {
           cachedApods.push(a);
         }

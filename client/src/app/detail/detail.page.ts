@@ -28,7 +28,8 @@ export class DetailPage implements OnInit {
     if (navigator.onLine) {
       this.navCtrl.navigateForward(['/full', this.selectedApod.date]);
     } else {
-      const response = await caches.match(this.imageHDURL(), {cacheName: 'images'});
+      const imagesCache = await caches.open('images');
+      const response = await imagesCache.match(this.imageHDURL());
       if (response) {
         this.navCtrl.navigateForward(['/full', this.selectedApod.date]);
       }
