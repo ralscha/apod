@@ -4,8 +4,8 @@ module.exports = {
     "index.html",
     "*.js",
     "*.css",
-    "assets/icon/*.png",
-    "assets/icon/favicon.ico",
+    "assets/icons/*.png",
+    "favicon.ico",
     "svg/*",
     "manifest.json"
   ],

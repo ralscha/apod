@@ -62,7 +62,13 @@
                 "output": "./workbox-431/"
               },
               "src/manifest.json",
-              "src/service-worker.js"
+              "src/service-worker.js",
+              {
+                "glob": "pwacompat.min.js",
+                "input": "node_modules/pwacompat/",
+                "output": "./pwacompat-2.0.9.min.js"
+              },
+			  "src/favicon.ico"
             ],
             "styles": [
               "src/variables.scss",
@@ -92,6 +98,11 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
               ]
             },

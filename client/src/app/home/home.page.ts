@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {IApod} from '../protos/apod';
 import {environment} from '../../environments/environment';
-import {Events, IonSearchbar, LoadingController} from '@ionic/angular';
+import {IonSearchbar, LoadingController} from '@ionic/angular';
 import {ApodService} from '../apod.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -18,16 +19,14 @@ export class HomePage implements OnInit, OnDestroy {
   @ViewChild('searchbar', {static: false})
   searchbar: IonSearchbar;
   private offset = 0;
-
-  private initEventHandler = () => this.init();
+  private updatesSubscription: Subscription;
 
   constructor(private readonly apodService: ApodService,
-              private readonly loadingCtrl: LoadingController,
-              private readonly events: Events) {
+              private readonly loadingCtrl: LoadingController) {
   }
 
   async ngOnInit() {
-    this.events.subscribe('apods_updated', this.initEventHandler);
+    this.updatesSubscription = this.apodService.updates.subscribe(() => this.initEventHandler);
     this.init();
 
     window.addEventListener('online', this.initEventHandler);
@@ -35,7 +34,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.events.unsubscribe('apods_updated', this.initEventHandler);
+    this.updatesSubscription.unsubscribe();
     window.removeEventListener('online', this.initEventHandler);
     window.removeEventListener('offline', this.initEventHandler);
   }
@@ -89,6 +88,8 @@ export class HomePage implements OnInit, OnDestroy {
     }
     this.init();
   }
+
+  private initEventHandler = () => this.init();
 
   private async readDataFromDb() {
     let apodsFromDb = [];

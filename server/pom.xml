@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.7.RELEASE</version>
+		<version>2.1.8.RELEASE</version>
 		<relativePath />
 	</parent>
 
@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<version>4.1.0</version>
+			<version>4.2.0</version>
 		</dependency>
 
 		<dependency>
@@ -89,7 +89,7 @@
 						<path>
 							<groupId>org.springframework.boot</groupId>
 							<artifactId>spring-boot-configuration-processor</artifactId>
-							<version>2.1.7.RELEASE</version>
+							<version>2.1.8.RELEASE</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>

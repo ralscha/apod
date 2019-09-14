@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ApodDb} from './apod-db';
-import {Events} from '@ionic/angular';
 import {Apods, IApod} from './protos/apod';
 import {environment} from '../environments/environment';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +10,10 @@ import {environment} from '../environments/environment';
 export class ApodService {
 
   private db: ApodDb;
+  private updatesSubject = new Subject<boolean>();
+  updates = this.updatesSubject.asObservable();
 
-  constructor(private readonly events: Events) {
+  constructor() {
     this.db = new ApodDb();
     this.init();
   }
@@ -41,7 +43,7 @@ export class ApodService {
         }
       });
 
-      this.events.publish('apods_updated');
+      this.updatesSubject.next(true);
     }
   }
 

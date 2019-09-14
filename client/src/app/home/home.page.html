@@ -4,12 +4,12 @@
 
     <ion-searchbar #searchbar (ionCancel)="clearSearch()" (ionInput)="triggerSearchInput($event)"
                    *ngIf="showSearchbar" [(ngModel)]="searchTerm"
-                   color="medium"
-                   [showCancelButton]="true"></ion-searchbar>
+                   [showCancelButton]="true"
+                   color="medium"></ion-searchbar>
 
     <ion-buttons slot="primary">
       <ion-button (click)="toggleSearch()">
-        <ion-icon slot="icon-only" [ngStyle]="{'color': searchTerm === '' ? '' : 'yellow' }" name="search"></ion-icon>
+        <ion-icon [ngStyle]="{'color': searchTerm === '' ? '' : 'yellow' }" name="search" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
 
@@ -18,7 +18,7 @@
 
 <ion-content>
 
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
     <ion-refresher-content pullingIcon="arrow-dropdown"
                            pullingText="Pull to refresh"
                            refreshingSpinner="circles"
@@ -27,8 +27,9 @@
   </ion-refresher>
 
   <ion-list>
-    <ion-item [routerLink]="['/detail', apod.date]" routerDirection="forward" no-margin no-padding
-              *ngFor="let apod of apods; trackBy: trackBy">
+    <ion-item *ngFor="let apod of apods; trackBy: trackBy" [routerLink]="['/detail', apod.date]"
+              class="ion-no-margin ion-no-padding"
+              routerDirection="forward">
       <ion-label>
         <div class="image">
           <img [alt]="apod.title" [src]="imageURL(apod)"/>
@@ -40,7 +41,7 @@
     </ion-item>
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-     <ion-infinite-scroll-content
+    <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data...">
     </ion-infinite-scroll-content>
