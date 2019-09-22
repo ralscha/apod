@@ -25,8 +25,10 @@ export class HomePage implements OnInit, OnDestroy {
               private readonly loadingCtrl: LoadingController) {
   }
 
+  private initEventHandler = () => this.init();
+
   async ngOnInit() {
-    this.updatesSubscription = this.apodService.updates.subscribe(() => this.initEventHandler);
+    this.updatesSubscription = this.apodService.updates.subscribe(this.initEventHandler);
     this.init();
 
     window.addEventListener('online', this.initEventHandler);
@@ -88,8 +90,6 @@ export class HomePage implements OnInit, OnDestroy {
     }
     this.init();
   }
-
-  private initEventHandler = () => this.init();
 
   private async readDataFromDb() {
     let apodsFromDb = [];
