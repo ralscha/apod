@@ -23,7 +23,7 @@
     "@ionic/angular": "4.11.3",
     "dexie": "2.0.4",
     "protobufjs": "6.8.8",
-    "pwacompat": "2.0.9",
+    "pwacompat": "2.0.10",
     "rxjs": "6.5.3",
     "tslib": "1.10.0",
     "workbox-sw": "4.3.1",
