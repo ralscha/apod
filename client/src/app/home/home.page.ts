@@ -16,7 +16,7 @@ export class HomePage implements OnInit, OnDestroy {
   apods: IApod[] = [];
   showSearchbar = false;
   searchTerm = '';
-  @ViewChild('searchbar', {static: false})
+  @ViewChild('searchbar')
   searchbar: IonSearchbar;
   private offset = 0;
   private updatesSubscription: Subscription;

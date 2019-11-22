@@ -18,7 +18,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/assets",
               {
@@ -66,7 +66,7 @@
               {
                 "glob": "pwacompat.min.js",
                 "input": "node_modules/pwacompat/",
-                "output": "./pwacompat-2.0.10.min.js"
+                "output": "./pwacompat2-0-10"
               },
 			  "src/favicon.ico"
             ],
@@ -89,7 +89,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
