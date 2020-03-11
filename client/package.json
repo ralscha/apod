@@ -40,7 +40,7 @@
     "bread-compressor-cli": "1.0.8",
     "codelyzer": "5.2.1",
     "local-web-server": "4.0.0",
-    "tslint": "6.0.0",
+    "tslint": "6.1.0",
     "typescript": "3.8.3",
     "workbox-cli": "4.3.1"
   }
