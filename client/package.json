@@ -22,7 +22,7 @@
     "@angular/router": "9.0.5",
     "@ionic/angular": "5.0.4",
     "dexie": "2.0.4",
-    "protobufjs": "6.8.8",
+    "protobufjs": "6.8.9",
     "pwacompat": "2.0.10",
     "rxjs": "6.5.4",
     "tslib": "1.11.1",
