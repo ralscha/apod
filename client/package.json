@@ -38,7 +38,7 @@
     "@ionic/angular-toolkit": "2.2.0",
     "@types/node": "13.9.2",
     "bread-compressor-cli": "1.0.8",
-    "codelyzer": "5.2.1",
+    "codelyzer": "5.2.2",
     "local-web-server": "4.0.0",
     "tslint": "6.1.0",
     "typescript": "3.8.3",
