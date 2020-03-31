@@ -8,7 +8,6 @@ import {CommonModule} from '@angular/common';
 import {DetailPage} from './detail/detail.page';
 import {FullPage} from './full/full.page';
 import {FormsModule} from '@angular/forms';
-import {ServiceWorkerModule} from './service-worker-module';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -25,8 +24,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule.forRoot(),
-    RouterModule.forRoot(routes, {useHash: true}),
-    ServiceWorkerModule.register('service-worker.js')],
+    RouterModule.forRoot(routes, {useHash: true})
+  ],
   providers: [
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
   ],

@@ -3,13 +3,17 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "dev": "npm-run-all --parallel sw-dev-webpack ionic-start",
+    "start": "ng serve -o",
+    "ionic-start": "ionic serve",
     "build": "ng build",
-    "build-prod": "ng build --prod && workbox injectManifest",
+    "build-prod": "ng build --prod",
+    "postbuild-prod": "npm run sw-prod-webpack && bread-compressor -a gzip dist/app && bread-compressor -a brotli \"dist/app/**/*.css\" \"dist/app/**/*.js\" \"dist/app/**/*.svg\"",
     "serve-dist": "ws --hostname localhost -d dist/app -p 1234 -o --log.format stats",
     "lint": "ng lint",
     "pbts": "pbjs -t static-module ../server/src/main/protobuf/Apod.proto -o src/app/protos/apod.js && pbts --no-comments src/app/protos/apod.js -o src/app/protos/apod.d.ts",
-    "postbuild-prod": "bread-compressor -a gzip dist/app && bread-compressor -a brotli \"dist/app/**/*.css\" \"dist/app/**/*.js\" \"dist/app/**/*.svg\""
+    "sw-dev-webpack": "rimraf ./src/service-worker.js && webpack --config ./sw-dev-webpack.config.js",
+    "sw-prod-webpack": "rimraf ./dist/app/service-worker.js && webpack --config ./sw-prod-webpack.config.js --progress --colors && workbox injectManifest ./workbox-config.js"
   },
   "private": true,
   "dependencies": {
@@ -26,8 +30,13 @@
     "pwacompat": "2.0.10",
     "rxjs": "6.5.4",
     "tslib": "1.11.1",
-    "workbox-sw": "4.3.1",
-    "workbox-window": "4.3.1",
+    "workbox-cacheable-response": "5.1.2",
+    "workbox-core": "5.1.2",
+    "workbox-expiration": "5.1.2",
+    "workbox-precaching": "5.1.2",
+    "workbox-routing": "5.1.2",
+    "workbox-strategies": "5.1.2",
+    "workbox-window": "5.1.2",
     "zone.js": "0.10.3"
   },
   "devDependencies": {
@@ -36,12 +45,17 @@
     "@angular/compiler-cli": "9.1.0",
     "@angular/language-service": "9.1.0",
     "@ionic/angular-toolkit": "2.2.0",
-    "@types/node": "13.9.5",
-    "bread-compressor-cli": "1.0.9",
+    "@types/node": "13.9.8",
+    "bread-compressor-cli": "1.1.0",
     "codelyzer": "5.2.2",
     "local-web-server": "4.0.0",
+    "npm-run-all": "4.1.5",
+    "rimraf": "3.0.2",
+    "ts-loader": "6.2.2",
     "tslint": "6.1.0",
     "typescript": "3.8.3",
-    "workbox-cli": "4.3.1"
+    "webpack": "4.42.1",
+    "webpack-cli": "3.3.11",
+    "workbox-cli": "5.1.2"
   }
 }

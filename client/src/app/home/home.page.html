@@ -4,7 +4,7 @@
 
     <ion-searchbar #searchbar (ionCancel)="clearSearch()" (ionInput)="triggerSearchInput($event)"
                    *ngIf="showSearchbar" [(ngModel)]="searchTerm"
-                   [showCancelButton]="true"
+                   showCancelButton="focus"
                    color="medium"></ion-searchbar>
 
     <ion-buttons slot="primary">
