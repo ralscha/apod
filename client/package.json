@@ -29,7 +29,7 @@
     "protobufjs": "6.9.0",
     "pwacompat": "2.0.11",
     "rxjs": "6.5.5",
-    "tslib": "1.11.1",
+    "tslib": "1.11.2",
     "workbox-cacheable-response": "5.1.2",
     "workbox-core": "5.1.2",
     "workbox-expiration": "5.1.2",
