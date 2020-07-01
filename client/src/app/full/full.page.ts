@@ -11,23 +11,23 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class FullPage implements OnInit {
 
-  selectedApod: IApod;
-  imgSrc: string = null;
-  imgHeight: number = null;
-  imgWidth: number = null;
+  selectedApod!: IApod | null | undefined;
+  imgSrc!: string;
+  imgHeight!: number;
+  imgWidth!: number;
 
   constructor(private readonly route: ActivatedRoute,
               private readonly apodService: ApodService) {
   }
 
-  imageURL() {
+  imageURL(): string {
     if (this.selectedApod) {
       return `${environment.serverURL}/img/${this.selectedApod.date}/hd`;
     }
     return 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
   }
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     const date = this.route.snapshot.paramMap.get('date');
     this.selectedApod = await this.apodService.getApod(date);
 

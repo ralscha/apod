@@ -12,14 +12,13 @@ import {Subscription} from 'rxjs';
 })
 export class HomePage implements OnInit, OnDestroy {
 
-  version: string;
   apods: IApod[] = [];
   showSearchbar = false;
   searchTerm = '';
   @ViewChild('searchbar')
-  searchbar: IonSearchbar;
+  searchbar!: IonSearchbar;
   private offset = 0;
-  private updatesSubscription: Subscription;
+  private updatesSubscription!: Subscription;
 
   constructor(private readonly apodService: ApodService,
               private readonly loadingCtrl: LoadingController) {
@@ -27,7 +26,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   private initEventHandler = () => this.init();
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.updatesSubscription = this.apodService.updates.subscribe(this.initEventHandler);
     this.init();
 
@@ -41,31 +40,33 @@ export class HomePage implements OnInit, OnDestroy {
     window.removeEventListener('offline', this.initEventHandler);
   }
 
-  doRefresh(event) {
-    this.apodService.init().then(() => event.target.complete());
+  doRefresh(event: Event): void {
+    // @ts-ignore
+    this.apodService.init().then(() => event.target?.complete());
   }
 
-  async init() {
+  async init(): Promise<void> {
     this.apods = [];
     this.offset = 0;
     this.readDataFromDb();
   }
 
-  async doInfinite(event) {
+  async doInfinite(event: Event): Promise<void> {
     this.offset += 5;
     await this.readDataFromDb();
-    event.target.complete();
+    // @ts-ignore
+    event.target?.complete();
   }
 
-  trackBy(index, item: IApod) {
+  trackBy(index: number, item: IApod): string | null | undefined {
     return item.date;
   }
 
-  imageURL(apod: IApod) {
+  imageURL(apod: IApod): string {
     return `${environment.serverURL}/img/${apod.date}/n`;
   }
 
-  toggleSearch() {
+  toggleSearch(): void {
     this.showSearchbar = !this.showSearchbar;
     setTimeout(() => {
       if (this.searchbar) {
@@ -74,14 +75,15 @@ export class HomePage implements OnInit, OnDestroy {
     }, 1);
   }
 
-  clearSearch() {
+  clearSearch(): void {
     this.searchTerm = '';
     this.toggleSearch();
 
     this.init();
   }
 
-  triggerSearchInput(event: any) {
+  triggerSearchInput(event: Event): void {
+    // @ts-ignore
     this.searchTerm = event.target.value;
     if (this.searchTerm && this.searchTerm.trim() !== '') {
 
@@ -91,7 +93,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.init();
   }
 
-  private async readDataFromDb() {
+  private async readDataFromDb(): Promise<void> {
     let apodsFromDb = [];
 
     if (navigator.onLine) {

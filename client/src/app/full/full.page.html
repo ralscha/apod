@@ -7,6 +7,6 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollX="true" scrollY="true">
+<ion-content [scrollX]="true" [scrollY]="true">
   <img *ngIf="imgSrc" [alt]="selectedApod?.title" [src]="imgSrc">
 </ion-content>

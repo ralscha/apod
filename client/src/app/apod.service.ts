@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {ApodDb} from './apod-db';
-import {Apods, IApod} from './protos/apod';
+import {Apod, Apods, IApod, IApods} from './protos/apod';
 import {environment} from '../environments/environment';
 import {Subject} from 'rxjs';
+import {PromiseExtended} from 'dexie';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,9 @@ export class ApodService {
     this.init();
   }
 
-  async init() {
+  async init(): Promise<void> {
     const lastApod = await this.getLastEntry();
-    let apods;
+    let apods: IApods | null;
     if (lastApod) {
       try {
         apods = await this.readApods(lastApod.date);
@@ -35,9 +36,12 @@ export class ApodService {
       }
     }
 
-    if (apods && apods.apods.length > 0) {
+    const len = apods?.apods?.length;
+    if (len && len > 0) {
       await this.db.transaction('rw', this.db.apods, async () => {
+        // @ts-ignore
         for (const apod of apods.apods) {
+          // @ts-ignore
           apod.titleTokens = this.getAllWords(apod.title);
           this.db.apods.put(apod);
         }
@@ -47,7 +51,7 @@ export class ApodService {
     }
   }
 
-  getLastEntry() {
+  getLastEntry(): PromiseExtended<IApod | undefined> {
     return this.db.apods.toCollection().last();
   }
 
@@ -60,13 +64,20 @@ export class ApodService {
     return this.db.apods.reverse().offset(offset).limit(limit).toArray();
   }
 
-  getApod(key: string) {
-    return this.db.apods.get(key);
+  getApod(key: string | null): Promise<IApod | undefined | null> {
+    if (key !== null) {
+      return this.db.apods.get(key);
+    }
+    return Promise.resolve(null);
   }
 
-  private getAllWords(text: string) {
+  private getAllWords(text: string | null | undefined): string[] {
+    if (text === null || text === undefined) {
+      return [];
+    }
+
     const allWords = text.split(' ');
-    const wordSet = allWords.reduce((prev, current) => {
+    const wordSet = allWords.reduce((prev: { [key: string]: boolean }, current) => {
       // ignore small tokens
       if (current && current.length > 2) {
         prev[current] = true;
@@ -76,7 +87,7 @@ export class ApodService {
     return Object.keys(wordSet);
   }
 
-  private async readApods(date: string = null) {
+  private async readApods(date: string | null = null): Promise<IApods> {
     const headers = new Headers();
     headers.append('Accept', 'application/x-protobuf');
 
