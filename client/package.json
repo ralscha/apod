@@ -24,7 +24,7 @@
     "@angular/platform-browser": "10.0.2",
     "@angular/platform-browser-dynamic": "10.0.2",
     "@angular/router": "10.0.2",
-    "@ionic/angular": "5.2.2",
+    "@ionic/angular": "5.2.3",
     "dexie": "3.0.1",
     "protobufjs": "6.9.0",
     "pwacompat": "2.0.15",
