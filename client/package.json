@@ -27,7 +27,7 @@
     "@ionic/angular": "5.3.1",
     "dexie": "3.0.2",
     "protobufjs": "6.10.1",
-    "pwacompat": "2.0.15",
+    "pwacompat": "2.0.17",
     "rxjs": "6.6.2",
     "tslib": "2.0.1",
     "workbox-cacheable-response": "5.1.3",
