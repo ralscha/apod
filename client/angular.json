@@ -35,7 +35,7 @@
               {
                 "glob": "pwacompat.min.js",
                 "input": "node_modules/pwacompat/",
-                "output": "./pwacompat2-0-15"
+                "output": "./pwacompat2-0-17"
               },
               "src/favicon.ico"
             ],
