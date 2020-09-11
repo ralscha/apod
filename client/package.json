@@ -44,7 +44,7 @@
     "@angular/cli": "10.0.8",
     "@angular/compiler-cli": "10.0.14",
     "@ionic/angular-toolkit": "2.3.3",
-    "@types/node": "14.6.2",
+    "@types/node": "14.10.1",
     "bread-compressor-cli": "1.1.0",
     "codelyzer": "6.0.0",
     "local-web-server": "4.2.1",
