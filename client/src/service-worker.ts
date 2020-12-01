@@ -1,7 +1,7 @@
 /// <reference lib="es2018" />
 /// <reference lib="webworker" />
 import {cleanupOutdatedCaches, precacheAndRoute} from 'workbox-precaching';
-import {clientsClaim, skipWaiting} from 'workbox-core';
+import {clientsClaim} from 'workbox-core';
 import {registerRoute} from 'workbox-routing';
 import {CacheFirst} from 'workbox-strategies';
 import {ExpirationPlugin} from 'workbox-expiration';
@@ -9,7 +9,7 @@ import {CacheableResponsePlugin} from 'workbox-cacheable-response';
 
 declare const self: ServiceWorkerGlobalScope;
 
-skipWaiting();
+self.skipWaiting();
 clientsClaim();
 
 cleanupOutdatedCaches();
