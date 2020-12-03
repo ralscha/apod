@@ -30,13 +30,13 @@
     "pwacompat": "2.0.17",
     "rxjs": "6.6.3",
     "tslib": "2.0.3",
-    "workbox-cacheable-response": "6.0.0",
-    "workbox-core": "6.0.0",
-    "workbox-expiration": "6.0.0",
-    "workbox-precaching": "6.0.0",
-    "workbox-routing": "6.0.0",
-    "workbox-strategies": "6.0.0",
-    "workbox-window": "6.0.0",
+    "workbox-cacheable-response": "6.0.2",
+    "workbox-core": "6.0.2",
+    "workbox-expiration": "6.0.2",
+    "workbox-precaching": "6.0.2",
+    "workbox-routing": "6.0.2",
+    "workbox-strategies": "6.0.2",
+    "workbox-window": "6.0.2",
     "zone.js": "0.11.3"
   },
   "devDependencies": {
@@ -55,6 +55,6 @@
     "typescript": "4.0.5",
     "webpack": "4.44.2",
     "webpack-cli": "3.3.12",
-    "workbox-cli": "6.0.0"
+    "workbox-cli": "6.0.2"
   }
 }
