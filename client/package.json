@@ -26,7 +26,7 @@
     "@angular/router": "11.2.11",
     "@ionic/angular": "5.6.5",
     "dexie": "3.0.3",
-    "protobufjs": "6.10.2",
+    "protobufjs": "6.11.2",
     "pwacompat": "2.0.17",
     "rxjs": "6.6.7",
     "tslib": "2.1.0",
