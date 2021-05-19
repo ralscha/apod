@@ -7,10 +7,10 @@ import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss']
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
-export class HomePage implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
 
   apods: IApod[] = [];
   showSearchbar = false;

@@ -3,22 +3,22 @@ import {BrowserModule} from '@angular/platform-browser';
 import {RouteReuseStrategy, RouterModule, Routes} from '@angular/router';
 import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 import {AppComponent} from './app.component';
-import {HomePage} from './home/home.page';
+import {HomeComponent} from './home/home.component';
 import {CommonModule} from '@angular/common';
-import {DetailPage} from './detail/detail.page';
-import {FullPage} from './full/full.page';
+import {DetailComponent} from './detail/detail.component';
+import {FullComponent} from './full/full.component';
 import {FormsModule} from '@angular/forms';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: 'home', component: HomePage},
-  {path: 'detail/:date', component: DetailPage},
-  {path: 'full/:date', component: FullPage},
+  {path: 'home', component: HomeComponent},
+  {path: 'detail/:date', component: DetailComponent},
+  {path: 'full/:date', component: FullComponent},
   {path: '**', redirectTo: '/home'}
 ];
 
 @NgModule({
-  declarations: [AppComponent, HomePage, DetailPage, FullPage],
+  declarations: [AppComponent, HomeComponent, DetailComponent, FullComponent],
   entryComponents: [],
   imports: [BrowserModule,
     CommonModule,

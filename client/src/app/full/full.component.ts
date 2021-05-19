@@ -6,10 +6,10 @@ import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-full',
-  templateUrl: './full.page.html',
-  styleUrls: ['./full.page.scss'],
+  templateUrl: './full.component.html',
+  styleUrls: ['./full.component.scss'],
 })
-export class FullPage implements OnInit {
+export class FullComponent implements OnInit {
 
   selectedApod!: IApod | null | undefined;
   imgSrc!: string;
