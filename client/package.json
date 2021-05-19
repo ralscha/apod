@@ -49,7 +49,7 @@
     "@angular/cli": "12.0.0",
     "@angular/compiler-cli": "12.0.0",
     "@ionic/angular-toolkit": "3.1.1",
-    "@types/node": "15.3.0",
+    "@types/node": "15.3.1",
     "@typescript-eslint/eslint-plugin": "4.24.0",
     "@typescript-eslint/parser": "4.24.0",
     "bread-compressor-cli": "1.1.0",
