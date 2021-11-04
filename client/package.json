@@ -47,7 +47,7 @@
     "@angular-eslint/template-parser": "12.6.1",
     "@angular/cli": "12.2.12",
     "@angular/compiler-cli": "12.2.12",
-    "@ionic/angular-toolkit": "5.0.0",
+    "@ionic/angular-toolkit": "5.0.3",
     "@types/node": "16.11.6",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
