@@ -102,8 +102,9 @@
       }
     }
   },
+  "defaultProject": "app",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "defaultCollection": "@ionic/angular-toolkit"
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
@@ -112,6 +113,5 @@
     "@ionic/angular-toolkit:page": {
       "styleext": "scss"
     }
-  },
-  "defaultProject": "app"
+  }
 }
