@@ -14,7 +14,7 @@ clientsClaim();
 
 cleanupOutdatedCaches();
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env['NODE_ENV'] === 'production') {
   registerRoute(/assets\/icons\/.+\.png$/, new CacheFirst({cacheName: 'icons'}));
   precacheAndRoute(self.__WB_MANIFEST);
 }
