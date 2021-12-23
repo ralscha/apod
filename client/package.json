@@ -48,7 +48,7 @@
     "@angular/cli": "13.1.1",
     "@angular/compiler-cli": "13.1.0",
     "@ionic/angular-toolkit": "5.0.3",
-    "@types/node": "16.11.12",
+    "@types/node": "16.11.17",
     "@typescript-eslint/eslint-plugin": "5.6.0",
     "@typescript-eslint/parser": "5.6.0",
     "bread-compressor-cli": "1.1.0",
