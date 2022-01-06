@@ -15,7 +15,7 @@ public class AppProperties {
 
 	private String jpegRecompressExe;
 
-	private String nginxSendFileContext;
+	private String redirDir;
 
 	public String getNasaApiKey() {
 		return this.nasaApiKey;
@@ -49,12 +49,12 @@ public class AppProperties {
 		this.jpegRecompressExe = jpegRecompressExe;
 	}
 
-	public String getNginxSendFileContext() {
-		return this.nginxSendFileContext;
+	public String getRedirDir() {
+		return this.redirDir;
 	}
 
-	public void setNginxSendFileContext(String nginxSendFileContext) {
-		this.nginxSendFileContext = nginxSendFileContext;
+	public void setRedirDir(String redirDir) {
+		this.redirDir = redirDir;
 	}
 
 }

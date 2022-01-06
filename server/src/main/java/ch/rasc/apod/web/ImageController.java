@@ -57,9 +57,8 @@ public class ImageController {
 					String contentType = Files.probeContentType(imgPath);
 					response.setContentType(contentType);
 
-					if (StringUtils
-							.hasText(this.appProperties.getNginxSendFileContext())) {
-						response.setHeader("X-Accel-Redirect",
+					if (StringUtils.hasText(this.appProperties.getRedirDir())) {
+						response.sendRedirect(
 								getNginxRedirect(date, imgPath.getFileName().toString()));
 						return;
 					}
@@ -117,8 +116,8 @@ public class ImageController {
 
 		String monthStr = (month < 10 ? "0" : "") + month;
 		String dayStr = (day < 10 ? "0" : "") + day;
-		return this.appProperties.getNginxSendFileContext() + "/" + ld.getYear() + "/"
-				+ monthStr + "/" + dayStr + "/" + fileName;
+		return this.appProperties.getRedirDir() + "/" + ld.getYear() + "/" + monthStr
+				+ "/" + dayStr + "/" + fileName;
 	}
 
 }
