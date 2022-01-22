@@ -1,4 +1,4 @@
-Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written with Ionic 4 (`client`) and Java (`server`).
+Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written with Ionic 6 / Angular 13 (`client`) and Java (`server`).
 
 # https://apod.hplar.ch/
 
@@ -8,7 +8,7 @@ Currently the app only runs on Chrome and Firefox.
 ## Technology
 
 ### Server
-Written in Java 8 with Spring / Spring Boot.    
+Written in Java 17 with Spring / Spring Boot.    
 Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the information in a [Xodus](https://github.com/JetBrains/xodus) database, downloads the normal and high def image and recompresses them with [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth.      
 Provides a Protocol Buffer endpoint (`/apods`) for the clients.
 
