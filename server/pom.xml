@@ -93,7 +93,7 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<protocVersion>3.19.3</protocVersion>
+							<protocVersion>3.19.4</protocVersion>
 							<inputDirectories>
 								<include>src/main/protobuf</include>
 							</inputDirectories>
