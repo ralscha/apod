@@ -18,18 +18,17 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, DetailComponent, FullComponent],
-  entryComponents: [],
-  imports: [BrowserModule,
-    CommonModule,
-    FormsModule,
-    IonicModule.forRoot(),
-    RouterModule.forRoot(routes, { useHash: true, relativeLinkResolution: 'legacy' })
-  ],
-  providers: [
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
-  ],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent, HomeComponent, DetailComponent, FullComponent],
+    imports: [BrowserModule,
+        CommonModule,
+        FormsModule,
+        IonicModule.forRoot(),
+        RouterModule.forRoot(routes, { useHash: true, relativeLinkResolution: 'legacy' })
+    ],
+    providers: [
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
