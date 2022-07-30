@@ -141,18 +141,22 @@
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.date = reader.string();
-                    break;
-                case 2:
-                    message.explanation = reader.string();
-                    break;
-                case 3:
-                    message.title = reader.string();
-                    break;
-                case 4:
-                    message.credit = reader.string();
-                    break;
+                case 1: {
+                        message.date = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.explanation = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.title = reader.string();
+                        break;
+                    }
+                case 4: {
+                        message.credit = reader.string();
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -267,6 +271,21 @@
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
     
+        /**
+         * Gets the default type url for Apod
+         * @function getTypeUrl
+         * @memberof Apod
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Apod.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Apod";
+        };
+    
         return Apod;
     })();
     
@@ -364,11 +383,12 @@
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    if (!(message.apods && message.apods.length))
-                        message.apods = [];
-                    message.apods.push($root.Apod.decode(reader, reader.uint32()));
-                    break;
+                case 1: {
+                        if (!(message.apods && message.apods.length))
+                            message.apods = [];
+                        message.apods.push($root.Apod.decode(reader, reader.uint32()));
+                        break;
+                    }
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -473,6 +493,21 @@
          */
         Apods.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+    
+        /**
+         * Gets the default type url for Apods
+         * @function getTypeUrl
+         * @memberof Apods
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Apods.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/Apods";
         };
     
         return Apods;

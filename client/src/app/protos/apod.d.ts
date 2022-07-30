@@ -1,4 +1,4 @@
-import * as $protobuf from 'protobufjs';
+import * as $protobuf from "protobufjs";
 export interface IApod {
     date?: (string|null);
     explanation?: (string|null);
@@ -21,6 +21,7 @@ export class Apod implements IApod {
     public static fromObject(object: { [k: string]: any }): Apod;
     public static toObject(message: Apod, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
+    public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
 export interface IApods {
@@ -39,4 +40,5 @@ export class Apods implements IApods {
     public static fromObject(object: { [k: string]: any }): Apods;
     public static toObject(message: Apods, options?: $protobuf.IConversionOptions): { [k: string]: any };
     public toJSON(): { [k: string]: any };
+    public static getTypeUrl(typeUrlPrefix?: string): string;
 }
