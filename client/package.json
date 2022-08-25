@@ -16,13 +16,13 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "14.1.0",
-    "@angular/compiler": "14.1.0",
-    "@angular/core": "14.1.0",
-    "@angular/forms": "14.1.0",
-    "@angular/platform-browser": "14.1.0",
-    "@angular/platform-browser-dynamic": "14.1.0",
-    "@angular/router": "14.1.0",
+    "@angular/common": "14.2.0",
+    "@angular/compiler": "14.2.0",
+    "@angular/core": "14.2.0",
+    "@angular/forms": "14.2.0",
+    "@angular/platform-browser": "14.2.0",
+    "@angular/platform-browser-dynamic": "14.2.0",
+    "@angular/router": "14.2.0",
     "@ionic/angular": "6.2.0",
     "dexie": "3.2.2",
     "protobufjs": "7.0.0",
@@ -36,7 +36,7 @@
     "workbox-routing": "6.5.4",
     "workbox-strategies": "6.5.4",
     "workbox-window": "6.5.4",
-    "zone.js": "0.11.7"
+    "zone.js": "0.11.8"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "14.1.0",
@@ -46,7 +46,7 @@
     "@angular-eslint/schematics": "14.0.2",
     "@angular-eslint/template-parser": "14.0.2",
     "@angular/cli": "14.1.0",
-    "@angular/compiler-cli": "14.1.0",
+    "@angular/compiler-cli": "14.2.0",
     "@ionic/angular-toolkit": "7.0.0",
     "@typescript-eslint/eslint-plugin": "5.31.0",
     "@typescript-eslint/parser": "5.31.0",
