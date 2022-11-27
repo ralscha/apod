@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApodDb} from './apod-db';
-import {Apod, Apods, IApod, IApods} from './protos/apod';
+import {Apods, IApod, IApods} from './protos/apod';
 import {environment} from '../environments/environment';
 import {Subject} from 'rxjs';
 import {PromiseExtended} from 'dexie';

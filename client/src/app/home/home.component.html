@@ -4,8 +4,8 @@
 
     <ion-searchbar #searchbar (ionCancel)="clearSearch()" (ionInput)="triggerSearchInput($event)"
                    *ngIf="showSearchbar" [(ngModel)]="searchTerm"
-                   showCancelButton="focus"
-                   color="medium"></ion-searchbar>
+                   color="medium"
+                   showCancelButton="focus"></ion-searchbar>
 
     <ion-buttons slot="primary">
       <ion-button (click)="toggleSearch()">
@@ -27,9 +27,9 @@
   </ion-refresher>
 
   <ion-list>
-    <ion-item *ngFor="let apod of apods; trackBy: trackBy" [routerLink]="['/detail', apod.date]"
-              class="ion-no-margin ion-no-padding"
-              routerDirection="forward" [detail]="false">
+    <ion-item *ngFor="let apod of apods; trackBy: trackBy" [detail]="false"
+              [routerLink]="['/detail', apod.date]"
+              class="ion-no-margin ion-no-padding" routerDirection="forward">
       <ion-label>
         <div class="image">
           <img [alt]="apod.title" [src]="imageURL(apod)"/>

@@ -69,7 +69,7 @@ public class CliRunner implements ApplicationRunner {
 
 			for (int i = 0; i < 10; i++) {
 				try {
-					boolean ok = this.importer.importData(c);
+					this.importer.importData(c);
 				}
 				catch (IOException e) {
 					Application.logger.info(e.getMessage());

@@ -24,8 +24,6 @@ export class HomeComponent implements OnInit, OnDestroy {
               private readonly loadingCtrl: LoadingController) {
   }
 
-  private initEventHandler = () => this.init();
-
   async ngOnInit(): Promise<void> {
     this.updatesSubscription = this.apodService.updates.subscribe(this.initEventHandler);
     this.init();
@@ -92,6 +90,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     this.init();
   }
+
+  private initEventHandler = () => this.init();
 
   private async readDataFromDb(): Promise<void> {
     let apodsFromDb = [];
