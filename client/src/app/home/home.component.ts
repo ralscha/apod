@@ -83,9 +83,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   triggerSearchInput(event: Event): void {
     // @ts-ignore
     this.searchTerm = event.target.value;
-    if (this.searchTerm && this.searchTerm.trim() !== '') {
-
-    } else {
+    if (!this.searchTerm || this.searchTerm.trim() === '') {
       this.searchTerm = '';
     }
     this.init();
