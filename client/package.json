@@ -39,13 +39,13 @@
     "zone.js": "0.12.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "15.0.2",
+    "@angular-devkit/build-angular": "15.0.4",
     "@angular-eslint/builder": "15.1.0",
     "@angular-eslint/eslint-plugin": "15.1.0",
     "@angular-eslint/eslint-plugin-template": "15.1.0",
     "@angular-eslint/schematics": "15.1.0",
     "@angular-eslint/template-parser": "15.1.0",
-    "@angular/cli": "15.0.2",
+    "@angular/cli": "15.0.4",
     "@angular/compiler-cli": "15.0.2",
     "@ionic/angular-toolkit": "7.0.0",
     "@typescript-eslint/eslint-plugin": "5.45.0",
