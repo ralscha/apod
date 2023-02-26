@@ -13,8 +13,8 @@ Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the inf
 Provides a Protocol Buffer endpoint (`/apods`) for the clients.
 
 **Libraries:**
-  * [Spring 5](https://projects.spring.io/spring-framework/)
-  * [Spring Boot 2](https://projects.spring.io/spring-boot/)
+  * [Spring 6](https://projects.spring.io/spring-framework/)
+  * [Spring Boot 3](https://projects.spring.io/spring-boot/)
   * [Xodus](https://github.com/JetBrains/xodus)
   * [jsoup](https://jsoup.org/)
   * [OkHttp](http://square.github.io/okhttp/)
