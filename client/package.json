@@ -27,7 +27,7 @@
     "dexie": "3.2.3",
     "protobufjs": "7.2.3",
     "pwacompat": "2.0.17",
-    "rxjs": "7.8.0",
+    "rxjs": "7.8.1",
     "tslib": "2.5.0",
     "workbox-cacheable-response": "6.5.4",
     "workbox-core": "6.5.4",
