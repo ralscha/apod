@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "16.0.2",
     "@angular/router": "16.0.2",
     "@ionic/angular": "7.0.7",
-    "ionicons": "7.1.0",
+    "ionicons": "7.1.2",
     "dexie": "3.2.3",
     "protobufjs": "7.2.3",
     "pwacompat": "2.0.17",
