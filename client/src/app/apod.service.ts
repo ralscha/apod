@@ -39,9 +39,9 @@ export class ApodService {
     const len = apods?.apods?.length;
     if (len && len > 0) {
       await this.db.transaction('rw', this.db.apods, async () => {
-        // @ts-ignore
+        // @ts-expect-error
         for (const apod of apods.apods) {
-          // @ts-ignore
+          // @ts-expect-error
           apod.titleTokens = this.getAllWords(apod.title);
           this.db.apods.put(apod);
         }

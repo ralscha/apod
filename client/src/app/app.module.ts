@@ -4,7 +4,7 @@ import {RouteReuseStrategy, RouterModule, Routes} from '@angular/router';
 import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {DetailComponent} from './detail/detail.component';
 import {FullComponent} from './full/full.component';
 import {FormsModule} from '@angular/forms';

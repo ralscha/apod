@@ -8,5 +8,7 @@
 </ion-header>
 
 <ion-content [scrollX]="true" [scrollY]="true">
-  <img *ngIf="imgSrc" [alt]="selectedApod?.title" [src]="imgSrc">
+  @if (imgSrc) {
+<img [alt]="selectedApod?.title" [src]="imgSrc">
+}
 </ion-content>

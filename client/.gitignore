@@ -3,3 +3,4 @@
 dist/
 /.angular/cache
 .DS_Store
+/.angular/

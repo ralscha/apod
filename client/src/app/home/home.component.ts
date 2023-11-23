@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   doRefresh(event: Event): void {
-    // @ts-ignore
+    // @ts-expect-error
     this.apodService.init().then(() => event.target?.complete());
   }
 
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   async doInfinite(event: Event): Promise<void> {
     this.offset += 5;
     await this.readDataFromDb();
-    // @ts-ignore
+    // @ts-expect-error
     event.target?.complete();
   }
 
@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   triggerSearchInput(event: Event): void {
-    // @ts-ignore
+    // @ts-expect-error
     this.searchTerm = event.target.value;
     if (!this.searchTerm || this.searchTerm.trim() === '') {
       this.searchTerm = '';

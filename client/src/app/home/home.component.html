@@ -1,12 +1,14 @@
 <ion-header>
   <ion-toolbar color="dark">
-    <ion-title *ngIf="!showSearchbar">NASA APOD</ion-title>
-
-    <ion-searchbar #searchbar (ionCancel)="clearSearch()" (ionInput)="triggerSearchInput($event)"
-                   *ngIf="showSearchbar" [(ngModel)]="searchTerm"
-                   color="medium"
-                   showCancelButton="focus"></ion-searchbar>
-
+    @if (!showSearchbar) {
+      <ion-title>NASA APOD</ion-title>
+    }
+    @if (showSearchbar) {
+      <ion-searchbar #searchbar (ionCancel)="clearSearch()" (ionInput)="triggerSearchInput($event)"
+                         [(ngModel)]="searchTerm"
+                         color="medium"
+                         showCancelButton="focus"></ion-searchbar>
+    }
     <ion-buttons slot="primary">
       <ion-button (click)="toggleSearch()">
         <ion-icon [ngStyle]="{'color': searchTerm === '' ? '' : 'yellow' }" name="search" slot="icon-only"></ion-icon>
@@ -27,7 +29,8 @@
   </ion-refresher>
 
   <ion-list>
-    <ion-item *ngFor="let apod of apods; trackBy: trackBy" [detail]="false"
+    @for (apod of apods; track trackBy($index, apod)) {
+  <ion-item [detail]="false"
               [routerLink]="['/detail', apod.date]"
               class="ion-no-margin ion-no-padding" routerDirection="forward">
       <ion-label>
@@ -39,6 +42,7 @@
         </div>
       </ion-label>
     </ion-item>
+}
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content
