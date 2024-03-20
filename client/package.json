@@ -25,7 +25,7 @@
     "@angular/router": "17.2.3",
     "@ionic/angular": "7.7.3",
     "ionicons": "7.2.2",
-    "dexie": "3.2.5",
+    "dexie": "3.2.7",
     "protobufjs": "7.2.6",
     "rxjs": "7.8.1",
     "tslib": "2.6.2",
