@@ -3,14 +3,14 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{selectedApod?.title}}</ion-title>
+    <ion-title>{{ selectedApod?.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <img (click)="showFull()" [alt]="selectedApod?.title" [src]="imageURL()"/>
   <div class="credit">
-    {{selectedApod?.credit}}
+    {{ selectedApod?.credit }}
   </div>
   <div [innerHTML]="selectedApod?.explanation" class="explanation">
   </div>

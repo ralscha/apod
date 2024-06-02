@@ -3,12 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{selectedApod?.title}}</ion-title>
+    <ion-title>{{ selectedApod?.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [scrollX]="true" [scrollY]="true">
   @if (imgSrc) {
-<img [alt]="selectedApod?.title" [src]="imgSrc">
-}
+    <img [alt]="selectedApod?.title" [src]="imgSrc">
+  }
 </ion-content>

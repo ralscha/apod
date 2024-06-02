@@ -5,9 +5,9 @@
     }
     @if (showSearchbar) {
       <ion-searchbar #searchbar (ionCancel)="clearSearch()" (ionInput)="triggerSearchInput($event)"
-                         [(ngModel)]="searchTerm"
-                         color="medium"
-                         showCancelButton="focus"></ion-searchbar>
+                     [(ngModel)]="searchTerm"
+                     color="medium"
+                     showCancelButton="focus"></ion-searchbar>
     }
     <ion-buttons slot="primary">
       <ion-button (click)="toggleSearch()">
@@ -30,19 +30,19 @@
 
   <ion-list>
     @for (apod of apods; track trackBy($index, apod)) {
-  <ion-item [detail]="false"
-              [routerLink]="['/detail', apod.date]"
-              class="ion-no-margin ion-no-padding" routerDirection="forward">
-      <ion-label>
-        <div class="image">
-          <img [alt]="apod.title" [src]="imageURL(apod)"/>
-          <h4><span>{{apod.date}}</span></h4>
-          <h2><span>{{apod.title}}</span></h2>
-          <h3><span>{{apod.credit}}</span></h3>
-        </div>
-      </ion-label>
-    </ion-item>
-}
+      <ion-item [detail]="false"
+                [routerLink]="['/detail', apod.date]"
+                class="ion-no-margin ion-no-padding" routerDirection="forward">
+        <ion-label>
+          <div class="image">
+            <img [alt]="apod.title" [src]="imageURL(apod)"/>
+            <h4><span>{{ apod.date }}</span></h4>
+            <h2><span>{{ apod.title }}</span></h2>
+            <h3><span>{{ apod.credit }}</span></h3>
+          </div>
+        </ion-label>
+      </ion-item>
+    }
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content

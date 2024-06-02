@@ -1,5 +1,6 @@
 import * as $protobuf from "protobufjs";
 
+
 export interface IApod {
   date?: (string | null);
   explanation?: (string | null);
