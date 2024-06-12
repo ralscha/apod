@@ -26,7 +26,7 @@
     "@ionic/angular": "8.2.1",
     "ionicons": "7.4.0",
     "dexie": "4.0.7",
-    "protobufjs": "7.3.0",
+    "protobufjs": "7.3.2",
     "rxjs": "7.8.1",
     "tslib": "2.6.3",
     "workbox-cacheable-response": "7.1.0",
