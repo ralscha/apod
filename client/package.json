@@ -23,7 +23,7 @@
     "@angular/platform-browser": "18.0.2",
     "@angular/platform-browser-dynamic": "18.0.2",
     "@angular/router": "18.0.2",
-    "@ionic/angular": "8.2.1",
+    "@ionic/angular": "8.2.4",
     "ionicons": "7.4.0",
     "dexie": "4.0.7",
     "protobufjs": "7.3.0",
