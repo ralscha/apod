@@ -52,7 +52,7 @@
     "protobufjs-cli": "1.1.2",
     "rimraf": "5.0.7",
     "ts-loader": "9.5.1",
-    "typescript": "5.4.5",
+    "typescript": "5.5.4",
     "webpack-cli": "5.1.4",
     "workbox-cli": "7.1.0"
   }
