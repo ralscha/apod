@@ -5,9 +5,10 @@ import {environment} from '../../environments/environment';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'app-full',
-  templateUrl: './full.component.html',
-  styleUrls: ['./full.component.scss'],
+    selector: 'app-full',
+    templateUrl: './full.component.html',
+    styleUrls: ['./full.component.scss'],
+    standalone: false
 })
 export class FullComponent implements OnInit {
 
