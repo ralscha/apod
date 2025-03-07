@@ -32,13 +32,13 @@
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
-			<version>4.29.3</version>
+			<version>4.30.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp-jvm</artifactId>
-			<version>5.0.0-alpha.14</version>
+			<version>5.0.0-alpha.12</version>
 		</dependency>
 
 		<dependency>
@@ -87,7 +87,7 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<protocVersion>4.29.3</protocVersion>
+							<protocVersion>4.30.0</protocVersion>
 							<inputDirectories>
 								<include>src/main/protobuf</include>
 							</inputDirectories>
