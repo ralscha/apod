@@ -6,10 +6,10 @@ import {environment} from '../../environments/environment';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
-    selector: 'app-detail',
-    templateUrl: './detail.component.html',
-    styleUrls: ['./detail.component.scss'],
-    standalone: false
+  selector: 'app-detail',
+  templateUrl: './detail.component.html',
+  styleUrls: ['./detail.component.scss'],
+  standalone: false
 })
 export class DetailComponent implements OnInit {
 

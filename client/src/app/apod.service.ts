@@ -77,7 +77,7 @@ export class ApodService {
     }
 
     const allWords = text.split(' ');
-    const wordSet = allWords.reduce((prev: { [key: string]: boolean }, current) => {
+    const wordSet = allWords.reduce((prev: Record<string, boolean>, current) => {
       // ignore small tokens
       if (current && current.length > 2) {
         prev[current] = true;
