@@ -1,24 +1,36 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {IApod} from '../protos/apod';
-import {NavController} from '@ionic/angular';
 import {ApodService} from '../apod.service';
 import {environment} from '../../environments/environment';
 import {ActivatedRoute} from '@angular/router';
+import {
+  IonBackButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  NavController
+} from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.scss'],
-  standalone: false
+  styleUrl: './detail.component.scss',
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonTitle,
+    IonContent
+  ]
 })
 export class DetailComponent implements OnInit {
-
   selectedApod: IApod | null | undefined;
-
-  constructor(private readonly navCtrl: NavController,
-              private readonly route: ActivatedRoute,
-              private readonly apodService: ApodService) {
-  }
+  private readonly navCtrl = inject(NavController);
+  private readonly route = inject(ActivatedRoute);
+  private readonly apodService = inject(ApodService);
 
   async ngOnInit(): Promise<void> {
     const date = this.route.snapshot.paramMap.get('date');

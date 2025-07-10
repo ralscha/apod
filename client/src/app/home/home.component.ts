@@ -1,28 +1,72 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {IApod} from '../protos/apod';
 import {environment} from '../../environments/environment';
-import {IonSearchbar, LoadingController} from '@ionic/angular';
 import {ApodService} from '../apod.service';
 import {Subscription} from 'rxjs';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonRefresher,
+  IonRefresherContent,
+  IonRouterLink,
+  IonSearchbar,
+  IonTitle,
+  IonToolbar,
+  LoadingController
+} from "@ionic/angular/standalone";
+import {RouterLink} from "@angular/router";
+import {FormsModule} from "@angular/forms";
+import {NgStyle} from "@angular/common";
+import {addIcons} from "ionicons";
+import {caretDown, search} from "ionicons/icons";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  standalone: false
+  styleUrl: './home.component.scss',
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonSearchbar,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonContent,
+    IonRefresher,
+    IonRefresherContent,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    RouterLink,
+    IonRouterLink,
+    FormsModule,
+    NgStyle
+  ]
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
   apods: IApod[] = [];
   showSearchbar = false;
   searchTerm = '';
   @ViewChild('searchbar')
   searchbar!: IonSearchbar;
+  private readonly apodService = inject(ApodService);
+  private readonly loadingCtrl = inject(LoadingController);
   private offset = 0;
   private updatesSubscription!: Subscription;
 
-  constructor(private readonly apodService: ApodService,
-              private readonly loadingCtrl: LoadingController) {
+  constructor() {
+    addIcons({search, caretDown});
   }
 
   async ngOnInit(): Promise<void> {

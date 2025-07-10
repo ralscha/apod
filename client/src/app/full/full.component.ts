@@ -1,25 +1,30 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {IApod} from '../protos/apod';
 import {ApodService} from '../apod.service';
 import {environment} from '../../environments/environment';
 import {ActivatedRoute} from '@angular/router';
+import {IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-full',
   templateUrl: './full.component.html',
-  styleUrls: ['./full.component.scss'],
-  standalone: false
+  styleUrl: './full.component.scss',
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonTitle,
+    IonContent
+  ]
 })
 export class FullComponent implements OnInit {
-
   selectedApod!: IApod | null | undefined;
   imgSrc!: string;
   imgHeight!: number;
   imgWidth!: number;
-
-  constructor(private readonly route: ActivatedRoute,
-              private readonly apodService: ApodService) {
-  }
+  private readonly route = inject(ActivatedRoute);
+  private readonly apodService = inject(ApodService);
 
   imageURL(): string {
     if (this.selectedApod) {

@@ -125,12 +125,14 @@ export const Apod = $root.Apod = (() => {
    * @throws {Error} If the payload is not a reader or valid buffer
    * @throws {$protobuf.util.ProtocolError} If required fields are missing
    */
-  Apod.decode = function decode(reader, length) {
+  Apod.decode = function decode(reader, length, error) {
     if (!(reader instanceof $Reader))
       reader = $Reader.create(reader);
     let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Apod();
     while (reader.pos < end) {
       let tag = reader.uint32();
+      if (tag === error)
+        break;
       switch (tag >>> 3) {
         case 1: {
           message.date = reader.string();
@@ -367,12 +369,14 @@ export const Apods = $root.Apods = (() => {
    * @throws {Error} If the payload is not a reader or valid buffer
    * @throws {$protobuf.util.ProtocolError} If required fields are missing
    */
-  Apods.decode = function decode(reader, length) {
+  Apods.decode = function decode(reader, length, error) {
     if (!(reader instanceof $Reader))
       reader = $Reader.create(reader);
     let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Apods();
     while (reader.pos < end) {
       let tag = reader.uint32();
+      if (tag === error)
+        break;
       switch (tag >>> 3) {
         case 1: {
           if (!(message.apods && message.apods.length))

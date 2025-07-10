@@ -26,15 +26,15 @@ export class Apod implements IApod {
 
   public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): Apod;
 
-  public static verify(message: Record<string, any>): (string | null);
+  public static verify(message: { [k: string]: any }): (string | null);
 
-  public static fromObject(object: Record<string, any>): Apod;
+  public static fromObject(object: { [k: string]: any }): Apod;
 
-  public static toObject(message: Apod, options?: $protobuf.IConversionOptions): Record<string, any>;
+  public static toObject(message: Apod, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
   public static getTypeUrl(typeUrlPrefix?: string): string;
 
-  public toJSON(): Record<string, any>;
+  public toJSON(): { [k: string]: any };
 }
 
 export interface IApods {
@@ -56,13 +56,13 @@ export class Apods implements IApods {
 
   public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): Apods;
 
-  public static verify(message: Record<string, any>): (string | null);
+  public static verify(message: { [k: string]: any }): (string | null);
 
-  public static fromObject(object: Record<string, any>): Apods;
+  public static fromObject(object: { [k: string]: any }): Apods;
 
-  public static toObject(message: Apods, options?: $protobuf.IConversionOptions): Record<string, any>;
+  public static toObject(message: Apods, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
   public static getTypeUrl(typeUrlPrefix?: string): string;
 
-  public toJSON(): Record<string, any>;
+  public toJSON(): { [k: string]: any };
 }
