@@ -7,11 +7,11 @@
       <ion-searchbar #searchbar (ionCancel)="clearSearch()" (ionInput)="triggerSearchInput($event)"
                      [(ngModel)]="searchTerm"
                      color="medium"
-                     showCancelButton="focus"></ion-searchbar>
+                     showCancelButton="focus" />
     }
     <ion-buttons slot="primary">
       <ion-button (click)="toggleSearch()">
-        <ion-icon [ngStyle]="{'color': searchTerm === '' ? '' : 'yellow' }" name="search" slot="icon-only"></ion-icon>
+        <ion-icon [ngStyle]="{'color': searchTerm === '' ? '' : 'yellow' }" name="search" slot="icon-only" />
       </ion-button>
     </ion-buttons>
 
@@ -24,8 +24,7 @@
     <ion-refresher-content pullingIcon="caret-down"
                            pullingText="Pull to refresh"
                            refreshingSpinner="circles"
-                           refreshingText="Refreshing...">
-    </ion-refresher-content>
+                           refreshingText="Refreshing..." />
   </ion-refresher>
 
   <ion-list>
@@ -45,10 +44,8 @@
     }
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more data...">
-    </ion-infinite-scroll-content>
+    <ion-infinite-scroll-content loadingSpinner="bubbles"
+      loadingText="Loading more data..." />
   </ion-infinite-scroll>
 
 </ion-content>

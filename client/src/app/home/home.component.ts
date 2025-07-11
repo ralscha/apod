@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, viewChild} from '@angular/core';
 import {IApod} from '../protos/apod';
 import {environment} from '../../environments/environment';
 import {ApodService} from '../apod.service';
@@ -58,8 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   apods: IApod[] = [];
   showSearchbar = false;
   searchTerm = '';
-  @ViewChild('searchbar')
-  searchbar!: IonSearchbar;
+  readonly searchbar = viewChild.required<IonSearchbar>('searchbar');
   private readonly apodService = inject(ApodService);
   private readonly loadingCtrl = inject(LoadingController);
   private offset = 0;
@@ -112,8 +111,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   toggleSearch(): void {
     this.showSearchbar = !this.showSearchbar;
     setTimeout(() => {
-      if (this.searchbar) {
-        this.searchbar.setFocus();
+      const searchbar = this.searchbar();
+      if (searchbar) {
+        searchbar.setFocus();
       }
     }, 1);
   }
