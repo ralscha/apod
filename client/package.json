@@ -41,7 +41,7 @@
     "@angular/build": "20.1.4",
     "@angular/cli": "20.1.4",
     "@angular/compiler-cli": "20.1.4",
-    "@ionic/angular-toolkit": "12.2.0",
+    "@ionic/angular-toolkit": "12.3.0",
     "angular-eslint": "20.1.1",
     "bread-compressor-cli": "3.1.2",
     "eslint": "9.32.0",
