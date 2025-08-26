@@ -25,13 +25,13 @@ export class ApodService {
     if (lastApod) {
       try {
         apods = await this.readApods(lastApod.date);
-      } catch (e) {
+      } catch {
         apods = null;
       }
     } else {
       try {
         apods = await this.readApods();
-      } catch (e) {
+      } catch {
         apods = null;
       }
     }
@@ -39,9 +39,9 @@ export class ApodService {
     const len = apods?.apods?.length;
     if (len && len > 0) {
       await this.db.transaction('rw', this.db.apods, async () => {
-        // @ts-expect-error
+        // @ts-expect-error: apods is checked to be non-null above but TypeScript doesn't infer this
         for (const apod of apods.apods) {
-          // @ts-expect-error
+          // @ts-expect-error: Adding custom property to interface type
           apod.titleTokens = this.getAllWords(apod.title);
           this.db.apods.put(apod);
         }

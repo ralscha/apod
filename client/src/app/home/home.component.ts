@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   doRefresh(event: Event): void {
-    // @ts-expect-error
+    // @ts-expect-error: Event target type is not properly typed in Ionic refresh event
     this.apodService.init().then(() => event.target?.complete());
   }
 
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   async doInfinite(event: Event): Promise<void> {
     this.offset += 5;
     await this.readDataFromDb();
-    // @ts-expect-error
+    // @ts-expect-error: Event target type is not properly typed in Ionic infinite scroll event
     event.target?.complete();
   }
 
@@ -126,7 +126,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   triggerSearchInput(event: Event): void {
-    // @ts-expect-error
+    // @ts-expect-error: Event target type doesn't include value property for input events
     this.searchTerm = event.target.value;
     if (!this.searchTerm || this.searchTerm.trim() === '') {
       this.searchTerm = '';
