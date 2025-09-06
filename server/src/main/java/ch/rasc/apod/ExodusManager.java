@@ -63,8 +63,7 @@ public class ExodusManager {
 	public void saveApod(Apod apod) {
 		this.environment.executeInTransaction(txn -> {
 
-			Store store = this.environment.openStore(APOD_STORE,
-					StoreConfig.WITHOUT_DUPLICATES, txn);
+			Store store = this.environment.openStore(APOD_STORE, StoreConfig.WITHOUT_DUPLICATES, txn);
 
 			Kryo kryo = this.kryoPool.borrow();
 			try {
@@ -72,8 +71,7 @@ public class ExodusManager {
 				Output output = new Output(32, -1);
 				kryo.writeObject(output, apod);
 				output.close();
-				store.put(txn, StringBinding.stringToEntry(apod.getDate()),
-						new ArrayByteIterable(output.toBytes()));
+				store.put(txn, StringBinding.stringToEntry(apod.getDate()), new ArrayByteIterable(output.toBytes()));
 			}
 			finally {
 				this.kryoPool.release(kryo);
@@ -84,8 +82,7 @@ public class ExodusManager {
 
 	public void deleteApod(Apod apod) {
 		this.environment.executeInTransaction(txn -> {
-			Store store = this.environment.openStore(APOD_STORE,
-					StoreConfig.WITHOUT_DUPLICATES, txn);
+			Store store = this.environment.openStore(APOD_STORE, StoreConfig.WITHOUT_DUPLICATES, txn);
 			store.delete(txn, StringBinding.stringToEntry(apod.getDate()));
 		});
 	}
@@ -93,16 +90,13 @@ public class ExodusManager {
 	public Apod readApod(final String date) {
 		return this.environment.computeInReadonlyTransaction(txn -> {
 			if (this.environment.storeExists(APOD_STORE, txn)) {
-				Store store = this.environment.openStore(APOD_STORE,
-						StoreConfig.WITHOUT_DUPLICATES, txn);
+				Store store = this.environment.openStore(APOD_STORE, StoreConfig.WITHOUT_DUPLICATES, txn);
 				try (Cursor cursor = store.openCursor(txn)) {
-					ByteIterable value = cursor
-							.getSearchKey(StringBinding.stringToEntry(date));
+					ByteIterable value = cursor.getSearchKey(StringBinding.stringToEntry(date));
 					if (value != null) {
 						ArrayByteIterable abi = new ArrayByteIterable(value);
 						return this.kryoPool.run(kryo -> {
-							try (Input input = new Input(abi.getBytesUnsafe(), 0,
-									abi.getLength())) {
+							try (Input input = new Input(abi.getBytesUnsafe(), 0, abi.getLength())) {
 								return kryo.readObject(input, Apod.class);
 							}
 						});
@@ -116,16 +110,14 @@ public class ExodusManager {
 	public List<Apod> readAllApod() {
 		return this.environment.computeInReadonlyTransaction(txn -> {
 			if (this.environment.storeExists(APOD_STORE, txn)) {
-				Store store = this.environment.openStore(APOD_STORE,
-						StoreConfig.WITHOUT_DUPLICATES, txn);
+				Store store = this.environment.openStore(APOD_STORE, StoreConfig.WITHOUT_DUPLICATES, txn);
 				List<Apod> result = new ArrayList<>();
 				try (Cursor cursor = store.openCursor(txn)) {
 					while (cursor.getNext()) {
 						ByteIterable value = cursor.getValue();
 						Apod apod = this.kryoPool.run(kryo -> {
 							ArrayByteIterable abi = new ArrayByteIterable(value);
-							try (Input input = new Input(abi.getBytesUnsafe(), 0,
-									abi.getLength())) {
+							try (Input input = new Input(abi.getBytesUnsafe(), 0, abi.getLength())) {
 								return kryo.readObject(input, Apod.class);
 							}
 						});
@@ -141,18 +133,15 @@ public class ExodusManager {
 	public List<Apod> readApodFrom(String fromDate) {
 		return this.environment.computeInReadonlyTransaction(txn -> {
 			if (this.environment.storeExists(APOD_STORE, txn)) {
-				Store store = this.environment.openStore(APOD_STORE,
-						StoreConfig.WITHOUT_DUPLICATES, txn);
+				Store store = this.environment.openStore(APOD_STORE, StoreConfig.WITHOUT_DUPLICATES, txn);
 				List<Apod> result = new ArrayList<>();
 				try (Cursor cursor = store.openCursor(txn)) {
 
-					ByteIterable value = cursor
-							.getSearchKeyRange(StringBinding.stringToEntry(fromDate));
+					ByteIterable value = cursor.getSearchKeyRange(StringBinding.stringToEntry(fromDate));
 					if (value != null) {
 						Apod apod = this.kryoPool.run(kryo -> {
 							ArrayByteIterable abi = new ArrayByteIterable(value);
-							try (Input input = new Input(abi.getBytesUnsafe(), 0,
-									abi.getLength())) {
+							try (Input input = new Input(abi.getBytesUnsafe(), 0, abi.getLength())) {
 								return kryo.readObject(input, Apod.class);
 							}
 						});
@@ -162,8 +151,7 @@ public class ExodusManager {
 							ByteIterable bi = cursor.getValue();
 							apod = this.kryoPool.run(kryo -> {
 								ArrayByteIterable abi = new ArrayByteIterable(bi);
-								try (Input input = new Input(abi.getBytesUnsafe(), 0,
-										abi.getLength())) {
+								try (Input input = new Input(abi.getBytesUnsafe(), 0, abi.getLength())) {
 									return kryo.readObject(input, Apod.class);
 								}
 							});

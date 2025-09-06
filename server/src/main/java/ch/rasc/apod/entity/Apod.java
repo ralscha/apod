@@ -83,9 +83,9 @@ public class Apod {
 
 	@Override
 	public String toString() {
-		return "Apod [date=" + this.date + ", explanation=" + this.explanation
-				+ ", hdUrl=" + this.hdUrl + ", mediaType=" + this.mediaType + ", title="
-				+ this.title + ", url=" + this.url + ", credit=" + this.credit + "]";
+		return "Apod [date=" + this.date + ", explanation=" + this.explanation + ", hdUrl=" + this.hdUrl
+				+ ", mediaType=" + this.mediaType + ", title=" + this.title + ", url=" + this.url + ", credit="
+				+ this.credit + "]";
 	}
 
 }

@@ -27,8 +27,7 @@ public class CliRunner implements ApplicationRunner {
 
 	private final ExodusManager exodusManager;
 
-	public CliRunner(Importer importer, ApplicationContext appContext,
-			ExodusManager exodusManager) {
+	public CliRunner(Importer importer, ApplicationContext appContext, ExodusManager exodusManager) {
 		this.importer = importer;
 		this.appContext = appContext;
 		this.exodusManager = exodusManager;
@@ -109,8 +108,7 @@ public class CliRunner implements ApplicationRunner {
 				List<String> lines = new ArrayList<>();
 				for (Apod apod : allApods) {
 
-					lines.add(
-							apod.getDate() + ";" + apod.getUrl() + ";" + apod.getHdUrl());
+					lines.add(apod.getDate() + ";" + apod.getUrl() + ";" + apod.getHdUrl());
 				}
 				Files.write(export, lines);
 			}

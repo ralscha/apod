@@ -19,8 +19,7 @@ import ch.rasc.apod.entity.Apod;
 @CrossOrigin
 public class ApodController {
 
-	private final static DateTimeFormatter longFormat = DateTimeFormatter
-			.ofPattern("yyyy-MM-dd");
+	private final static DateTimeFormatter longFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	private final ExodusManager exodusManager;
 
@@ -29,8 +28,7 @@ public class ApodController {
 	}
 
 	@GetMapping("/apods")
-	public Apods getApods(
-			@RequestParam(name = "from", required = false) String fromDate) {
+	public Apods getApods(@RequestParam(name = "from", required = false) String fromDate) {
 		List<Apod> apods;
 		if (fromDate == null) {
 			apods = this.exodusManager.readAllApod();
@@ -46,8 +44,7 @@ public class ApodController {
 			if (a.getCredit() != null) {
 				newBuilder.setCredit(a.getCredit());
 			}
-			return newBuilder.setDate(a.getDate()).setExplanation(a.getExplanation())
-					.setTitle(a.getTitle()).build();
+			return newBuilder.setDate(a.getDate()).setExplanation(a.getExplanation()).setTitle(a.getTitle()).build();
 		}).collect(Collectors.toList());
 
 		return Apods.newBuilder().addAllApods(protoApods).build();

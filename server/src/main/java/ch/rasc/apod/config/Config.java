@@ -13,8 +13,7 @@ public class Config {
 
 	@Bean
 	public OkHttpClient httpClient() {
-		OkHttpClient client = new OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS)
-				.build();
+		OkHttpClient client = new OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS).build();
 		return client;
 	}
 

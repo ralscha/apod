@@ -38,15 +38,14 @@ public class ImageController {
 
 	@RequestMapping(value = "/img/{date}/{format}", method = RequestMethod.GET)
 	public void download(@PathVariable(value = "date", required = true) String date,
-			@PathVariable(value = "format", required = true) String format,
-			HttpServletResponse response) throws IOException {
+			@PathVariable(value = "format", required = true) String format, HttpServletResponse response)
+			throws IOException {
 
 		Apod apod = this.exodusManager.readApod(date);
 
 		if (apod != null) {
 			String url = apod.getUrl();
-			if (url == null
-					|| "hd".equals(format) && StringUtils.hasText(apod.getHdUrl())) {
+			if (url == null || "hd".equals(format) && StringUtils.hasText(apod.getHdUrl())) {
 				url = apod.getHdUrl();
 			}
 
@@ -58,8 +57,7 @@ public class ImageController {
 					response.setContentType(contentType);
 
 					if (StringUtils.hasText(this.appProperties.getRedirDir())) {
-						response.sendRedirect(
-								getNginxRedirect(date, imgPath.getFileName().toString()));
+						response.sendRedirect(getNginxRedirect(date, imgPath.getFileName().toString()));
 						return;
 					}
 
@@ -92,15 +90,13 @@ public class ImageController {
 		if (pos != -1) {
 			Path optimizedFile = null;
 			if (lowQuality) {
-				optimizedFile = imgFile.resolveSibling(
-						fileName.substring(0, pos) + "_oo" + fileName.substring(pos));
+				optimizedFile = imgFile.resolveSibling(fileName.substring(0, pos) + "_oo" + fileName.substring(pos));
 			}
 			if (optimizedFile != null && Files.exists(optimizedFile)) {
 				return optimizedFile;
 			}
 
-			optimizedFile = imgFile.resolveSibling(
-					fileName.substring(0, pos) + "_o" + fileName.substring(pos));
+			optimizedFile = imgFile.resolveSibling(fileName.substring(0, pos) + "_o" + fileName.substring(pos));
 			if (Files.exists(optimizedFile)) {
 				return optimizedFile;
 			}
@@ -116,8 +112,7 @@ public class ImageController {
 
 		String monthStr = (month < 10 ? "0" : "") + month;
 		String dayStr = (day < 10 ? "0" : "") + day;
-		return this.appProperties.getRedirDir() + "/" + ld.getYear() + "/" + monthStr
-				+ "/" + dayStr + "/" + fileName;
+		return this.appProperties.getRedirDir() + "/" + ld.getYear() + "/" + monthStr + "/" + dayStr + "/" + fileName;
 	}
 
 }
