@@ -1,6 +1,6 @@
 Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written with Ionic 7 / Angular 17 (`client`) and Java (`server`).
 
-# https://apod.hplar.ch/
+# https://apod.rasc.ch/
 
 This is *not* a PWA. This web app requires a browser with service worker and Cache API implementation.    
 Currently the app only runs on Chrome and Firefox. 

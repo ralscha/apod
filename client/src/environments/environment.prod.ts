@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  serverURL: 'https://apod.hplar.ch'
+  serverURL: 'https://apod.rasc.ch'
 };
