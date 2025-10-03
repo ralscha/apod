@@ -38,8 +38,8 @@
     "zone.js": "0.15.1"
   },
   "devDependencies": {
-    "@angular/build": "20.3.3",
-    "@angular/cli": "20.3.3",
+    "@angular/build": "20.3.4",
+    "@angular/cli": "20.3.4",
     "@angular/compiler-cli": "20.3.3",
     "@ionic/angular-toolkit": "12.3.0",
     "angular-eslint": "20.3.0",
