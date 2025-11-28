@@ -24,7 +24,7 @@ import {
 } from "@ionic/angular/standalone";
 import {RouterLink} from "@angular/router";
 import {FormsModule} from "@angular/forms";
-import {NgStyle} from "@angular/common";
+
 import {addIcons} from "ionicons";
 import {caretDown, search} from "ionicons/icons";
 
@@ -50,9 +50,8 @@ import {caretDown, search} from "ionicons/icons";
     IonInfiniteScrollContent,
     RouterLink,
     IonRouterLink,
-    FormsModule,
-    NgStyle
-  ]
+    FormsModule
+]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   apods: IApod[] = [];

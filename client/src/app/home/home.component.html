@@ -11,7 +11,7 @@
     }
     <ion-buttons slot="primary">
       <ion-button (click)="toggleSearch()">
-        <ion-icon [ngStyle]="{'color': searchTerm === '' ? '' : 'yellow' }" name="search" slot="icon-only" />
+        <ion-icon [style.color]="searchTerm === '' ? '' : 'yellow'" name="search" slot="icon-only" />
       </ion-button>
     </ion-buttons>
 
