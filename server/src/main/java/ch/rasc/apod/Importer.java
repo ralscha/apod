@@ -19,14 +19,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ch.rasc.apod.config.AppProperties;
 import ch.rasc.apod.entity.Apod;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 public class Importer {
