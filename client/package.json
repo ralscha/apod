@@ -44,7 +44,7 @@
     "@ionic/angular-toolkit": "12.3.0",
     "angular-eslint": "21.1.0",
     "bread-compressor-cli": "3.1.2",
-    "eslint": "9.39.1",
+    "eslint": "9.39.2",
     "local-web-server": "5.4.0",
     "npm-run-all": "4.1.5",
     "protobufjs-cli": "1.2.0",
