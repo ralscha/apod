@@ -22,7 +22,7 @@
     "@angular/forms": "21.0.3",
     "@angular/platform-browser": "21.0.3",
     "@angular/router": "21.0.3",
-    "@ionic/angular": "8.7.11",
+    "@ionic/angular": "8.7.15",
     "dexie": "4.2.1",
     "ionicons": "8.0.13",
     "protobufjs": "7.5.4",
