@@ -4,7 +4,6 @@ import {cleanupOutdatedCaches, precacheAndRoute} from 'workbox-precaching';
 import {clientsClaim} from 'workbox-core';
 import {registerRoute} from 'workbox-routing';
 import {CacheFirst} from 'workbox-strategies';
-import {RangeRequestsPlugin} from 'workbox-range-requests';
 import {ExpirationPlugin} from 'workbox-expiration';
 import {CacheableResponsePlugin} from 'workbox-cacheable-response';
 
@@ -29,8 +28,7 @@ registerRoute(/(.*)img(.*)/,
       }),
       new CacheableResponsePlugin({
         statuses: [0, 200]
-      }),
-	  new RangeRequestsPlugin()
+      })
     ]
   })
 );
