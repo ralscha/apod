@@ -1,11 +1,10 @@
-import * as $protobuf from "protobufjs";
-
+import * as $protobuf from 'protobufjs';
 
 export interface IApod {
-  date?: (string | null);
-  explanation?: (string | null);
-  title?: (string | null);
-  credit?: (string | null);
+  date?: string | null;
+  explanation?: string | null;
+  title?: string | null;
+  credit?: string | null;
 }
 
 export class Apod implements IApod {
@@ -22,15 +21,18 @@ export class Apod implements IApod {
 
   public static encodeDelimited(message: IApod, writer?: $protobuf.Writer): $protobuf.Writer;
 
-  public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): Apod;
+  public static decode(reader: $protobuf.Reader | Uint8Array, length?: number): Apod;
 
-  public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): Apod;
+  public static decodeDelimited(reader: $protobuf.Reader | Uint8Array): Apod;
 
-  public static verify(message: Record<string, unknown>): (string | null);
+  public static verify(message: Record<string, unknown>): string | null;
 
   public static fromObject(object: Record<string, unknown>): Apod;
 
-  public static toObject(message: Apod, options?: $protobuf.IConversionOptions): Record<string, unknown>;
+  public static toObject(
+    message: Apod,
+    options?: $protobuf.IConversionOptions
+  ): Record<string, unknown>;
 
   public static getTypeUrl(typeUrlPrefix?: string): string;
 
@@ -38,7 +40,7 @@ export class Apod implements IApod {
 }
 
 export interface IApods {
-  apods?: (IApod[] | null);
+  apods?: IApod[] | null;
 }
 
 export class Apods implements IApods {
@@ -52,15 +54,18 @@ export class Apods implements IApods {
 
   public static encodeDelimited(message: IApods, writer?: $protobuf.Writer): $protobuf.Writer;
 
-  public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): Apods;
+  public static decode(reader: $protobuf.Reader | Uint8Array, length?: number): Apods;
 
-  public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): Apods;
+  public static decodeDelimited(reader: $protobuf.Reader | Uint8Array): Apods;
 
-  public static verify(message: Record<string, unknown>): (string | null);
+  public static verify(message: Record<string, unknown>): string | null;
 
   public static fromObject(object: Record<string, unknown>): Apods;
 
-  public static toObject(message: Apods, options?: $protobuf.IConversionOptions): Record<string, unknown>;
+  public static toObject(
+    message: Apods,
+    options?: $protobuf.IConversionOptions
+  ): Record<string, unknown>;
 
   public static getTypeUrl(typeUrlPrefix?: string): string;
 

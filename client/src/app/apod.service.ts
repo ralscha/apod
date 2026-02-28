@@ -1,15 +1,14 @@
-import {Injectable} from '@angular/core';
-import {ApodDb} from './apod-db';
-import {Apods, IApod, IApods} from './protos/apod';
-import {environment} from '../environments/environment';
-import {Subject} from 'rxjs';
-import {PromiseExtended} from 'dexie';
+import { Injectable } from '@angular/core';
+import { ApodDb } from './apod-db';
+import { Apods, IApod, IApods } from './protos/apod';
+import { environment } from '../environments/environment';
+import { Subject } from 'rxjs';
+import { PromiseExtended } from 'dexie';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApodService {
-
   private db: ApodDb;
   private updatesSubject = new Subject<boolean>();
   updates = this.updatesSubject.asObservable();
@@ -58,8 +57,14 @@ export class ApodService {
   getApods(offset: number, limit: number, searchTerms: string): Promise<IApod[]> {
     if (searchTerms && searchTerms.trim().length > 0) {
       const words = this.getAllWords(searchTerms);
-      return this.db.apods.where('titleTokens').startsWithAnyOfIgnoreCase(words)
-        .distinct().reverse().offset(offset).limit(limit).toArray();
+      return this.db.apods
+        .where('titleTokens')
+        .startsWithAnyOfIgnoreCase(words)
+        .distinct()
+        .reverse()
+        .offset(offset)
+        .limit(limit)
+        .toArray();
     }
     return this.db.apods.reverse().offset(offset).limit(limit).toArray();
   }
@@ -98,7 +103,7 @@ export class ApodService {
       queryParam = '';
     }
 
-    const response = await fetch(`${environment.serverURL}/apods${queryParam}`, {headers});
+    const response = await fetch(`${environment.serverURL}/apods${queryParam}`, { headers });
     const buf = await response.arrayBuffer();
     return Apods.decode(new Uint8Array(buf));
   }

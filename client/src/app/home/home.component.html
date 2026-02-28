@@ -4,48 +4,63 @@
       <ion-title>NASA APOD</ion-title>
     }
     @if (showSearchbar) {
-      <ion-searchbar #searchbar (ionCancel)="clearSearch()" (ionInput)="triggerSearchInput($event)"
-                     [(ngModel)]="searchTerm"
-                     color="medium"
-                     showCancelButton="focus" />
+      <ion-searchbar
+        #searchbar
+        (ionCancel)="clearSearch()"
+        (ionInput)="triggerSearchInput($event)"
+        [(ngModel)]="searchTerm"
+        color="medium"
+        showCancelButton="focus"
+      />
     }
     <ion-buttons slot="primary">
       <ion-button (click)="toggleSearch()">
-        <ion-icon [style.color]="searchTerm === '' ? '' : 'yellow'" name="search" slot="icon-only" />
+        <ion-icon
+          [style.color]="searchTerm === '' ? '' : 'yellow'"
+          name="search"
+          slot="icon-only"
+        />
       </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
-    <ion-refresher-content pullingIcon="caret-down"
-                           pullingText="Pull to refresh"
-                           refreshingSpinner="circles"
-                           refreshingText="Refreshing..." />
+    <ion-refresher-content
+      pullingIcon="caret-down"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing..."
+    />
   </ion-refresher>
 
   <ion-list>
     @for (apod of apods; track trackBy($index, apod)) {
-      <ion-item [detail]="false"
-                [routerLink]="['/detail', apod.date]"
-                class="ion-no-margin ion-no-padding" routerDirection="forward">
+      <ion-item
+        [detail]="false"
+        [routerLink]="['/detail', apod.date]"
+        class="ion-no-margin ion-no-padding"
+        routerDirection="forward"
+      >
         <ion-label>
           <div class="image">
-            <img [alt]="apod.title" [src]="imageURL(apod)"/>
-            <h4><span>{{ apod.date }}</span></h4>
-            <h2><span>{{ apod.title }}</span></h2>
-            <h3><span>{{ apod.credit }}</span></h3>
+            <img [alt]="apod.title" [src]="imageURL(apod)" />
+            <h4>
+              <span>{{ apod.date }}</span>
+            </h4>
+            <h2>
+              <span>{{ apod.title }}</span>
+            </h2>
+            <h3>
+              <span>{{ apod.credit }}</span>
+            </h3>
           </div>
         </ion-label>
       </ion-item>
     }
   </ion-list>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-    <ion-infinite-scroll-content loadingSpinner="bubbles"
-      loadingText="Loading more data..." />
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data..." />
   </ion-infinite-scroll>
-
 </ion-content>

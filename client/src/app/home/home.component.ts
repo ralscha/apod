@@ -1,8 +1,8 @@
-import {Component, inject, OnDestroy, OnInit, viewChild} from '@angular/core';
-import {IApod} from '../protos/apod';
-import {environment} from '../../environments/environment';
-import {ApodService} from '../apod.service';
-import {Subscription} from 'rxjs';
+import { Component, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { IApod } from '../protos/apod';
+import { environment } from '../../environments/environment';
+import { ApodService } from '../apod.service';
+import { Subscription } from 'rxjs';
 import {
   IonButton,
   IonButtons,
@@ -21,12 +21,12 @@ import {
   IonTitle,
   IonToolbar,
   LoadingController
-} from "@ionic/angular/standalone";
-import {RouterLink} from "@angular/router";
-import {FormsModule} from "@angular/forms";
+} from '@ionic/angular/standalone';
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
-import {addIcons} from "ionicons";
-import {caretDown, search} from "ionicons/icons";
+import { addIcons } from 'ionicons';
+import { caretDown, search } from 'ionicons/icons';
 
 @Component({
   selector: 'app-home',
@@ -51,7 +51,7 @@ import {caretDown, search} from "ionicons/icons";
     RouterLink,
     IonRouterLink,
     FormsModule
-]
+  ]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   apods: IApod[] = [];
@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private updatesSubscription!: Subscription;
 
   constructor() {
-    addIcons({search, caretDown});
+    addIcons({ search, caretDown });
   }
 
   async ngOnInit(): Promise<void> {
@@ -152,7 +152,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         loading.dismiss();
         apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
       }
-
     } else {
       apodsFromDb = await this.getCachedApods();
     }
@@ -176,5 +175,4 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     return cachedApods;
   }
-
 }

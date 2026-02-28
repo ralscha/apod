@@ -8,10 +8,15 @@
 </ion-header>
 
 <ion-content>
-  <img (click)="showFull()" (keyup.enter)="showFull()" [alt]="selectedApod?.title" [src]="imageURL()" tabindex="0"/>
+  <img
+    (click)="showFull()"
+    (keyup.enter)="showFull()"
+    [alt]="selectedApod?.title"
+    [src]="imageURL()"
+    tabindex="0"
+  />
   <div class="credit">
     {{ selectedApod?.credit }}
   </div>
-  <div [innerHTML]="selectedApod?.explanation" class="explanation">
-  </div>
+  <div [innerHTML]="selectedApod?.explanation" class="explanation"></div>
 </ion-content>

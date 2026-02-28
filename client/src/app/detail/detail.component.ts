@@ -1,8 +1,8 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {IApod} from '../protos/apod';
-import {ApodService} from '../apod.service';
-import {environment} from '../../environments/environment';
-import {ActivatedRoute} from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { IApod } from '../protos/apod';
+import { ApodService } from '../apod.service';
+import { environment } from '../../environments/environment';
+import { ActivatedRoute } from '@angular/router';
 import {
   IonBackButton,
   IonButtons,
@@ -11,20 +11,13 @@ import {
   IonTitle,
   IonToolbar,
   NavController
-} from "@ionic/angular/standalone";
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
-  imports: [
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonBackButton,
-    IonTitle,
-    IonContent
-  ]
+  imports: [IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent]
 })
 export class DetailComponent implements OnInit {
   selectedApod: IApod | null | undefined;
@@ -62,5 +55,4 @@ export class DetailComponent implements OnInit {
     }
     return 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
   }
-
 }

@@ -1,14 +1,15 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
-import * as $protobuf from "protobufjs/minimal";
+import * as $protobuf from 'protobufjs/minimal';
 
 // Common aliases
-const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
+const $Reader = $protobuf.Reader,
+  $Writer = $protobuf.Writer,
+  $util = $protobuf.util;
 
 // Exported root namespace
-const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
+const $root = $protobuf.roots['default'] || ($protobuf.roots['default'] = {});
 
-export const Apod = $root.Apod = (() => {
-
+export const Apod = ($root.Apod = (() => {
   /**
    * Properties of an Apod.
    * @exports IApod
@@ -30,8 +31,7 @@ export const Apod = $root.Apod = (() => {
   function Apod(properties) {
     if (properties)
       for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-        if (properties[keys[i]] != null)
-          this[keys[i]] = properties[keys[i]];
+        if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
   }
 
   /**
@@ -40,7 +40,7 @@ export const Apod = $root.Apod = (() => {
    * @memberof Apod
    * @instance
    */
-  Apod.prototype.date = "";
+  Apod.prototype.date = '';
 
   /**
    * Apod explanation.
@@ -48,7 +48,7 @@ export const Apod = $root.Apod = (() => {
    * @memberof Apod
    * @instance
    */
-  Apod.prototype.explanation = "";
+  Apod.prototype.explanation = '';
 
   /**
    * Apod title.
@@ -56,7 +56,7 @@ export const Apod = $root.Apod = (() => {
    * @memberof Apod
    * @instance
    */
-  Apod.prototype.title = "";
+  Apod.prototype.title = '';
 
   /**
    * Apod credit.
@@ -64,7 +64,7 @@ export const Apod = $root.Apod = (() => {
    * @memberof Apod
    * @instance
    */
-  Apod.prototype.credit = "";
+  Apod.prototype.credit = '';
 
   /**
    * Creates a new Apod instance using the specified properties.
@@ -88,16 +88,15 @@ export const Apod = $root.Apod = (() => {
    * @returns {$protobuf.Writer} Writer
    */
   Apod.encode = function encode(message, writer) {
-    if (!writer)
-      writer = $Writer.create();
-    if (message.date != null && Object.hasOwnProperty.call(message, "date"))
-      writer.uint32(/* id 1, wireType 2 =*/10).string(message.date);
-    if (message.explanation != null && Object.hasOwnProperty.call(message, "explanation"))
-      writer.uint32(/* id 2, wireType 2 =*/18).string(message.explanation);
-    if (message.title != null && Object.hasOwnProperty.call(message, "title"))
-      writer.uint32(/* id 3, wireType 2 =*/26).string(message.title);
-    if (message.credit != null && Object.hasOwnProperty.call(message, "credit"))
-      writer.uint32(/* id 4, wireType 2 =*/34).string(message.credit);
+    if (!writer) writer = $Writer.create();
+    if (message.date != null && Object.hasOwnProperty.call(message, 'date'))
+      writer.uint32(/* id 1, wireType 2 =*/ 10).string(message.date);
+    if (message.explanation != null && Object.hasOwnProperty.call(message, 'explanation'))
+      writer.uint32(/* id 2, wireType 2 =*/ 18).string(message.explanation);
+    if (message.title != null && Object.hasOwnProperty.call(message, 'title'))
+      writer.uint32(/* id 3, wireType 2 =*/ 26).string(message.title);
+    if (message.credit != null && Object.hasOwnProperty.call(message, 'credit'))
+      writer.uint32(/* id 4, wireType 2 =*/ 34).string(message.credit);
     return writer;
   };
 
@@ -126,13 +125,12 @@ export const Apod = $root.Apod = (() => {
    * @throws {$protobuf.util.ProtocolError} If required fields are missing
    */
   Apod.decode = function decode(reader, length, error) {
-    if (!(reader instanceof $Reader))
-      reader = $Reader.create(reader);
-    let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Apod();
+    if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
+    let end = length === undefined ? reader.len : reader.pos + length,
+      message = new $root.Apod();
     while (reader.pos < end) {
       let tag = reader.uint32();
-      if (tag === error)
-        break;
+      if (tag === error) break;
       switch (tag >>> 3) {
         case 1: {
           message.date = reader.string();
@@ -169,8 +167,7 @@ export const Apod = $root.Apod = (() => {
    * @throws {$protobuf.util.ProtocolError} If required fields are missing
    */
   Apod.decodeDelimited = function decodeDelimited(reader) {
-    if (!(reader instanceof $Reader))
-      reader = new $Reader(reader);
+    if (!(reader instanceof $Reader)) reader = new $Reader(reader);
     return this.decode(reader, reader.uint32());
   };
 
@@ -183,20 +180,15 @@ export const Apod = $root.Apod = (() => {
    * @returns {string|null} `null` if valid, otherwise the reason why it is not
    */
   Apod.verify = function verify(message) {
-    if (typeof message !== "object" || message === null)
-      return "object expected";
-    if (message.date != null && message.hasOwnProperty("date"))
-      if (!$util.isString(message.date))
-        return "date: string expected";
-    if (message.explanation != null && message.hasOwnProperty("explanation"))
-      if (!$util.isString(message.explanation))
-        return "explanation: string expected";
-    if (message.title != null && message.hasOwnProperty("title"))
-      if (!$util.isString(message.title))
-        return "title: string expected";
-    if (message.credit != null && message.hasOwnProperty("credit"))
-      if (!$util.isString(message.credit))
-        return "credit: string expected";
+    if (typeof message !== 'object' || message === null) return 'object expected';
+    if (message.date != null && message.hasOwnProperty('date'))
+      if (!$util.isString(message.date)) return 'date: string expected';
+    if (message.explanation != null && message.hasOwnProperty('explanation'))
+      if (!$util.isString(message.explanation)) return 'explanation: string expected';
+    if (message.title != null && message.hasOwnProperty('title'))
+      if (!$util.isString(message.title)) return 'title: string expected';
+    if (message.credit != null && message.hasOwnProperty('credit'))
+      if (!$util.isString(message.credit)) return 'credit: string expected';
     return null;
   };
 
@@ -209,17 +201,12 @@ export const Apod = $root.Apod = (() => {
    * @returns {Apod} Apod
    */
   Apod.fromObject = function fromObject(object) {
-    if (object instanceof $root.Apod)
-      return object;
+    if (object instanceof $root.Apod) return object;
     let message = new $root.Apod();
-    if (object.date != null)
-      message.date = String(object.date);
-    if (object.explanation != null)
-      message.explanation = String(object.explanation);
-    if (object.title != null)
-      message.title = String(object.title);
-    if (object.credit != null)
-      message.credit = String(object.credit);
+    if (object.date != null) message.date = String(object.date);
+    if (object.explanation != null) message.explanation = String(object.explanation);
+    if (object.title != null) message.title = String(object.title);
+    if (object.credit != null) message.credit = String(object.credit);
     return message;
   };
 
@@ -233,23 +220,19 @@ export const Apod = $root.Apod = (() => {
    * @returns {Object.<string,*>} Plain object
    */
   Apod.toObject = function toObject(message, options) {
-    if (!options)
-      options = {};
+    if (!options) options = {};
     let object = {};
     if (options.defaults) {
-      object.date = "";
-      object.explanation = "";
-      object.title = "";
-      object.credit = "";
+      object.date = '';
+      object.explanation = '';
+      object.title = '';
+      object.credit = '';
     }
-    if (message.date != null && message.hasOwnProperty("date"))
-      object.date = message.date;
-    if (message.explanation != null && message.hasOwnProperty("explanation"))
+    if (message.date != null && message.hasOwnProperty('date')) object.date = message.date;
+    if (message.explanation != null && message.hasOwnProperty('explanation'))
       object.explanation = message.explanation;
-    if (message.title != null && message.hasOwnProperty("title"))
-      object.title = message.title;
-    if (message.credit != null && message.hasOwnProperty("credit"))
-      object.credit = message.credit;
+    if (message.title != null && message.hasOwnProperty('title')) object.title = message.title;
+    if (message.credit != null && message.hasOwnProperty('credit')) object.credit = message.credit;
     return object;
   };
 
@@ -274,16 +257,15 @@ export const Apod = $root.Apod = (() => {
    */
   Apod.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
     if (typeUrlPrefix === undefined) {
-      typeUrlPrefix = "type.googleapis.com";
+      typeUrlPrefix = 'type.googleapis.com';
     }
-    return typeUrlPrefix + "/Apod";
+    return typeUrlPrefix + '/Apod';
   };
 
   return Apod;
-})();
+})());
 
-export const Apods = $root.Apods = (() => {
-
+export const Apods = ($root.Apods = (() => {
   /**
    * Properties of an Apods.
    * @exports IApods
@@ -303,8 +285,7 @@ export const Apods = $root.Apods = (() => {
     this.apods = [];
     if (properties)
       for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-        if (properties[keys[i]] != null)
-          this[keys[i]] = properties[keys[i]];
+        if (properties[keys[i]] != null) this[keys[i]] = properties[keys[i]];
   }
 
   /**
@@ -337,11 +318,13 @@ export const Apods = $root.Apods = (() => {
    * @returns {$protobuf.Writer} Writer
    */
   Apods.encode = function encode(message, writer) {
-    if (!writer)
-      writer = $Writer.create();
+    if (!writer) writer = $Writer.create();
     if (message.apods != null && message.apods.length)
       for (let i = 0; i < message.apods.length; ++i)
-        $root.Apod.encode(message.apods[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        $root.Apod.encode(
+          message.apods[i],
+          writer.uint32(/* id 1, wireType 2 =*/ 10).fork()
+        ).ldelim();
     return writer;
   };
 
@@ -370,17 +353,15 @@ export const Apods = $root.Apods = (() => {
    * @throws {$protobuf.util.ProtocolError} If required fields are missing
    */
   Apods.decode = function decode(reader, length, error) {
-    if (!(reader instanceof $Reader))
-      reader = $Reader.create(reader);
-    let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Apods();
+    if (!(reader instanceof $Reader)) reader = $Reader.create(reader);
+    let end = length === undefined ? reader.len : reader.pos + length,
+      message = new $root.Apods();
     while (reader.pos < end) {
       let tag = reader.uint32();
-      if (tag === error)
-        break;
+      if (tag === error) break;
       switch (tag >>> 3) {
         case 1: {
-          if (!(message.apods && message.apods.length))
-            message.apods = [];
+          if (!(message.apods && message.apods.length)) message.apods = [];
           message.apods.push($root.Apod.decode(reader, reader.uint32()));
           break;
         }
@@ -403,8 +384,7 @@ export const Apods = $root.Apods = (() => {
    * @throws {$protobuf.util.ProtocolError} If required fields are missing
    */
   Apods.decodeDelimited = function decodeDelimited(reader) {
-    if (!(reader instanceof $Reader))
-      reader = new $Reader(reader);
+    if (!(reader instanceof $Reader)) reader = new $Reader(reader);
     return this.decode(reader, reader.uint32());
   };
 
@@ -417,15 +397,12 @@ export const Apods = $root.Apods = (() => {
    * @returns {string|null} `null` if valid, otherwise the reason why it is not
    */
   Apods.verify = function verify(message) {
-    if (typeof message !== "object" || message === null)
-      return "object expected";
-    if (message.apods != null && message.hasOwnProperty("apods")) {
-      if (!Array.isArray(message.apods))
-        return "apods: array expected";
+    if (typeof message !== 'object' || message === null) return 'object expected';
+    if (message.apods != null && message.hasOwnProperty('apods')) {
+      if (!Array.isArray(message.apods)) return 'apods: array expected';
       for (let i = 0; i < message.apods.length; ++i) {
         let error = $root.Apod.verify(message.apods[i]);
-        if (error)
-          return "apods." + error;
+        if (error) return 'apods.' + error;
       }
     }
     return null;
@@ -440,16 +417,13 @@ export const Apods = $root.Apods = (() => {
    * @returns {Apods} Apods
    */
   Apods.fromObject = function fromObject(object) {
-    if (object instanceof $root.Apods)
-      return object;
+    if (object instanceof $root.Apods) return object;
     let message = new $root.Apods();
     if (object.apods) {
-      if (!Array.isArray(object.apods))
-        throw TypeError(".Apods.apods: array expected");
+      if (!Array.isArray(object.apods)) throw TypeError('.Apods.apods: array expected');
       message.apods = [];
       for (let i = 0; i < object.apods.length; ++i) {
-        if (typeof object.apods[i] !== "object")
-          throw TypeError(".Apods.apods: object expected");
+        if (typeof object.apods[i] !== 'object') throw TypeError('.Apods.apods: object expected');
         message.apods[i] = $root.Apod.fromObject(object.apods[i]);
       }
     }
@@ -466,11 +440,9 @@ export const Apods = $root.Apods = (() => {
    * @returns {Object.<string,*>} Plain object
    */
   Apods.toObject = function toObject(message, options) {
-    if (!options)
-      options = {};
+    if (!options) options = {};
     let object = {};
-    if (options.arrays || options.defaults)
-      object.apods = [];
+    if (options.arrays || options.defaults) object.apods = [];
     if (message.apods && message.apods.length) {
       object.apods = [];
       for (let j = 0; j < message.apods.length; ++j)
@@ -500,12 +472,12 @@ export const Apods = $root.Apods = (() => {
    */
   Apods.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
     if (typeUrlPrefix === undefined) {
-      typeUrlPrefix = "type.googleapis.com";
+      typeUrlPrefix = 'type.googleapis.com';
     }
-    return typeUrlPrefix + "/Apods";
+    return typeUrlPrefix + '/Apods';
   };
 
   return Apods;
-})();
+})());
 
-export {$root as default};
+export { $root as default };
