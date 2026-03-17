@@ -43,7 +43,7 @@
     "@angular/cli": "21.2.2",
     "@angular/compiler-cli": "21.2.4",
     "@ionic/angular-toolkit": "12.3.0",
-    "angular-eslint": "21.3.0",
+    "angular-eslint": "21.3.1",
     "bread-compressor-cli": "3.1.2",
     "eslint": "9.39.4",
     "local-web-server": "5.4.0",
