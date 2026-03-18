@@ -136,10 +136,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   private initEventHandler = () => this.init();
 
   private async readDataFromDb(): Promise<void> {
-    let apodsFromDb = [];
-
     if (navigator.onLine) {
-      apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
+      let apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
 
       if (apodsFromDb.length === 0 && this.searchTerm.trim().length === 0) {
         const loading = await this.loadingCtrl.create({
@@ -152,10 +150,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         loading.dismiss();
         apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
       }
-    } else {
-      apodsFromDb = await this.getCachedApods();
+
+      this.apods.push(...apodsFromDb);
+      return;
     }
 
+    const apodsFromDb = await this.getCachedApods();
     this.apods.push(...apodsFromDb);
   }
 
