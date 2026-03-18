@@ -25,11 +25,11 @@ registerRoute(
     cacheName: 'images',
     plugins: [
       new ExpirationPlugin({
-        maxEntries: 500
+        maxEntries: 500,
       }),
       new CacheableResponsePlugin({
-        statuses: [0, 200]
-      })
-    ]
-  })
+        statuses: [0, 200],
+      }),
+    ],
+  }),
 );

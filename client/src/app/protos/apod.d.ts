@@ -31,7 +31,7 @@ export class Apod implements IApod {
 
   public static toObject(
     message: Apod,
-    options?: $protobuf.IConversionOptions
+    options?: $protobuf.IConversionOptions,
   ): Record<string, unknown>;
 
   public static getTypeUrl(typeUrlPrefix?: string): string;
@@ -64,7 +64,7 @@ export class Apods implements IApods {
 
   public static toObject(
     message: Apods,
-    options?: $protobuf.IConversionOptions
+    options?: $protobuf.IConversionOptions,
   ): Record<string, unknown>;
 
   public static getTypeUrl(typeUrlPrefix?: string): string;

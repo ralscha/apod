@@ -10,14 +10,14 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
-  NavController
+  NavController,
 } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
-  imports: [IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent]
+  imports: [IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent],
 })
 export class DetailComponent implements OnInit {
   selectedApod: IApod | null | undefined;

@@ -5,7 +5,7 @@ module.exports = {
   entry: path.join(__dirname, 'src', 'service-worker.ts'),
   output: {
     path: path.join(__dirname, 'dist', 'app'),
-    filename: 'service-worker.js'
+    filename: 'service-worker.js',
   },
   module: {
     rules: [
@@ -14,12 +14,12 @@ module.exports = {
         loader: 'ts-loader',
         exclude: /node_modules/,
         options: {
-          onlyCompileBundledFiles: true
-        }
-      }
-    ]
+          onlyCompileBundledFiles: true,
+        },
+      },
+    ],
   },
   resolve: {
-    extensions: ['.ts', '.wasm', '.mjs', '.js', '.json']
-  }
+    extensions: ['.ts', '.wasm', '.mjs', '.js', '.json'],
+  },
 };

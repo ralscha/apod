@@ -5,11 +5,11 @@ module.exports = {
   entry: path.join(__dirname, 'src', 'service-worker.ts'),
   output: {
     path: path.join(__dirname, 'src'),
-    filename: 'service-worker.js'
+    filename: 'service-worker.js',
   },
   watch: true,
   watchOptions: {
-    ignored: /node_modules/
+    ignored: /node_modules/,
   },
   module: {
     rules: [
@@ -18,12 +18,12 @@ module.exports = {
         loader: 'ts-loader',
         exclude: /node_modules/,
         options: {
-          onlyCompileBundledFiles: true
-        }
-      }
-    ]
+          onlyCompileBundledFiles: true,
+        },
+      },
+    ],
   },
   resolve: {
-    extensions: ['.ts', '.wasm', '.mjs', '.js', '.json']
-  }
+    extensions: ['.ts', '.wasm', '.mjs', '.js', '.json'],
+  },
 };

@@ -20,7 +20,7 @@ import {
   IonSearchbar,
   IonTitle,
   IonToolbar,
-  LoadingController
+  LoadingController,
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -50,8 +50,8 @@ import { caretDown, search } from 'ionicons/icons';
     IonInfiniteScrollContent,
     RouterLink,
     IonRouterLink,
-    FormsModule
-  ]
+    FormsModule,
+  ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   apods: IApod[] = [];
@@ -143,7 +143,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       if (apodsFromDb.length === 0 && this.searchTerm.trim().length === 0) {
         const loading = await this.loadingCtrl.create({
-          message: 'Please wait...'
+          message: 'Please wait...',
         });
 
         await loading.present();

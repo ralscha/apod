@@ -323,7 +323,7 @@ export const Apods = ($root.Apods = (() => {
       for (let i = 0; i < message.apods.length; ++i)
         $root.Apod.encode(
           message.apods[i],
-          writer.uint32(/* id 1, wireType 2 =*/ 10).fork()
+          writer.uint32(/* id 1, wireType 2 =*/ 10).fork(),
         ).ldelim();
     return writer;
   };

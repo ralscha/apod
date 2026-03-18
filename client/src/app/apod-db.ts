@@ -7,7 +7,7 @@ export class ApodDb extends Dexie {
   constructor() {
     super('ApodDb');
     this.version(1).stores({
-      apods: 'date,*titleTokens'
+      apods: 'date,*titleTokens',
     });
   }
 }

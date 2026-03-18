@@ -9,14 +9,14 @@ import {
   IonContent,
   IonHeader,
   IonTitle,
-  IonToolbar
+  IonToolbar,
 } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-full',
   templateUrl: './full.component.html',
   styleUrl: './full.component.scss',
-  imports: [IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent]
+  imports: [IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent],
 })
 export class FullComponent implements OnInit {
   selectedApod!: IApod | null | undefined;

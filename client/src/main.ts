@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'detail/:date', component: DetailComponent },
   { path: 'full/:date', component: FullComponent },
-  { path: '**', redirectTo: '/home' }
+  { path: '**', redirectTo: '/home' },
 ];
 
 function loadServiceWorker(): void {
@@ -28,8 +28,8 @@ bootstrapApplication(AppComponent, {
     provideZoneChangeDetection(),
     provideIonicAngular(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideRouter(routes, withHashLocation())
-  ]
+    provideRouter(routes, withHashLocation()),
+  ],
 })
   .then(() => loadServiceWorker())
   .catch((err) => console.error(err));

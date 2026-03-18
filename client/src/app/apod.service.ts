@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { PromiseExtended } from 'dexie';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApodService {
   private db: ApodDb;
