@@ -19,7 +19,9 @@ const routes: Routes = [
 function loadServiceWorker(): void {
   if ('serviceWorker' in navigator) {
     const wb = new Workbox('service-worker.js');
-    wb.register();
+    wb.register().catch((error) => {
+      console.error('Service worker registration failed.', error);
+    });
   }
 }
 

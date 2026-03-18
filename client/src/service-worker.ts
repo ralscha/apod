@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 /// <reference lib="es2018" />
 /// <reference lib="webworker" />
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
@@ -14,7 +15,7 @@ clientsClaim();
 
 cleanupOutdatedCaches();
 
-if (process.env['NODE_ENV'] === 'production') {
+if (import.meta.env.PROD) {
   registerRoute(/assets\/icons\/.+\.png$/, new CacheFirst({ cacheName: 'icons' }));
   precacheAndRoute(self.__WB_MANIFEST);
 }

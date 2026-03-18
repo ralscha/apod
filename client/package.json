@@ -3,17 +3,17 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "dev": "npm-run-all --parallel sw-dev-webpack ionic-start",
+    "dev": "npm-run-all --parallel sw:dev ionic-start",
     "start": "ng serve -o",
     "ionic-start": "ionic serve",
     "build": "ng build",
     "format": "npx prettier --write .",
-    "postbuild": "npm run sw-prod-webpack && bread-compressor dist/app",
+    "postbuild": "npm run sw:build && bread-compressor dist/app",
     "serve-dist": "ws --hostname localhost -d dist/app -p 1234 -o --log.format stats",
     "lint": "ng lint",
     "pbts": "pbjs -t static-module --es6 -w es6 ../server/src/main/protobuf/Apod.proto -o src/app/protos/apod.js && pbts --no-comments src/app/protos/apod.js -o src/app/protos/apod.d.ts",
-    "sw-dev-webpack": "rimraf ./src/service-worker.js && webpack --config ./sw-dev-webpack.config.js",
-    "sw-prod-webpack": "rimraf ./dist/app/service-worker.js && webpack --config ./sw-prod-webpack.config.js --progress --color && workbox injectManifest ./workbox-config.js"
+    "sw:dev": "rimraf ./src/service-worker.js && vite build --config ./vite.sw.config.mjs --mode development --watch",
+    "sw:build": "rimraf ./dist/app/service-worker.js && vite build --config ./vite.sw.config.mjs --mode production && workbox injectManifest ./workbox-config.js"
   },
   "private": true,
   "dependencies": {
@@ -52,11 +52,10 @@
     "npm-run-all": "4.1.5",
     "protobufjs-cli": "1.2.0",
     "rimraf": "6.1.3",
-    "ts-loader": "9.5.4",
     "prettier": "3.8.1",
     "typescript": "5.9.3",
     "typescript-eslint": "8.57.1",
-    "webpack-cli": "6.0.1",
+    "vite": "8.0.0",
     "workbox-cli": "7.4.0"
   }
 }
