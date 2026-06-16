@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { IApod } from '../protos/apod';
 import { ApodService } from '../apod.service';
 import { environment } from '../../environments/environment';
@@ -17,6 +17,7 @@ import {
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent],
 })
 export class DetailComponent implements OnInit {

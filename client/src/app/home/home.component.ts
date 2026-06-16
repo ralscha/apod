@@ -1,4 +1,11 @@
-import { Component, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  viewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { IApod } from '../protos/apod';
 import { environment } from '../../environments/environment';
 import { ApodService } from '../apod.service';
@@ -32,6 +39,7 @@ import { caretDown, search } from 'ionicons/icons';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     IonHeader,
     IonToolbar,

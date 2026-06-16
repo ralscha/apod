@@ -11,12 +11,12 @@
   <img
     (click)="showFull()"
     (keyup.enter)="showFull()"
-    [alt]="selectedApod?.title"
+    [alt]="$safeNavigationMigration(selectedApod?.title)"
     [src]="imageURL()"
     tabindex="0"
   />
   <div class="credit">
     {{ selectedApod?.credit }}
   </div>
-  <div [innerHTML]="selectedApod?.explanation" class="explanation"></div>
+  <div [innerHTML]="$safeNavigationMigration(selectedApod?.explanation)" class="explanation"></div>
 </ion-content>
