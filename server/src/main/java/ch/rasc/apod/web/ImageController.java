@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.rasc.apod.ExodusManager;
+import ch.rasc.apod.config.AppPaths;
 import ch.rasc.apod.config.AppProperties;
 import ch.rasc.apod.entity.Apod;
 
@@ -30,10 +30,10 @@ public class ImageController {
 	private final Path imageDirectory;
 
 	@Autowired
-	public ImageController(AppProperties appProperties, ExodusManager exodusManager) {
+	public ImageController(AppProperties appProperties, AppPaths appPaths, ExodusManager exodusManager) {
 		this.appProperties = appProperties;
 		this.exodusManager = exodusManager;
-		this.imageDirectory = Paths.get(appProperties.getImagesPath());
+		this.imageDirectory = appPaths.resolve(appProperties.getImagesPath());
 	}
 
 	@RequestMapping(value = "/img/{date}/{format}", method = RequestMethod.GET)
@@ -83,7 +83,7 @@ public class ImageController {
 
 		String monthStr = (month < 10 ? "0" : "") + month;
 		String dayStr = (day < 10 ? "0" : "") + day;
-		Path datePath = Paths.get(String.valueOf(ld.getYear()), monthStr, dayStr);
+		Path datePath = Path.of(String.valueOf(ld.getYear()), monthStr, dayStr);
 
 		Path imgFile = this.imageDirectory.resolve(datePath.resolve(fileName));
 		int pos = fileName.lastIndexOf(".");

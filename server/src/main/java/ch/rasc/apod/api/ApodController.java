@@ -27,7 +27,7 @@ public class ApodController {
 		this.exodusManager = exodusManager;
 	}
 
-	@GetMapping("/apods")
+	@GetMapping(value = "/apods", produces = "application/x-protobuf")
 	public Apods getApods(@RequestParam(name = "from", required = false) String fromDate) {
 		List<Apod> apods;
 		if (fromDate == null) {

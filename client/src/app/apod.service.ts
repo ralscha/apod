@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 })
 export class ApodService {
   private db: ApodDb;
+  private initPromise: Promise<void> | null = null;
   private updatesSubject = new Subject<boolean>();
   updates = this.updatesSubject.asObservable();
 
@@ -17,7 +18,18 @@ export class ApodService {
     this.init();
   }
 
-  async init(): Promise<void> {
+  init(): Promise<void> {
+    if (this.initPromise) {
+      return this.initPromise;
+    }
+
+    this.initPromise = this.loadApods().finally(() => {
+      this.initPromise = null;
+    });
+    return this.initPromise;
+  }
+
+  private async loadApods(): Promise<void> {
     const lastApod = await this.getLastEntry();
     let apods: IApods | null;
     if (lastApod) {

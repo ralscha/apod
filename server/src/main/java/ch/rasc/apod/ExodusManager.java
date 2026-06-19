@@ -13,6 +13,7 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.pool.KryoFactory;
 import com.esotericsoftware.kryo.pool.KryoPool;
 import jakarta.annotation.PreDestroy;
+import ch.rasc.apod.config.AppPaths;
 import ch.rasc.apod.config.AppProperties;
 import ch.rasc.apod.entity.Apod;
 import jetbrains.exodus.ArrayByteIterable;
@@ -34,8 +35,8 @@ public class ExodusManager {
 	private final KryoPool kryoPool;
 
 	@Autowired
-	public ExodusManager(AppProperties appProperties) {
-		this.environment = Environments.newInstance(appProperties.getXodusPath());
+	public ExodusManager(AppProperties appProperties, AppPaths appPaths) {
+		this.environment = Environments.newInstance(appPaths.resolve(appProperties.getXodusPath()).toString());
 
 		KryoFactory factory = () -> {
 			Kryo kryo = new Kryo();

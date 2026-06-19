@@ -21,6 +21,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import ch.rasc.apod.config.AppPaths;
 import ch.rasc.apod.config.AppProperties;
 import ch.rasc.apod.entity.Apod;
 import okhttp3.OkHttpClient;
@@ -46,13 +47,13 @@ public class Importer {
 
 	private final AppProperties appProperties;
 
-	public Importer(ObjectMapper om, AppProperties appProperties, ExodusManager exodusManager, OkHttpClient httpClient)
-			throws IOException {
+	public Importer(ObjectMapper om, AppProperties appProperties, AppPaths appPaths, ExodusManager exodusManager,
+			OkHttpClient httpClient) throws IOException {
 		this.om = om;
 		this.appProperties = appProperties;
 		this.httpClient = httpClient;
 		this.exodusManager = exodusManager;
-		this.imageDirectory = Paths.get(appProperties.getImagesPath());
+		this.imageDirectory = appPaths.resolve(appProperties.getImagesPath());
 		Files.createDirectories(this.imageDirectory);
 	}
 
