@@ -21,7 +21,7 @@ if (import.meta.env.PROD) {
 }
 
 registerRoute(
-  /(.*)img(.*)/,
+  ({ url }) => url.pathname.startsWith('/img/'),
   new CacheFirst({
     cacheName: 'images',
     plugins: [

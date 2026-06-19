@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { IApod } from '../protos/apod';
 import { ApodService } from '../apod.service';
 import { environment } from '../../environments/environment';
@@ -16,7 +16,6 @@ import {
   selector: 'app-full',
   templateUrl: './full.component.html',
   styleUrl: './full.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent],
 })
 export class FullComponent implements OnInit {
@@ -24,6 +23,7 @@ export class FullComponent implements OnInit {
   imgSrc!: string;
   imgHeight!: number;
   imgWidth!: number;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly route = inject(ActivatedRoute);
   private readonly apodService = inject(ApodService);
 
@@ -37,12 +37,14 @@ export class FullComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const date = this.route.snapshot.paramMap.get('date');
     this.selectedApod = await this.apodService.getApod(date);
+    this.changeDetectorRef.markForCheck();
 
     const image = new Image();
     image.onload = () => {
       this.imgHeight = image.naturalHeight;
       this.imgWidth = image.naturalWidth;
       this.imgSrc = image.src;
+      this.changeDetectorRef.markForCheck();
     };
     image.src = this.imageURL();
   }

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ApodDb } from './apod-db';
+import { ApodDb, StoredApod } from './apod-db';
 import { Apods, IApod, IApods } from './protos/apod';
 import { environment } from '../environments/environment';
 import { Subject } from 'rxjs';
-import { PromiseExtended } from 'dexie';
 
 @Injectable({
   providedIn: 'root',
@@ -35,14 +34,15 @@ export class ApodService {
       }
     }
 
-    const len = apods?.apods?.length;
-    if (len && len > 0) {
+    const decodedApods = apods?.apods ?? [];
+    if (decodedApods.length > 0) {
       await this.db.transaction('rw', this.db.apods, async () => {
-        // @ts-expect-error: apods is checked to be non-null above but TypeScript doesn't infer this
-        for (const apod of apods.apods) {
-          // @ts-expect-error: Adding custom property to interface type
-          apod.titleTokens = this.getAllWords(apod.title);
-          this.db.apods.put(apod);
+        for (const apod of decodedApods) {
+          const storedApod: StoredApod = {
+            ...apod,
+            titleTokens: this.getAllWords(apod.title),
+          };
+          this.db.apods.put(storedApod);
         }
       });
 
@@ -50,7 +50,7 @@ export class ApodService {
     }
   }
 
-  getLastEntry(): PromiseExtended<IApod | undefined> {
+  getLastEntry(): Promise<IApod | undefined> {
     return this.db.apods.toCollection().last();
   }
 
@@ -104,6 +104,9 @@ export class ApodService {
     }
 
     const response = await fetch(`${environment.serverURL}/apods${queryParam}`, { headers });
+    if (!response.ok) {
+      throw new Error(`Could not read APOD data: ${response.status} ${response.statusText}`);
+    }
     const buf = await response.arrayBuffer();
     return Apods.decode(new Uint8Array(buf));
   }

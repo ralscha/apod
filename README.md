@@ -1,4 +1,4 @@
-Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written with Ionic 7 / Angular 17 (`client`) and Java (`server`).
+Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written with Ionic 8 / Angular 22 (`client`) and Java (`server`).
 
 # https://apod.rasc.ch/
 
@@ -8,13 +8,13 @@ Currently the app only runs on Chrome and Firefox.
 ## Technology
 
 ### Server
-Written in Java 17 with Spring / Spring Boot.    
+Written in Java 25 with Spring / Spring Boot.
 Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the information in a [Xodus](https://github.com/JetBrains/xodus) database, downloads the normal and high def image and recompresses them with [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth.      
 Provides a Protocol Buffer endpoint (`/apods`) for the clients.
 
 **Libraries:**
-  * [Spring 6](https://projects.spring.io/spring-framework/)
-  * [Spring Boot 3](https://projects.spring.io/spring-boot/)
+  * [Spring 7](https://spring.io/projects/spring-framework)
+  * [Spring Boot 4](https://spring.io/projects/spring-boot)
   * [Xodus](https://github.com/JetBrains/xodus)
   * [jsoup](https://jsoup.org/)
   * [OkHttp](http://square.github.io/okhttp/)
@@ -49,15 +49,13 @@ Various sized icons generated with: http://cthedot.de/icongen/
 
 ## Run locally
 
-  * Install Node.js    
+  * Install Node.js
     https://nodejs.org/en/
 
-  * Download jpeg-recompress for your operation system    
-    https://github.com/imagemin/jpeg-recompress-bin/tree/master/vendor/
+  * Install Java 25
 
-  * Install the Ionic and Angular CLI: 
-    * `npm install -g ionic@latest`
-    * `npm install -g @angular/cli`
+  * Download jpeg-recompress for your operation system
+    https://github.com/imagemin/jpeg-recompress-bin/tree/master/vendor/
 
   * Clone the project and install the dependencies
     ```
@@ -86,8 +84,8 @@ Various sized icons generated with: http://cthedot.de/icongen/
   ./mvnw spring-boot:run -Dspring.profiles.active=development
   ```
 
-  * Start the client
+  * Start the client and service worker build watcher
   ```
   cd apod/client
-  ionic serve
+  npm run dev
   ```

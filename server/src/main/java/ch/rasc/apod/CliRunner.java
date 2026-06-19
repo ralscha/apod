@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +39,7 @@ public class CliRunner implements ApplicationRunner {
 		if (args.getNonOptionArgs().contains("importall")) {
 			Application.runJobs = false;
 
-			LocalDate c = LocalDate.now();
+			LocalDate c = LocalDate.now(ZoneId.systemDefault());
 
 			int counter = 0;
 			for (int i = 0; i < 9000; i++) {
@@ -64,7 +65,7 @@ public class CliRunner implements ApplicationRunner {
 		else if (args.getNonOptionArgs().contains("import10")) {
 			Application.runJobs = false;
 
-			LocalDate c = LocalDate.now();
+			LocalDate c = LocalDate.now(ZoneId.systemDefault());
 
 			for (int i = 0; i < 10; i++) {
 				try {

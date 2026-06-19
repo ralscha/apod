@@ -45,7 +45,7 @@ public class ImageController {
 
 		if (apod != null) {
 			String url = apod.getUrl();
-			if (url == null || "hd".equals(format) && StringUtils.hasText(apod.getHdUrl())) {
+			if (url == null || ("hd".equals(format) && StringUtils.hasText(apod.getHdUrl()))) {
 				url = apod.getHdUrl();
 			}
 

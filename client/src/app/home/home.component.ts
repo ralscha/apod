@@ -4,7 +4,7 @@ import {
   OnDestroy,
   OnInit,
   viewChild,
-  ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { IApod } from '../protos/apod';
 import { environment } from '../../environments/environment';
@@ -39,7 +39,6 @@ import { caretDown, search } from 'ionicons/icons';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     IonHeader,
     IonToolbar,
@@ -67,8 +66,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   searchTerm = '';
   readonly searchbar = viewChild.required<IonSearchbar>('searchbar');
   private readonly apodService = inject(ApodService);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly loadingCtrl = inject(LoadingController);
   private offset = 0;
+  private loadGeneration = 0;
   private updatesSubscription!: Subscription;
 
   constructor() {
@@ -91,18 +92,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   doRefresh(event: Event): void {
     // @ts-expect-error: Event target type is not properly typed in Ionic refresh event
-    this.apodService.init().then(() => event.target?.complete());
+    this.apodService.init().finally(() => event.target?.complete());
   }
 
   async init(): Promise<void> {
+    const generation = ++this.loadGeneration;
     this.apods = [];
     this.offset = 0;
-    this.readDataFromDb();
+    this.changeDetectorRef.markForCheck();
+    await this.readDataFromDb(generation);
   }
 
   async doInfinite(event: Event): Promise<void> {
+    const generation = this.loadGeneration;
     this.offset += 5;
-    await this.readDataFromDb();
+    await this.readDataFromDb(generation);
     // @ts-expect-error: Event target type is not properly typed in Ionic infinite scroll event
     event.target?.complete();
   }
@@ -143,32 +147,46 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private initEventHandler = () => this.init();
 
-  private async readDataFromDb(): Promise<void> {
+  private async readDataFromDb(generation: number): Promise<void> {
     if (navigator.onLine) {
       let apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
+      if (generation !== this.loadGeneration) {
+        return;
+      }
 
       if (apodsFromDb.length === 0 && this.searchTerm.trim().length === 0) {
         const loading = await this.loadingCtrl.create({
           message: 'Please wait...',
         });
 
-        await loading.present();
+        try {
+          await loading.present();
 
-        await this.apodService.init();
-        loading.dismiss();
-        apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
+          await this.apodService.init();
+          apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
+        } finally {
+          await loading.dismiss();
+        }
+        if (generation !== this.loadGeneration) {
+          return;
+        }
       }
 
       this.apods.push(...apodsFromDb);
+      this.changeDetectorRef.markForCheck();
       return;
     }
 
     const apodsFromDb = await this.getCachedApods();
+    if (generation !== this.loadGeneration) {
+      return;
+    }
     this.apods.push(...apodsFromDb);
+    this.changeDetectorRef.markForCheck();
   }
 
   private async getCachedApods(): Promise<IApod[]> {
-    const cachedApods = [];
+    const cachedApods: IApod[] = [];
     let apodsFromDb = await this.apodService.getApods(this.offset, 5, this.searchTerm);
     while (cachedApods.length < 5 && apodsFromDb.length > 0) {
       for (const a of apodsFromDb) {

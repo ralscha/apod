@@ -2,15 +2,17 @@ package ch.rasc.apod;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -60,7 +62,7 @@ public class Importer {
 			return;
 		}
 
-		LocalDate c = LocalDate.now();
+		LocalDate c = LocalDate.now(ZoneId.systemDefault());
 		for (int j = 0; j < 4; j++) {
 			try {
 				importData(c);
@@ -135,7 +137,7 @@ public class Importer {
 			if (Files.exists(imgFile)) {
 				String fileName = imgFile.getFileName().toString();
 
-				if (fileName.toLowerCase().endsWith(".jpg")) {
+				if (isJpegFileName(fileName)) {
 					int pos = fileName.lastIndexOf(".");
 					if (pos != -1) {
 						Path out = imgFile.resolveSibling(fileName.substring(0, pos) + "_o" + fileName.substring(pos));
@@ -174,12 +176,31 @@ public class Importer {
 		String dayStr = (day < 10 ? "0" : "") + day;
 		Path dayPath = Paths.get(String.valueOf(ld.getYear()), monthStr, dayStr);
 
-		int pos = url.lastIndexOf('/');
-		if (pos != -1) {
-			return dayPath.resolve(url.substring(pos + 1));
+		return dayPath.resolve(extractFileName(url));
+	}
+
+	private static String extractFileName(String url) {
+		try {
+			URI uri = URI.create(url);
+			String path = uri.getPath();
+			if (StringUtils.hasText(path)) {
+				return Paths.get(path.replace('\\', '/')).getFileName().toString();
+			}
+		}
+		catch (IllegalArgumentException e) {
+			// Fall back to string parsing below for malformed but still fetchable URLs.
 		}
 
-		return dayPath.resolve(url);
+		int queryPos = url.indexOf('?');
+		String withoutQuery = queryPos == -1 ? url : url.substring(0, queryPos);
+		int fragmentPos = withoutQuery.indexOf('#');
+		String withoutFragment = fragmentPos == -1 ? withoutQuery : withoutQuery.substring(0, fragmentPos);
+		return Paths.get(withoutFragment.replace('\\', '/')).getFileName().toString();
+	}
+
+	private static boolean isJpegFileName(String fileName) {
+		String lowerFileName = fileName.toLowerCase(Locale.ROOT);
+		return lowerFileName.endsWith(".jpg") || lowerFileName.endsWith(".jpeg");
 	}
 
 	private static String getCreditNote(Apod apod) throws IOException {
@@ -228,7 +249,10 @@ public class Importer {
 		Process p = new ProcessBuilder(this.appProperties.getJpegRecompressExe(), "-c", "--accurate", "--strip",
 				in.toString(), out.toString())
 			.start();
-		p.waitFor();
+		int exitCode = p.waitFor();
+		if (exitCode != 0) {
+			throw new IOException("jpeg-recompress failed with exit code " + exitCode + " for " + in);
+		}
 	}
 
 	private void optimizeJpegsLowQuality(Path in, Path out) throws IOException, InterruptedException {
@@ -239,7 +263,10 @@ public class Importer {
 		Process p = new ProcessBuilder(this.appProperties.getJpegRecompressExe(), "-c", "-s", "-q", "low", "-t", ".97",
 				in.toString(), out.toString())
 			.start();
-		p.waitFor();
+		int exitCode = p.waitFor();
+		if (exitCode != 0) {
+			throw new IOException("jpeg-recompress failed with exit code " + exitCode + " for " + in);
+		}
 	}
 
 	public void recompress(Apod apod, String url) {
@@ -249,7 +276,7 @@ public class Importer {
 		if (Files.exists(imgFile)) {
 			String fileName = imgFile.getFileName().toString();
 
-			if (fileName.toLowerCase().endsWith(".jpg")) {
+			if (isJpegFileName(fileName)) {
 				int pos = fileName.lastIndexOf(".");
 				if (pos != -1) {
 					Path out = imgFile.resolveSibling(fileName.substring(0, pos) + "_oo" + fileName.substring(pos));
@@ -267,10 +294,10 @@ public class Importer {
 
 	public boolean isJpeg(Apod apod) {
 		if (apod.getUrl() != null) {
-			return apod.getUrl().toLowerCase().endsWith(".jpg");
+			return isJpegFileName(extractFileName(apod.getUrl()));
 		}
 		if (apod.getHdUrl() != null) {
-			return apod.getHdUrl().toLowerCase().endsWith(".jpg");
+			return isJpegFileName(extractFileName(apod.getHdUrl()));
 		}
 		return false;
 	}
@@ -285,12 +312,15 @@ public class Importer {
 		Path dayPath = Paths.get(String.valueOf(ld.getYear()), monthStr, dayStr);
 
 		Path dir = this.imageDirectory.resolve(dayPath);
-		System.out.println(dir);
-
-		Files.walk(dir, FileVisitOption.FOLLOW_LINKS)
-			.sorted(Comparator.reverseOrder())
-			.map(Path::toFile)
-			.forEach(File::delete);
+		if (Files.exists(dir)) {
+			try (var paths = Files.walk(dir)) {
+				paths.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(file -> {
+					if (!file.delete()) {
+						Application.logger.warn("Could not delete {}", file);
+					}
+				});
+			}
+		}
 
 		this.exodusManager.deleteApod(apod);
 	}
@@ -307,7 +337,7 @@ public class Importer {
 				"Free Present", "Free Presentation", "    Free", "See for yourself:", "Follow APOD on", "Poll:",
 				"Now Available:", ".   Students", "digg_url", ".    ");
 		for (String ob : obsoleteTexts) {
-			int pos = expl.toLowerCase().indexOf(ob.toLowerCase());
+			int pos = expl.toLowerCase(Locale.ROOT).indexOf(ob.toLowerCase(Locale.ROOT));
 			if (pos > -1) {
 				expl = expl.substring(0, pos);
 			}

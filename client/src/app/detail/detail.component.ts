@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { IApod } from '../protos/apod';
 import { ApodService } from '../apod.service';
 import { environment } from '../../environments/environment';
@@ -17,11 +17,11 @@ import {
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent],
 })
 export class DetailComponent implements OnInit {
   selectedApod: IApod | null | undefined;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly navCtrl = inject(NavController);
   private readonly route = inject(ActivatedRoute);
   private readonly apodService = inject(ApodService);
@@ -29,6 +29,7 @@ export class DetailComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const date = this.route.snapshot.paramMap.get('date');
     this.selectedApod = await this.apodService.getApod(date);
+    this.changeDetectorRef.markForCheck();
   }
 
   async showFull(): Promise<void> {

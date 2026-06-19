@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.rasc.apod.ApodOuterClass.Apod.Builder;
+import ch.rasc.apod.ApodOuterClass;
 import ch.rasc.apod.ApodOuterClass.Apods;
 import ch.rasc.apod.ExodusManager;
 import ch.rasc.apod.entity.Apod;
@@ -40,7 +40,7 @@ public class ApodController {
 		}
 
 		List<ch.rasc.apod.ApodOuterClass.Apod> protoApods = apods.stream().map(a -> {
-			Builder newBuilder = ch.rasc.apod.ApodOuterClass.Apod.newBuilder();
+			ApodOuterClass.Apod.Builder newBuilder = ch.rasc.apod.ApodOuterClass.Apod.newBuilder();
 			if (a.getCredit() != null) {
 				newBuilder.setCredit(a.getCredit());
 			}
