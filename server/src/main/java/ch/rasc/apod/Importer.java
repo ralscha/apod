@@ -1,6 +1,5 @@
 package ch.rasc.apod;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -17,6 +16,8 @@ import java.util.Locale;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -55,6 +56,12 @@ public class Importer {
 		this.exodusManager = exodusManager;
 		this.imageDirectory = appPaths.resolve(appProperties.getImagesPath());
 		Files.createDirectories(this.imageDirectory);
+	}
+
+	@EventListener(ApplicationReadyEvent.class)
+	public void onStartup() {
+		Application.logger.info("onStartup: running initial import");
+		scheduledImport();
 	}
 
 	@Scheduled(cron = "0 7 10,22 * * *")
