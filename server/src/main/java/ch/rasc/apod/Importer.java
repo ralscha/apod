@@ -292,7 +292,12 @@ public class Importer {
 				in.toString(), out.toString())
 			.start();
 		int exitCode = p.waitFor();
-		if (exitCode != 0) {
+		if (exitCode == 1) {
+			// Output would be larger than input — keep original, discard optimized version
+			Application.logger.info("optimizeJpegs: skipping optimization for {} (output would be larger)", in);
+			Files.deleteIfExists(out);
+		}
+		else if (exitCode != 0) {
 			throw new IOException("jpeg-recompress failed with exit code " + exitCode + " for " + in);
 		}
 	}
@@ -306,7 +311,13 @@ public class Importer {
 				in.toString(), out.toString())
 			.start();
 		int exitCode = p.waitFor();
-		if (exitCode != 0) {
+		if (exitCode == 1) {
+			// Output would be larger than input — keep original, discard optimized version
+			Application.logger.info("optimizeJpegsLowQuality: skipping optimization for {} (output would be larger)",
+					in);
+			Files.deleteIfExists(out);
+		}
+		else if (exitCode != 0) {
 			throw new IOException("jpeg-recompress failed with exit code " + exitCode + " for " + in);
 		}
 	}
