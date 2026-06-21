@@ -60,19 +60,25 @@ public class Importer {
 	@Scheduled(cron = "0 7 10,22 * * *")
 	public void scheduledImport() {
 		if (!Application.runJobs) {
+			Application.logger.info("scheduledImport: runJobs is false, skipping");
 			return;
 		}
 
+		Application.logger.info("scheduledImport: starting import run");
 		LocalDate c = LocalDate.now(ZoneId.systemDefault());
 		for (int j = 0; j < 4; j++) {
 			try {
-				importData(c);
+				boolean imported = importData(c);
+				if (imported) {
+					Application.logger.info("scheduledImport: successfully imported {}", c);
+				}
 			}
 			catch (IOException e) {
 				Application.logger.error("scheduledImport", e);
 			}
 			c = c.minusDays(1);
 		}
+		Application.logger.info("scheduledImport: import run finished");
 	}
 
 	public boolean importData(LocalDate localDate) throws IOException {
@@ -87,47 +93,72 @@ public class Importer {
 
 		Request request = new Request.Builder().url(url).build();
 		try (Response response = this.httpClient.newCall(request).execute()) {
-			if (response.isSuccessful()) {
-				// System.out.println(response.header("X-RateLimit-Limit"));
-				System.out.println(response.header("X-RateLimit-Remaining"));
+			if (!response.isSuccessful()) {
+				Application.logger.warn("importData: NASA API returned {} {} for date {}", response.code(),
+						response.message(), date);
+				return false;
+			}
 
-				try (ResponseBody body = response.body()) {
-					if (body != null) {
-						String json = body.string();
-						Apod apod = this.om.readValue(json, Apod.class);
-						String credit = getCreditNote(apod);
-						apod.setCredit(credit);
+			Application.logger.info("importData: rate limit remaining = {}",
+					response.header("X-RateLimit-Remaining"));
 
-						if ("image".equals(apod.getMediaType()) && isJpeg(apod)) {
-							boolean hasImage = false;
+			try (ResponseBody body = response.body()) {
+				if (body != null) {
+					String json = body.string();
+					Apod apod = this.om.readValue(json, Apod.class);
+					String credit = getCreditNote(apod);
+					apod.setCredit(credit);
 
-							if (StringUtils.hasText(apod.getHdUrl())) {
-								String fileName = downloadAndOptimize(apod.getDate(), apod.getHdUrl(), true);
-								if (fileName != null) {
-									apod.setHdUrl(fileName);
-									hasImage = true;
-								}
-							}
+					if (!"image".equals(apod.getMediaType())) {
+						Application.logger.info("importData: skipping {} (media_type={}, not an image)", date,
+								apod.getMediaType());
+						return false;
+					}
 
-							if (StringUtils.hasText(apod.getUrl())) {
-								String fileName = downloadAndOptimize(apod.getDate(), apod.getUrl(), false);
-								if (fileName != null) {
-									apod.setUrl(fileName);
-									hasImage = true;
-								}
-							}
+					if (!isJpeg(apod)) {
+						Application.logger.info("importData: skipping {} (not a JPEG image)", date);
+						return false;
+					}
 
-							if (hasImage) {
-								apod.setExplanation(cleanup(apod.getExplanation()));
-								this.exodusManager.saveApod(apod);
-							}
+					boolean hasImage = false;
+
+					if (StringUtils.hasText(apod.getHdUrl())) {
+						String fileName = downloadAndOptimize(apod.getDate(), apod.getHdUrl(), true);
+						if (fileName != null) {
+							apod.setHdUrl(fileName);
+							hasImage = true;
+						}
+						else {
+							Application.logger.warn("importData: failed to download HD image for {} from {}", date,
+									apod.getHdUrl());
 						}
 					}
+
+					if (StringUtils.hasText(apod.getUrl())) {
+						String fileName = downloadAndOptimize(apod.getDate(), apod.getUrl(), false);
+						if (fileName != null) {
+							apod.setUrl(fileName);
+							hasImage = true;
+						}
+						else {
+							Application.logger.warn("importData: failed to download image for {} from {}", date,
+									apod.getUrl());
+						}
+					}
+
+					if (hasImage) {
+						apod.setExplanation(cleanup(apod.getExplanation()));
+						this.exodusManager.saveApod(apod);
+						return true;
+					}
+
+					Application.logger.warn("importData: no image downloaded for {} (hdUrl={}, url={})", date,
+							apod.getHdUrl(), apod.getUrl());
 				}
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	private String downloadAndOptimize(String date, String url, boolean hd) {
@@ -238,6 +269,9 @@ public class Importer {
 						Files.write(file, body.bytes());
 					}
 				}
+			}
+			else {
+				Application.logger.warn("download: HTTP {} {} for {}", response.code(), response.message(), url);
 			}
 		}
 	}
