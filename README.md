@@ -2,8 +2,6 @@ Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astro
 
 # https://apod.rasc.ch/
 
-This is *not* a PWA. This web app requires a browser with service worker and Cache API implementation.    
-Currently the app only runs on Chrome and Firefox. 
 
 ## Technology
 
@@ -44,6 +42,7 @@ Various sized icons generated with: http://cthedot.de/icongen/
 
 #### Build tools
   * [bread-compressor-cli](https://github.com/ralscha/bread-compressor-cli): Pre-compresses assets
+  * [Vite](https://vite.dev/): Builds the custom service worker
   * [workbox-cli](https://github.com/googlechrome/workbox): Precache the application resources
   
 

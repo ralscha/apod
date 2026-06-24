@@ -1,12 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { ApodDb, StoredApod } from './apod-db';
 import { Apods, IApod, IApods } from './protos/apod';
 import { environment } from '../environments/environment';
 import { Subject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class ApodService {
   private db: ApodDb;
   private initPromise: Promise<void> | null = null;
@@ -115,7 +113,9 @@ export class ApodService {
       queryParam = '';
     }
 
-    const response = await fetch(`${environment.serverURL}/apods${queryParam}`, { headers });
+    const response = await fetch(`${environment.serverURL}/apods${queryParam}`, {
+      headers,
+    });
     if (!response.ok) {
       throw new Error(`Could not read APOD data: ${response.status} ${response.statusText}`);
     }

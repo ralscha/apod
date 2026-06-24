@@ -1,15 +1,16 @@
 import {
   Component,
+  DestroyRef,
   inject,
   OnDestroy,
   OnInit,
   viewChild,
   ChangeDetectorRef,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { IApod } from '../protos/apod';
 import { environment } from '../../environments/environment';
 import { ApodService } from '../apod.service';
-import { Subscription } from 'rxjs';
 import {
   IonButton,
   IonButtons,
@@ -18,6 +19,7 @@ import {
   IonIcon,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
+  InfiniteScrollCustomEvent,
   IonItem,
   IonLabel,
   IonList,
@@ -28,12 +30,12 @@ import {
   IonTitle,
   IonToolbar,
   LoadingController,
+  RefresherCustomEvent,
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-import { addIcons } from 'ionicons';
 import { caretDown, search } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-home',
@@ -67,17 +69,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   readonly searchbar = viewChild.required<IonSearchbar>('searchbar');
   private readonly apodService = inject(ApodService);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly loadingCtrl = inject(LoadingController);
   private offset = 0;
   private loadGeneration = 0;
-  private updatesSubscription!: Subscription;
 
   constructor() {
     addIcons({ search, caretDown });
   }
 
   async ngOnInit(): Promise<void> {
-    this.updatesSubscription = this.apodService.updates.subscribe(this.initEventHandler);
+    this.apodService.updates
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(this.initEventHandler);
     this.init();
 
     window.addEventListener('online', this.initEventHandler);
@@ -85,14 +89,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.updatesSubscription.unsubscribe();
     window.removeEventListener('online', this.initEventHandler);
     window.removeEventListener('offline', this.initEventHandler);
   }
 
-  doRefresh(event: Event): void {
-    // @ts-expect-error: Event target type is not properly typed in Ionic refresh event
-    this.apodService.init().finally(() => event.target?.complete());
+  doRefresh(event: RefresherCustomEvent): void {
+    this.apodService.init().finally(() => event.target.complete());
   }
 
   async init(): Promise<void> {
@@ -103,12 +105,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     await this.readDataFromDb(generation);
   }
 
-  async doInfinite(event: Event): Promise<void> {
+  async doInfinite(event: InfiniteScrollCustomEvent): Promise<void> {
     const generation = this.loadGeneration;
     this.offset += 5;
-    await this.readDataFromDb(generation);
-    // @ts-expect-error: Event target type is not properly typed in Ionic infinite scroll event
-    event.target?.complete();
+    try {
+      await this.readDataFromDb(generation);
+    } finally {
+      event.target.complete();
+    }
   }
 
   trackBy(index: number, item: IApod): string | null | undefined {
@@ -136,9 +140,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.init();
   }
 
-  triggerSearchInput(event: Event): void {
-    // @ts-expect-error: Event target type doesn't include value property for input events
-    this.searchTerm = event.target.value;
+  triggerSearchInput(event: CustomEvent<{ value?: string | null }>): void {
+    this.searchTerm = event.detail.value ?? '';
     if (!this.searchTerm || this.searchTerm.trim() === '') {
       this.searchTerm = '';
     }
