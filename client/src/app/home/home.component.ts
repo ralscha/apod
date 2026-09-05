@@ -31,7 +31,7 @@ import {
   IonToolbar,
   LoadingController,
   RefresherCustomEvent,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { caretDown, search } from 'ionicons/icons';

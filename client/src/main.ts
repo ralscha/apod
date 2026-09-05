@@ -1,4 +1,3 @@
-import { provideZoneChangeDetection } from '@angular/core';
 import { Workbox } from 'workbox-window';
 import { provideRouter, RouteReuseStrategy, Routes, withHashLocation } from '@angular/router';
 import { bootstrapApplication } from '@angular/platform-browser';
@@ -6,7 +5,7 @@ import { HomeComponent } from './app/home/home.component';
 import { DetailComponent } from './app/detail/detail.component';
 import { FullComponent } from './app/full/full.component';
 import { AppComponent } from './app/app.component';
-import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
+import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,7 +26,6 @@ function loadServiceWorker(): void {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideZoneChangeDetection(),
     provideIonicAngular(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideRouter(routes, withHashLocation()),
