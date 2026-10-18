@@ -36,7 +36,15 @@ public class CliRunner implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		if (args.getNonOptionArgs().contains("importall")) {
+		if (args.getNonOptionArgs().contains("import-range")) {
+			Application.runJobs = false;
+			LocalDate from = dateOption(args, "from", null);
+			LocalDate to = dateOption(args, "to", LocalDate.now(ZoneId.systemDefault()));
+			int imported = this.importer.importRange(from, to);
+			Application.logger.info("Imported {} APOD images from {} through {}", imported, from, to);
+			SpringApplication.exit(this.appContext, () -> 0);
+		}
+		else if (args.getNonOptionArgs().contains("importall")) {
 			Application.runJobs = false;
 
 			LocalDate c = LocalDate.now(ZoneId.systemDefault());
@@ -273,6 +281,17 @@ public class CliRunner implements ApplicationRunner {
 			SpringApplication.exit(this.appContext, () -> 0);
 		}
 
+	}
+
+	private static LocalDate dateOption(ApplicationArguments args, String name, LocalDate defaultValue) {
+		List<String> values = args.getOptionValues(name);
+		if (values == null && defaultValue != null) {
+			return defaultValue;
+		}
+		if (values == null || values.size() != 1 || !StringUtils.hasText(values.get(0))) {
+			throw new IllegalArgumentException("Specify --" + name + "=YYYY-MM-DD");
+		}
+		return LocalDate.parse(values.get(0));
 	}
 
 }

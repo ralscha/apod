@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,6 +27,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
@@ -88,6 +88,20 @@ public class Importer {
 		Application.logger.info("scheduledImport: import run finished");
 	}
 
+	public int importRange(LocalDate from, LocalDate to) throws IOException {
+		if (from.isAfter(to)) {
+			throw new IllegalArgumentException("The import start date must be on or before the end date");
+		}
+		int imported = 0;
+		// Import oldest first so clients that sync by their latest date see the backfill.
+		for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
+			if (importData(date)) {
+				imported++;
+			}
+		}
+		return imported;
+	}
+
 	public boolean importData(LocalDate localDate) throws IOException {
 		String date = localDate.format(longFormat);
 
@@ -95,26 +109,22 @@ public class Importer {
 			return false;
 		}
 
-		String url = String.format("https://api.nasa.gov/planetary/apod?api_key=%s&hd=true&date=%s",
-				this.appProperties.getNasaApiKey(), date);
+		String apiUrl = this.appProperties.getNasaApiUrl();
+		String url = apiUrl + (apiUrl.endsWith("/") ? "" : "/") + localDate.format(shortFormat);
 
-		Request request = new Request.Builder().url(url).build();
+		Request request = new Request.Builder().url(url).header("Accept", "application/json").build();
 		try (Response response = this.httpClient.newCall(request).execute()) {
 			if (!response.isSuccessful()) {
-				Application.logger.warn("importData: NASA API returned {} {} for date {}", response.code(),
-						response.message(), date);
-				return false;
+				if (response.code() == 404) {
+					Application.logger.info("importData: no APOD available for {}", date);
+					return false;
+				}
+				throw new IOException("NASA API returned HTTP " + response.code() + " for date " + date);
 			}
-
-			Application.logger.info("importData: rate limit remaining = {}",
-					response.header("X-RateLimit-Remaining"));
 
 			try (ResponseBody body = response.body()) {
 				if (body != null) {
-					String json = body.string();
-					Apod apod = this.om.readValue(json, Apod.class);
-					String credit = getCreditNote(apod);
-					apod.setCredit(credit);
+					Apod apod = readApod(body.string(), date);
 
 					if (!"image".equals(apod.getMediaType())) {
 						Application.logger.info("importData: skipping {} (media_type={}, not an image)", date,
@@ -127,34 +137,16 @@ public class Importer {
 						return false;
 					}
 
-					boolean hasImage = false;
+					// The new API's url is an article permalink, not an image URL.
+					String hdUrl = isJpegUrl(apod.getHdUrl()) ? apod.getHdUrl() : null;
+					String imageUrl = isJpegUrl(apod.getUrl()) ? apod.getUrl() : hdUrl;
+					String hdFile = hdUrl != null ? downloadAndOptimize(date, hdUrl, true) : null;
+					String imageFile = imageUrl != null ? downloadAndOptimize(date, imageUrl, false) : null;
 
-					if (StringUtils.hasText(apod.getHdUrl())) {
-						String fileName = downloadAndOptimize(apod.getDate(), apod.getHdUrl(), true);
-						if (fileName != null) {
-							apod.setHdUrl(fileName);
-							hasImage = true;
-						}
-						else {
-							Application.logger.warn("importData: failed to download HD image for {} from {}", date,
-									apod.getHdUrl());
-						}
-					}
-
-					if (StringUtils.hasText(apod.getUrl())) {
-						String fileName = downloadAndOptimize(apod.getDate(), apod.getUrl(), false);
-						if (fileName != null) {
-							apod.setUrl(fileName);
-							hasImage = true;
-						}
-						else {
-							Application.logger.warn("importData: failed to download image for {} from {}", date,
-									apod.getUrl());
-						}
-					}
-
-					if (hasImage) {
-						apod.setExplanation(cleanup(apod.getExplanation()));
+					if (hdFile != null || imageFile != null) {
+						// Store only local filenames, including when one download failed.
+						apod.setHdUrl(hdFile != null ? hdFile : imageFile);
+						apod.setUrl(imageFile != null ? imageFile : hdFile);
 						this.exodusManager.saveApod(apod);
 						return true;
 					}
@@ -166,6 +158,31 @@ public class Importer {
 		}
 
 		return false;
+	}
+
+	private Apod readApod(String json, String requestedDate) throws IOException {
+		try {
+			JsonNode data = this.om.readTree(json);
+			Apod apod = this.om.treeToValue(data, Apod.class);
+			if (apod == null || !requestedDate.equals(apod.getDate())) {
+				throw new IOException("NASA API returned an unexpected APOD date for " + requestedDate);
+			}
+			String credit = apod.getCredit();
+			if (!StringUtils.hasText(credit)) {
+				credit = data.path("copyright").asText("");
+			}
+			apod.setCredit(plainText(credit));
+			apod.setTitle(plainText(apod.getTitle()));
+			apod.setExplanation(cleanup(apod.getExplanation()));
+			return apod;
+		}
+		catch (JacksonException e) {
+			throw new IOException("Invalid NASA API response for " + requestedDate, e);
+		}
+	}
+
+	private static String plainText(String html) {
+		return html == null ? null : Jsoup.parseBodyFragment(html).text();
 	}
 
 	private String downloadAndOptimize(String date, String url, boolean hd) {
@@ -242,23 +259,8 @@ public class Importer {
 		return lowerFileName.endsWith(".jpg") || lowerFileName.endsWith(".jpeg");
 	}
 
-	private static String getCreditNote(Apod apod) throws IOException {
-
-		LocalDate ld = LocalDate.parse(apod.getDate());
-		Document doc = Jsoup.connect("https://apod.nasa.gov/apod/ap" + ld.format(shortFormat) + ".html").get();
-
-		Elements elements = doc.getElementsByTag("center");
-		if (elements.size() >= 2) {
-			String txt = elements.get(1).wholeText().trim();
-			txt = txt.replace(apod.getTitle(), "");
-			int pos = txt.indexOf(':');
-			if (pos > -1) {
-				return txt.substring(pos + 1).replace("\r", "").replace("\n", "").trim();
-			}
-			return txt;
-		}
-
-		return null;
+	private static boolean isJpegUrl(String url) {
+		return StringUtils.hasText(url) && isJpegFileName(extractFileName(url));
 	}
 
 	private void download(Path file, String url) throws IOException {
@@ -268,12 +270,17 @@ public class Importer {
 
 		Files.createDirectories(file.getParent());
 
-		Request request = new Request.Builder().url(url).build();
+		Request request = new Request.Builder().url(url).header("Accept", "image/jpeg").build();
 		try (Response response = this.httpClient.newCall(request).execute()) {
 			if (response.isSuccessful()) {
 				try (ResponseBody body = response.body()) {
 					if (body != null) {
-						Files.write(file, body.bytes());
+						byte[] image = body.bytes();
+						if (image.length < 3 || image[0] != (byte) 0xff || image[1] != (byte) 0xd8
+								|| image[2] != (byte) 0xff) {
+							throw new IOException("Expected JPEG image from " + url);
+						}
+						Files.write(file, image);
 					}
 				}
 			}
@@ -293,7 +300,8 @@ public class Importer {
 			.start();
 		int exitCode = p.waitFor();
 		if (exitCode == 1) {
-			// Output would be larger than input — keep original, discard optimized version
+			// Output would be larger than input — keep original, discard optimized
+			// version
 			Application.logger.info("optimizeJpegs: skipping optimization for {} (output would be larger)", in);
 			Files.deleteIfExists(out);
 		}
@@ -312,7 +320,8 @@ public class Importer {
 			.start();
 		int exitCode = p.waitFor();
 		if (exitCode == 1) {
-			// Output would be larger than input — keep original, discard optimized version
+			// Output would be larger than input — keep original, discard optimized
+			// version
 			Application.logger.info("optimizeJpegsLowQuality: skipping optimization for {} (output would be larger)",
 					in);
 			Files.deleteIfExists(out);
@@ -346,13 +355,7 @@ public class Importer {
 	}
 
 	public boolean isJpeg(Apod apod) {
-		if (apod.getUrl() != null) {
-			return isJpegFileName(extractFileName(apod.getUrl()));
-		}
-		if (apod.getHdUrl() != null) {
-			return isJpegFileName(extractFileName(apod.getHdUrl()));
-		}
-		return false;
+		return isJpegUrl(apod.getUrl()) || isJpegUrl(apod.getHdUrl());
 	}
 
 	public void deleteApod(Apod apod) throws IOException {
@@ -383,12 +386,13 @@ public class Importer {
 			return null;
 		}
 
-		String expl = explanation;
+		String expl = plainText(explanation).replaceFirst("(?i)^Explanation:\\s*", "");
 		List<String> obsoleteTexts = Arrays.asList("Free APOD Lectur", "Free Download:", "Note: Free", "Free Lecture",
 				"No Textbook:", "Happy Holidays:", "Print or Peruse:", "If Time Continues:", "Budget Universe:",
 				"Downloadable Universe:", "Organize Your Universe:", "News: ", "Best Space Images", "Free Download",
 				"Free Present", "Free Presentation", "    Free", "See for yourself:", "Follow APOD on", "Poll:",
-				"Now Available:", ".   Students", "digg_url", ".    ");
+				"Now Available:", ".   Students", "digg_url", ".    ", "APOD's email for image submissions",
+				"APOD's main NASA site", "Tomorrow's picture:");
 		for (String ob : obsoleteTexts) {
 			int pos = expl.toLowerCase(Locale.ROOT).indexOf(ob.toLowerCase(Locale.ROOT));
 			if (pos > -1) {

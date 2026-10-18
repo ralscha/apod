@@ -1,4 +1,4 @@
-Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) (APOD) viewer written with Ionic 8 / Angular 22 (`client`) and Java (`server`).
+Self hosted [NASA Astronomy Picture of the Day](https://science.nasa.gov/apod/) (APOD) viewer written with Ionic 8 / Angular 22 (`client`) and Java (`server`).
 
 # https://apod.rasc.ch/
 
@@ -7,7 +7,9 @@ Self hosted [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astro
 
 ### Server
 Written in Java 25 with Spring / Spring Boot.
-Periodically polls the [APOD API](https://api.nasa.gov/api.html), stores the information in a [Xodus](https://github.com/JetBrains/xodus) database, downloads the normal and high def image and recompresses them with [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth.      
+Periodically polls the [NASA Science APOD API](https://science.nasa.gov/wp-json/wp/v2/apod-basic/261017), stores the information in a [Xodus](https://github.com/JetBrains/xodus) database, downloads JPEG images and recompresses them with [jpeg-recompress](https://github.com/danielgtaylor/jpeg-archive) to save bandwidth. The API's `url` is an article link; `hdurl` supplies the image used for both normal and high definition views. Credits and explanations are converted from HTML to plain text. Video and non-JPEG entries are skipped.
+
+The NASA Science API does not require an API key. Its base URL can be overridden with `app.nasa-api-url` (default: `https://science.nasa.gov/wp-json/wp/v2/apod-basic/`).
 Provides a Protocol Buffer endpoint (`/apods`) for the clients.
 
 **Libraries:**
@@ -66,12 +68,6 @@ Various sized icons generated with: http://cthedot.de/icongen/
   * Open `server/src/main/resources/application-development.properties` and change the path to the jpeg-recompress binary. 
 
 
-  * Visit the NASA Open API page and apply for an API key (it's free)     
-    https://api.nasa.gov/index.html#apply-for-an-api-key
-
-  * Open `server/src/main/resources/application.properties` and enter the API key     
-    `app.nasa-api-key=<enter key here>`
-
   * Download some test data. The following command will download the last 10 days.
     ```
     cd apod/server
@@ -88,3 +84,20 @@ Various sized icons generated with: http://cthedot.de/icongen/
   cd apod/client
   npm run dev
   ```
+
+## Backfill missing dates
+
+The scheduled import checks the latest four days. To recover a longer gap, stop the running server, replace its JAR with the rebuilt `server/target/apod.jar`, and run the following with the same configuration and data paths as the service:
+
+```
+java -jar apod.jar import-range --from=2026-09-29 --to=2026-10-18 --spring.main.web-application-type=none
+```
+
+Both dates are inclusive; `--to` defaults to today. Existing database entries are skipped. The command imports oldest first and can be rerun after a failure. Run it before restarting the service so clients receive the missing dates before newer entries. Clients that already synchronized newer dates will need their local APOD data refreshed to pick up older backfilled entries.
+
+Build and test the server with Java 25 or later:
+
+```
+cd server
+./mvnw verify
+```

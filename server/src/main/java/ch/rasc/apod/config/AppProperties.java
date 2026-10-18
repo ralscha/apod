@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppProperties {
 
-	private String nasaApiKey;
+	private String nasaApiUrl = "https://science.nasa.gov/wp-json/wp/v2/apod-basic/";
 
 	private String imagesPath;
 
@@ -17,12 +17,12 @@ public class AppProperties {
 
 	private String redirDir;
 
-	public String getNasaApiKey() {
-		return this.nasaApiKey;
+	public String getNasaApiUrl() {
+		return this.nasaApiUrl;
 	}
 
-	public void setNasaApiKey(String nasaApiKey) {
-		this.nasaApiKey = nasaApiKey;
+	public void setNasaApiUrl(String nasaApiUrl) {
+		this.nasaApiUrl = nasaApiUrl;
 	}
 
 	public String getImagesPath() {
