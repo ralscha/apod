@@ -32,6 +32,7 @@ import ch.rasc.apod.config.AppPaths;
 import ch.rasc.apod.config.AppProperties;
 import ch.rasc.apod.entity.Apod;
 import okhttp3.MediaType;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Response;
@@ -137,6 +138,57 @@ class ImporterTest {
 		assertFalse(this.importer.importData(DATE));
 		assertNull(this.database.readApod(DATE.toString()));
 		assertEquals(List.of(API + "261017", API + "261017"), this.requests);
+	}
+
+	@Test
+	void backfillSkipsUnicodePngAndContinuesToNextDay() throws IOException {
+		LocalDate date = LocalDate.of(2026, 10, 10);
+		Map<String, Object> data = entry(date);
+		data.put("hdurl", "https://assets.science.nasa.gov/dynamicimage/assets/science/cds/apod/apod/2026/october/"
+				+ "2026_10_10_PZ_Jesli\u010dky_01_1500px.png");
+		respond(date, data);
+		respond(date.plusDays(1), entry(date.plusDays(1)));
+		assertEquals(1, this.importer.importRange(date, date.plusDays(1)));
+		assertNull(this.database.readApod(date.toString()));
+		assertNotNull(this.database.readApod(date.plusDays(1).toString()));
+		assertEquals(List.of(API + "261010", API + "261011", IMAGE), this.requests);
+	}
+
+	@Test
+	void importsRawAndEncodedUnicodeJpegNamesAsPortableLocalFiles() throws IOException {
+		String raw = "https://assets.science.nasa.gov/JESLI\u010cKY 01.JPEG?w=1500#image";
+		String encoded = "https://assets.science.nasa.gov/JESLI%C4%8CKY%2001.JPEG?w=1500#image";
+		String localFileName = null;
+		for (String url : List.of(raw, encoded)) {
+			Map<String, Object> data = entry(DATE);
+			data.put("hdurl", url);
+			respond(DATE, data);
+			this.replies.put(HttpUrl.get(url).toString(), new Reply(200, "image/jpeg", this.jpeg));
+			assertTrue(this.importer.importData(DATE));
+			Apod stored = this.database.readApod(DATE.toString());
+			assertTrue(stored.getUrl().matches("[a-zA-Z0-9._-]+"));
+			assertTrue(stored.getUrl().endsWith(".JPEG"));
+			assertEquals(stored.getUrl(), stored.getHdUrl());
+			assertArrayEquals(this.jpeg, Files.readAllBytes(imagePath(stored.getUrl())));
+			if (localFileName != null) {
+				assertEquals(localFileName, stored.getUrl());
+			}
+			localFileName = stored.getUrl();
+			this.database.deleteApod(stored);
+		}
+	}
+
+	@Test
+	void classifiesEncodedAndMalformedUrlPathsWithoutFilesystemParsing() {
+		Apod apod = new Apod();
+		apod.setUrl("https://assets.science.nasa.gov/Jesli\u010dky 01.png?download=photo.jpg");
+		assertFalse(this.importer.isJpeg(apod));
+		apod.setUrl("https://assets.science.nasa.gov/image%00.png");
+		assertFalse(this.importer.isJpeg(apod));
+		apod.setUrl("https://assets.science.nasa.gov/Jesli%C4%8Dky%2001.JPEG?w=1500");
+		assertTrue(this.importer.isJpeg(apod));
+		apod.setUrl("old-local-file.jpg");
+		assertTrue(this.importer.isJpeg(apod));
 	}
 
 	@Test

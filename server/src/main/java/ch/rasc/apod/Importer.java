@@ -1,7 +1,7 @@
 package ch.rasc.apod;
 
 import java.io.IOException;
-import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import org.jsoup.Jsoup;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -23,6 +24,7 @@ import org.springframework.util.StringUtils;
 import ch.rasc.apod.config.AppPaths;
 import ch.rasc.apod.config.AppProperties;
 import ch.rasc.apod.entity.Apod;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -187,7 +189,13 @@ public class Importer {
 
 	private String downloadAndOptimize(String date, String url, boolean hd) {
 		try {
-			Path dayPath = getFileName(date, url);
+			String sourceFileName = extractFileName(url);
+			// Keep new local filenames portable across filesystem encodings and
+			// redirects.
+			String localFileName = sourceFileName.matches("[a-zA-Z0-9._-]+") ? sourceFileName
+					: "image-" + UUID.nameUUIDFromBytes(sourceFileName.getBytes(StandardCharsets.UTF_8))
+							+ sourceFileName.substring(sourceFileName.lastIndexOf('.'));
+			Path dayPath = getFileName(date, localFileName);
 			Path imgFile = this.imageDirectory.resolve(dayPath);
 			download(imgFile, url);
 			if (Files.exists(imgFile)) {
@@ -236,22 +244,19 @@ public class Importer {
 	}
 
 	private static String extractFileName(String url) {
-		try {
-			URI uri = URI.create(url);
-			String path = uri.getPath();
-			if (StringUtils.hasText(path)) {
-				return Paths.get(path.replace('\\', '/')).getFileName().toString();
-			}
-		}
-		catch (IllegalArgumentException e) {
-			// Fall back to string parsing below for malformed but still fetchable URLs.
+		// Inspect URL segments as strings, without involving the filesystem's encoding.
+		HttpUrl parsedUrl = HttpUrl.parse(url);
+		if (parsedUrl != null) {
+			return parsedUrl.pathSegments().getLast();
 		}
 
+		// Stored records contain local filenames; tolerate relative paths as before.
 		int queryPos = url.indexOf('?');
 		String withoutQuery = queryPos == -1 ? url : url.substring(0, queryPos);
 		int fragmentPos = withoutQuery.indexOf('#');
 		String withoutFragment = fragmentPos == -1 ? withoutQuery : withoutQuery.substring(0, fragmentPos);
-		return Paths.get(withoutFragment.replace('\\', '/')).getFileName().toString();
+		String path = withoutFragment.replace('\\', '/');
+		return path.substring(path.lastIndexOf('/') + 1);
 	}
 
 	private static boolean isJpegFileName(String fileName) {
