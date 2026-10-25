@@ -4,10 +4,6 @@
 version: 2
 updates:
 - package-ecosystem: maven
-  # Legacy decoder for the one-time Kryo 4 -> 5 store migration. kryo5 is updated normally.
-  ignore:
-  - dependency-name: com.esotericsoftware:kryo
-    update-types: [version-update:semver-major]
   directory: /server
   schedule:
     interval: weekly

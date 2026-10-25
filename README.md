@@ -101,27 +101,3 @@ Build and test the server with Java 25 or later:
 cd server
 ./mvnw verify
 ```
-
-## Upgrading an existing Kryo 4 database
-
-Stop APOD and back up the complete directory configured by `app.xodus-path`
-(resolved relative to the configured application paths) before the first start.
-Allow space for both the original records and their converted copy.
-
-On startup, APOD converts the `apod` store into `apod-kryo5` in one Xodus
-transaction. It checks the record count, leaves `apod` untouched, and uses the
-new store for all subsequent reads and writes. A conversion failure aborts
-startup and rolls back the new store. Restarting does not import records again;
-deleting records from the new store does not resurrect the original data.
-
-Kryo 4.0.3 remains solely as the legacy decoder; the relocated `kryo5` artifact
-5.7.1 handles current data. Dependabot continues updating Kryo 5 and Kryo 4
-patches, but cannot replace the legacy decoder with a different major version.
-This follows [Kryo's migration approach](https://github.com/EsotericSoftware/kryo/wiki/Migration-to-v5).
-
-Verify the archive after startup. To roll back, stop APOD and restore the full
-pre-upgrade backup with the old application. The retained `apod` store is a
-snapshot at migration time and does not include later edits.
-
-Validation: `mvn -f server/pom.xml verify` includes conversion of actual Kryo 4
-records, Unicode/null fields, restart behavior, and atomic rollback on corruption.

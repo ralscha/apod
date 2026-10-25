@@ -1,93 +1,99 @@
 package ch.rasc.apod;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.nio.file.Path;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import jetbrains.exodus.ArrayByteIterable;
-import jetbrains.exodus.bindings.StringBinding;
-import jetbrains.exodus.env.*;
+
+import ch.rasc.apod.config.AppPaths;
+import ch.rasc.apod.config.AppProperties;
 import ch.rasc.apod.entity.Apod;
 
 class KryoStoreTest {
-    @TempDir Path directory;
 
-    private Apod sample() {
-        Apod value = new Apod();
-        value.setDate("2026-10-25"); value.setExplanation("A star — 星 🌟");
-        value.setHdUrl(null); value.setMediaType("image"); value.setTitle("Repeated");
-        value.setUrl("https://example.com/image"); value.setCredit("Repeated"); return value;
-    }
+	@TempDir
+	Path directory;
 
-    private void seed(Environment env, boolean corrupt) {
-        env.executeInTransaction(txn -> {
-            Store store = env.openStore("apod", StoreConfig.WITHOUT_DUPLICATES, txn);
-            com.esotericsoftware.kryo.Kryo kryo = new com.esotericsoftware.kryo.Kryo();
-            kryo.register(Apod.class);
-            try (com.esotericsoftware.kryo.io.Output output = new com.esotericsoftware.kryo.io.Output(32, -1)) {
-                kryo.writeObject(output, sample());
-                store.put(txn, StringBinding.stringToEntry("first"), new ArrayByteIterable(output.toBytes()));
-            }
-            if (corrupt) {
-                store.put(txn, StringBinding.stringToEntry("second"), new ArrayByteIterable(new byte[0]));
-            }
-        });
-    }
+	private AppProperties properties;
 
-    @Test void migratesRealKryo4BytesAndPreservesEveryField() {
-        try (Environment env = Environments.newInstance(directory.toFile())) {
-            seed(env, false);
-            KryoStore.migrate(env);
-            env.executeInReadonlyTransaction(txn -> {
-                Store target = env.openStore(KryoStore.STORE, StoreConfig.WITHOUT_DUPLICATES, txn);
-                ArrayByteIterable bytes = new ArrayByteIterable(target.get(txn, StringBinding.stringToEntry("first")));
-                try (com.esotericsoftware.kryo.kryo5.io.Input input = new com.esotericsoftware.kryo.kryo5.io.Input(bytes.getBytesUnsafe(), 0, bytes.getLength())) {
-                    Apod actual = KryoStore.newKryo().readObject(input, Apod.class);
-                    assertEquals(sample().getDate(), actual.getDate());
-assertEquals(sample().getExplanation(), actual.getExplanation());
-assertEquals(sample().getHdUrl(), actual.getHdUrl());
-assertEquals(sample().getMediaType(), actual.getMediaType());
-assertEquals(sample().getTitle(), actual.getTitle());
-assertEquals(sample().getUrl(), actual.getUrl());
-assertEquals(sample().getCredit(), actual.getCredit());
-                    assertEquals(bytes.getLength(), input.position());
-                }
-                assertEquals(1L, target.count(txn));
-                assertEquals(1L, env.openStore("apod", StoreConfig.WITHOUT_DUPLICATES, txn).count(txn));
-            });
-        }
-    }
+	private ExodusManager database;
 
-    @Test void restartDoesNotReimportDeletedRecords() {
-        try (Environment env = Environments.newInstance(directory.toFile())) {
-            seed(env, false);
-            KryoStore.migrate(env);
-            env.executeInTransaction(txn -> env.truncateStore(KryoStore.STORE, txn));
-        }
-        try (Environment env = Environments.newInstance(directory.toFile())) {
-            KryoStore.migrate(env);
-            env.executeInReadonlyTransaction(txn -> assertEquals(0L,
-                    env.openStore(KryoStore.STORE, StoreConfig.WITHOUT_DUPLICATES, txn).count(txn)));
-        }
-    }
+	@BeforeEach
+	void setUp() {
+		this.properties = new AppProperties();
+		this.properties.setXodusPath(this.directory.resolve("database").toString());
+		this.database = new ExodusManager(this.properties, new AppPaths());
+	}
 
-    @Test void corruptLegacyRecordRollsBackTheEntireMigration() {
-        try (Environment env = Environments.newInstance(directory.toFile())) {
-            seed(env, true);
-            assertThrows(RuntimeException.class, () -> KryoStore.migrate(env));
-            env.executeInReadonlyTransaction(txn -> {
-                assertFalse(env.storeExists(KryoStore.STORE, txn));
-                assertEquals(2L, env.openStore("apod", StoreConfig.WITHOUT_DUPLICATES, txn).count(txn));
-            });
-        }
-    }
+	@AfterEach
+	void closeDatabase() {
+		if (this.database != null) {
+			this.database.destroy();
+		}
+	}
 
-    @Test void initializesAnEmptyDatabaseAndIsIdempotent() {
-        try (Environment env = Environments.newInstance(directory.toFile())) {
-            KryoStore.migrate(env);
-            KryoStore.migrate(env);
-            env.executeInReadonlyTransaction(txn -> assertEquals(0L,
-                    env.openStore(KryoStore.STORE, StoreConfig.WITHOUT_DUPLICATES, txn).count(txn)));
-        }
-    }
+	private static Apod sample(String date) {
+		Apod value = new Apod();
+		value.setDate(date);
+		value.setExplanation("A star — 星 🌟");
+		value.setMediaType("image");
+		value.setTitle("Repeated");
+		value.setUrl("https://example.com/" + date + ".jpg");
+		value.setCredit("Repeated");
+		return value;
+	}
+
+	@Test
+	void readApodPreservesUnicodeAndNullFields() {
+		this.database.saveApod(sample("2026-10-25"));
+
+		Apod actual = this.database.readApod("2026-10-25");
+
+		assertEquals("2026-10-25", actual.getDate());
+		assertEquals("A star — 星 🌟", actual.getExplanation());
+		assertEquals("image", actual.getMediaType());
+		assertEquals("Repeated", actual.getTitle());
+		assertEquals("https://example.com/2026-10-25.jpg", actual.getUrl());
+		assertEquals("Repeated", actual.getCredit());
+		assertNull(actual.getHdUrl());
+	}
+
+	@Test
+	void keepsRecordsOrderedByDateAndSupportsRangedReads() {
+		this.database.saveApod(sample("2026-10-25"));
+		this.database.saveApod(sample("2026-10-23"));
+
+		assertEquals(List.of("2026-10-23", "2026-10-25"),
+				this.database.readAllApod().stream().map(Apod::getDate).toList());
+		assertEquals(List.of("2026-10-25"),
+				this.database.readApodFrom("2026-10-24").stream().map(Apod::getDate).toList());
+	}
+
+	@Test
+	void deleteApodRemovesOnlyTheGivenRecord() {
+		this.database.saveApod(sample("2026-10-24"));
+		this.database.saveApod(sample("2026-10-25"));
+
+		this.database.deleteApod(sample("2026-10-24"));
+
+		assertNull(this.database.readApod("2026-10-24"));
+		assertEquals("2026-10-25", this.database.readApod("2026-10-25").getDate());
+	}
+
+	@Test
+	void recordsSurviveAnApplicationRestart() {
+		this.database.saveApod(sample("2026-10-25"));
+		this.database.destroy();
+
+		this.database = new ExodusManager(this.properties, new AppPaths());
+
+		assertEquals("2026-10-25", this.database.readApod("2026-10-25").getDate());
+	}
+
 }
