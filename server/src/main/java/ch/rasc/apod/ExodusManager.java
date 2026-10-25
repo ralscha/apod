@@ -7,11 +7,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.pool.KryoFactory;
-import com.esotericsoftware.kryo.pool.KryoPool;
+import com.esotericsoftware.kryo.kryo5.Kryo;
+import com.esotericsoftware.kryo.kryo5.io.Input;
+import com.esotericsoftware.kryo.kryo5.io.Output;
+
 import jakarta.annotation.PreDestroy;
 import ch.rasc.apod.config.AppPaths;
 import ch.rasc.apod.config.AppProperties;
@@ -28,22 +27,24 @@ import jetbrains.exodus.env.StoreConfig;
 @Component
 public class ExodusManager {
 
-	private static final String APOD_STORE = "apod";
+	private static final String APOD_STORE = KryoStore.STORE;
 
 	private final Environment environment;
 
-	private final KryoPool kryoPool;
+	private final KryoStore kryoPool;
 
 	@Autowired
 	public ExodusManager(AppProperties appProperties, AppPaths appPaths) {
 		this.environment = Environments.newInstance(appPaths.resolve(appProperties.getXodusPath()).toString());
 
-		KryoFactory factory = () -> {
-			Kryo kryo = new Kryo();
-			kryo.register(Apod.class);
-			return kryo;
-		};
-		this.kryoPool = new KryoPool.Builder(factory).softReferences().build();
+		this.kryoPool = new KryoStore();
+		try {
+			KryoStore.migrate(this.environment);
+		}
+		catch (RuntimeException | Error ex) {
+			this.environment.close();
+			throw ex;
+		}
 	}
 
 	@PreDestroy
@@ -56,7 +57,7 @@ public class ExodusManager {
 	public void deleteStore() {
 		this.environment.executeInTransaction(txn -> {
 			if (this.environment.storeExists(APOD_STORE, txn)) {
-				this.environment.removeStore(APOD_STORE, txn);
+				this.environment.truncateStore(APOD_STORE, txn);
 			}
 		});
 	}
